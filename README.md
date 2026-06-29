@@ -42,6 +42,9 @@ Then open <http://localhost:8000/>.
 
 ```
 index.html              ← the site (standalone three.js, no dependencies bundled)
+assets/projects/        ← in-world exhibit visuals shown on each room's monitor
+  nautichess.png        ← NotiChess tactics-trainer screenshot
+  foreman.png           ← Foreman v2 workspace UI (rendered from its design)
 design/                 ← source-of-truth design export, kept for re-sync
   The Basement.dc.html  ← original Claude Design Component (<x-dc> + logic class)
   support.js            ← the Design Component runtime that mounts a .dc.html
@@ -73,6 +76,17 @@ component can still be edited in claude.ai/design and re-synced later.
 
 ## Project rooms
 
-The three doors lead to `NAUTICHESS`, `MINISHELL`, and `FOREMAN`. Each room is
-currently a stub (`// WORK IN PROGRESS`) with a glowing artifact on a pedestal —
-ready to be filled in with real project content.
+Each of the three doors opens onto a project room. Inside, a self-lit **monitor**
+on one wall shows a visual of the project and a **placard** on the other wall
+gives a short write-up (what it is, the stack, and where to find it). The
+monitor's glowing bezel matches the door's accent colour.
+
+| Door | Project | Visual | What it is |
+| --- | --- | --- | --- |
+| `NAUTICHESS` | [NotiChess](https://github.com/TsRun) | tactics-trainer screenshot | Desktop chess studio — play/import/organize games + a tactics trainer over ~4.1M real games (Tauri 2 · React · Rust). |
+| `MINISHELL` | [minishell](https://github.com/TsRun/minishell) | procedural CRT terminal | École 42 systems project — a Bash-like shell in C (pipes, redirections, env, signals, builtins). |
+| `FOREMAN` | [foreman](https://github.com/TsRun) | live workspace UI | macOS task queue for AI coding agents — auto-classifies & routes tasks to role agents that run in parallel and coordinate (Tauri 2 · React · Rust · SQLite). |
+
+The two screenshot visuals live in `assets/projects/`; MINISHELL's terminal is
+drawn procedurally at runtime (a C/shell project has no UI screenshot), and every
+placard is rendered to a canvas in-engine — so only the two `.png`s are assets.
