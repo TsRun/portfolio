@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;background:#05060a;overflow:hidden}
+*{box-sizing:border-box}
+canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+@keyframes grainmove{0%{transform:translate(0,0)}10%{transform:translate(-4%,-6%)}20%{transform:translate(-8%,4%)}30%{transform:translate(6%,-8%)}40%{transform:translate(-6%,8%)}50%{transform:translate(8%,6%)}60%{transform:translate(-8%,-6%)}70%{transform:translate(6%,8%)}80%{transform:translate(-6%,-8%)}90%{transform:translate(8%,-4%)}100%{transform:translate(0,0)}}
+@keyframes introflick{0%,93%,100%{opacity:1}94%{opacity:.35}96%{opacity:.9}97%{opacity:.5}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+</helmet>
+<div ref="{{ containerRef }}" onClick="{{ onClick }}" data-screen-label="Basement" style="position:fixed;inset:0;background:#05060a;overflow:hidden;font-family:'VT323',monospace;color:#cfc9ba;cursor:pointer;user-select:none">
+  <div ref="{{ mountRef }}" style="position:absolute;inset:0;z-index:1"></div>
+  <div ref="{{ grainRef }}" style="position:absolute;inset:-50%;width:200%;height:200%;background:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%27 height=%27100%27 filter=%27url(%23n)%27/%3E%3C/svg%3E');background-size:128px 128px;opacity:.10;mix-blend-mode:screen;pointer-events:none;animation:grainmove .55s steps(1) infinite;z-index:5"></div>
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,.16) 3px);opacity:.45;mix-blend-mode:multiply;pointer-events:none;z-index:6"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 36%,rgba(0,0,0,.82) 100%);pointer-events:none;z-index:7"></div>
+  <div style="position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:rgba(255,240,210,.22);box-shadow:0 0 3px rgba(255,200,120,.4);pointer-events:none;z-index:8"></div>
+  <div ref="{{ hudRef }}" style="position:absolute;inset:0;z-index:10;pointer-events:none"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: &quot;100%&quot; },
+  &quot;atmosphere&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 7, &quot;min&quot;: 1, &quot;max&quot;: 10, &quot;step&quot;: 1, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Mood&quot; },
+  &quot;lanternColor&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#ff8a3c&quot;, &quot;options&quot;: [&quot;#ff8a3c&quot;, &quot;#ffb347&quot;, &quot;#ff6a2b&quot;, &quot;#ffd27a&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Mood&quot; },
+  &quot;neonColor&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#bcd4ff&quot;, &quot;options&quot;: [&quot;#bcd4ff&quot;, &quot;#9fffe0&quot;, &quot;#c9b3ff&quot;, &quot;#ff95b3&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Mood&quot; },
+  &quot;pixelation&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 4, &quot;min&quot;: 1, &quot;max&quot;: 6, &quot;step&quot;: 1, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Retro&quot; },
+  &quot;grain&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Retro&quot; }
+}">
+class Component extends DCLogic {
+  mountRef = React.createRef();
+  containerRef = React.createRef();
+  grainRef = React.createRef();
+  hudRef = React.createRef();
+
+  keys = {};
+  yaw = 0; pitch = 0; time = 0; walkDist = 0;
+  phase = 'intro'; locked = false; muted = false;
+  transitioning = false; portalArmed = true;
+  signs = []; rooms = {}; activeRoom = 'hub';
+  colliders = []; bounds = { RX: 9, RZ: 7 };
+  inited = false;
+
+  renderVals() {
+    return {
+      containerRef: this.containerRef,
+      mountRef: this.mountRef,
+      grainRef: this.grainRef,
+      hudRef: this.hudRef,
+      onClick: this.onClick,
+    };
+  }
+
+  componentDidMount() {
+    this._mounted = true;
+    let tries = 0;
+    const wait = () => {
+      if (!this._mounted) return;
+      if (window.THREE) {
+        try { this.init(); } catch (e) { console.error(e); this.showError('Init error: ' + (e && e.message || e)); }
+        return;
+      }
+      if (tries++ > 200) { this.showError('Could not load the 3D engine. Check your connection and reload.'); return; }
+      setTimeout(wait, 40);
+    };
+    wait();
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mousedown', this.onMouseDown);
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('keyup', this.onKeyUp);
+    document.removeEventListener('pointerlockchange', this.onPLC);
+    window.removeEventListener('resize', this.onResize);
+    try { if (this.renderer) this.renderer.dispose(); } catch (e) {}
+    try { if (this.audio) this.audio.ctx.close(); } catch (e) {}
+  }
+
+  scaleFromPixel(p) { return Math.max(0.12, Math.min(0.85, 0.7 - (p - 1) * 0.1)); }
+  atmoApply(a) {
+    if (this.scene && this.scene.fog) this.scene.fog.density = 0.03 + (a - 1) / 9 * 0.06;
+    if (this.ambient) this.ambient.intensity = 0.95 - (a - 1) / 9 * 0.7;
+  }
+
+  // ---------- geometry helpers ----------
+  box(w, h, d, mat, x, y, z) { const m = new window.THREE.Mesh(new window.THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); return m; }
+  plane(w, h, mat, x, y, z, rx) { const m = new window.THREE.Mesh(new window.THREE.PlaneGeometry(w, h), mat); m.position.set(x, y, z); m.rotation.x = rx; return m; }
+  aabb(x, z, hx, hz) { return { minX: x - hx, maxX: x + hx, minZ: z - hz, maxZ: z + hz }; }
+
+  makeConcrete(base, speckle) {
+    const T = window.THREE;
+    const c = document.createElement('canvas'); c.width = c.height = 128;
+    const x = c.getContext('2d');
+    x.fillStyle = base; x.fillRect(0, 0, 128, 128);
+    for (let i = 0; i < 2600; i++) {
+      const v = Math.random(); const g = Math.floor(speckle * v);
+      x.fillStyle = 'rgba(' + g + ',' + g + ',' + (g + 5) + ',' + (0.12 + Math.random() * 0.5) + ')';
+      const s = Math.random() * 2 + 0.5;
+      x.fillRect(Math.random() * 128, Math.random() * 128, s, s);
+    }
+    x.strokeStyle = 'rgba(0,0,0,0.35)'; x.lineWidth = 1;
+    for (let i = 0; i < 7; i++) {
+      x.beginPath(); let px = Math.random() * 128, py = Math.random() * 128; x.moveTo(px, py);
+      for (let j = 0; j < 5; j++) { px += (Math.random() - 0.5) * 34; py += (Math.random() - 0.5) * 34; x.lineTo(px, py); }
+      x.stroke();
+    }
+    const tex = new T.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = T.RepeatWrapping;
+    tex.magFilter = T.NearestFilter; tex.minFilter = T.NearestMipmapNearestFilter;
+    return tex;
+  }
+
+  makeSignTex(text, fontSize, cw, ch) {
+    const c = document.createElement('canvas'); c.width = cw; c.height = ch;
+    const x = c.getContext('2d');
+    x.clearRect(0, 0, cw, ch);
+    x.font = '700 ' + fontSize + 'px monospace';
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.shadowColor = '#ffffff'; x.shadowBlur = Math.round(fontSize * 0.18); x.fillStyle = '#ffffff';
+    x.fillText(text, cw / 2, ch / 2); x.shadowBlur = 0; x.fillText(text, cw / 2, ch / 2);
+    const T = window.THREE;
+    const tex = new T.CanvasTexture(c); tex.magFilter = T.NearestFilter; tex.minFilter = T.LinearFilter;
+    return tex;
+  }
+  makeSignMesh(text, accentHex, planeW, planeH, fontSize, cw, ch) {
+    const T = window.THREE;
+    const tex = this.makeSignTex(text, fontSize, cw, ch);
+    const mat = new T.MeshBasicMaterial({ map: tex, color: new T.Color(accentHex), transparent: true, opacity: 1, fog: false, blending: T.AdditiveBlending, depthWrite: false });
+    const mesh = new T.Mesh(new T.PlaneGeometry(planeW, planeH), mat);
+    return { mesh, mat };
+  }
+
+  // ---------- rooms ----------
+  buildHub() {
+    const T = window.THREE, RX = 9, RZ = 7, H = 3.2;
+    const g = new T.Group(); this.scene.add(g);
+    const colliders = [];
+    g.add(this.plane(RX * 2, RZ * 2, this.matFloor, 0, 0, 0, -Math.PI / 2));
+    g.add(this.plane(RX * 2, RZ * 2, this.matCeil, 0, H, 0, Math.PI / 2));
+    g.add(this.box(RX * 2, H, 0.4, this.matWall, 0, H / 2, RZ + 0.2));
+    g.add(this.box(0.4, H, RZ * 2, this.matWall, -RX - 0.2, H / 2, 0));
+    g.add(this.box(0.4, H, RZ * 2, this.matWall, RX + 0.2, H / 2, 0));
+
+    const doors = [-5, 0, 5];
+    const targets = ['nautichess', 'minishell', 'foreman'];
+    const names = ['NAUTICHESS', 'MINISHELL', 'FOREMAN'];
+    const cols = ['#6fe3ff', '#8dff6f', '#ffb43c'];
+    const segs = [[-7.425, 3.15], [-2.5, 3.3], [2.5, 3.3], [7.425, 3.15]];
+    for (const s of segs) g.add(this.box(s[1], H, 0.4, this.matWall, s[0], H / 2, -RZ - 0.2));
+    doors.forEach((dx, i) => {
+      g.add(this.box(1.9, 0.8, 0.4, this.matWall, dx, 2.8, -RZ - 0.2));
+      g.add(this.box(0.14, 2.4, 0.3, this.matMetal, dx - 0.92, 1.2, -RZ));
+      g.add(this.box(0.14, 2.4, 0.3, this.matMetal, dx + 0.92, 1.2, -RZ));
+      g.add(this.box(1.84, 0.12, 0.3, this.matMetal, dx, 2.45, -RZ));
+      g.add(this.box(1.8, 2.4, 0.05, this.matDark, dx, 1.2, -RZ - 0.45));
+      const sg = this.makeSignMesh(names[i], cols[i], 1.9, 0.53, 84, 640, 180);
+      sg.mesh.position.set(dx, 2.74, -RZ + 0.14); g.add(sg.mesh);
+      g.add(this.box(2.06, 0.69, 0.06, this.matDark, dx, 2.74, -RZ + 0.06));
+      const light = new T.PointLight(new T.Color(cols[i]), 1.4, 6.5, 1.8); light.position.set(dx, 2.5, -RZ + 0.9); g.add(light);
+      this.signs.push({ mat: sg.mat, light: light, base: new T.Color(cols[i]), lbase: 1.6, type: 'neon', t: Math.random() * 2, dur: 0.5 + Math.random(), mode: 'on', ph: Math.random() * 6 });
+    });
+
+    [[-4.5, -2.0], [4.2, 1.5]].forEach((c) => { g.add(this.box(0.85, H, 0.85, this.matCol, c[0], H / 2, c[1])); colliders.push(this.aabb(c[0], c[1], 0.45, 0.45)); });
+    [[-6.6, 0.5, 3.4, 0.2], [-5.5, 0.5, 2.9, -0.4], [-6.6, 1.5, 3.4, 0.25], [6.3, 0.5, -3.8, 0.5]].forEach((c) => { const m = this.box(1, 1, 1, this.matWood, c[0], c[1], c[2]); m.rotation.y = c[3]; g.add(m); colliders.push(this.aabb(c[0], c[2], 0.6, 0.6)); });
+    { const b = new T.Mesh(new T.CylinderGeometry(0.5, 0.5, 1.1, 14), this.matMetal); b.position.set(6.4, 0.55, 3.6); g.add(b); colliders.push(this.aabb(6.4, 3.6, 0.55, 0.55)); }
+    [-2.2, -4.6, 2.6].forEach((pz) => { const p = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, RX * 1.85, 8), this.matPipe); p.rotation.z = Math.PI / 2; p.position.set(0, H - 0.32, pz); g.add(p); });
+
+    const fxX = 2.4, fxZ = 1.2;
+    g.add(this.box(2.0, 0.12, 0.36, this.matFix, fxX, H - 0.06, fxZ));
+    this.tubeMat = new T.MeshBasicMaterial({ color: this.neonColor.clone(), fog: false });
+    const tube = new T.Mesh(new T.BoxGeometry(1.74, 0.07, 0.17), this.tubeMat); tube.position.set(fxX, H - 0.16, fxZ); g.add(tube);
+    this.fluoLight = new T.PointLight(this.neonColor.clone(), 0, 14, 1.6); this.fluoLight.position.set(fxX, H - 0.45, fxZ); g.add(this.fluoLight);
+    this.fluo = { t: 0, dur: 1, mode: 'on', val: 1 };
+
+    const portals = doors.map((dx, i) => ({ kind: 'negz', x: dx, target: targets[i], spawn: this.rooms[targets[i]].spawn, label: names[i] }));
+    this.rooms.hub = { group: g, colliders: colliders, bounds: { RX: RX, RZ: RZ, doorsNegZ: doors, doorsPosZ: [] }, portals: portals, spawn: { x: 0, z: RZ - 1.6, yaw: 0 } };
+  }
+
+  buildProject(key, display, accent, hubDoorX) {
+    const T = window.THREE, RX = 6, RZ = 5, H = 3.2;
+    const g = new T.Group(); g.visible = false; this.scene.add(g);
+    const colliders = [];
+    g.add(this.plane(RX * 2, RZ * 2, this.matFloor, 0, 0, 0, -Math.PI / 2));
+    g.add(this.plane(RX * 2, RZ * 2, this.matCeil, 0, H, 0, Math.PI / 2));
+    g.add(this.box(RX * 2, H, 0.4, this.matWall, 0, H / 2, -RZ - 0.2));
+    g.add(this.box(0.4, H, RZ * 2, this.matWall, -RX - 0.2, H / 2, 0));
+    g.add(this.box(0.4, H, RZ * 2, this.matWall, RX + 0.2, H / 2, 0));
+    // +Z wall with single doorway (exit to hub)
+    g.add(this.box(5.15, H, 0.4, this.matWall, -3.425, H / 2, RZ + 0.2));
+    g.add(this.box(5.15, H, 0.4, this.matWall, 3.425, H / 2, RZ + 0.2));
+    g.add(this.box(1.9, 0.8, 0.4, this.matWall, 0, 2.8, RZ + 0.2));
+    g.add(this.box(0.14, 2.4, 0.3, this.matMetal, -0.92, 1.2, RZ));
+    g.add(this.box(0.14, 2.4, 0.3, this.matMetal, 0.92, 1.2, RZ));
+    g.add(this.box(1.84, 0.12, 0.3, this.matMetal, 0, 2.45, RZ));
+    g.add(this.box(1.8, 2.4, 0.05, this.matDark, 0, 1.2, RZ + 0.45));
+
+    const np = this.makeSignMesh(display, accent, 4.0, 0.94, 150, 1024, 240);
+    np.mesh.position.set(0, 1.95, -RZ + 0.13); g.add(np.mesh);
+    g.add(this.box(4.2, 1.1, 0.06, this.matDark, 0, 1.95, -RZ + 0.05));
+    const npl = new T.PointLight(new T.Color(accent), 1.1, 9, 1.6); npl.position.set(0, 2.2, -RZ + 1.6); g.add(npl);
+    this.signs.push({ mat: np.mat, light: npl, base: new T.Color(accent), lbase: 1.2, type: 'soft', t: Math.random(), dur: 1 + Math.random() * 2, mode: 'on', ph: Math.random() * 6 });
+    const sub = this.makeSignMesh('// WORK IN PROGRESS', accent, 2.6, 0.34, 52, 1024, 150);
+    sub.mesh.position.set(0, 1.2, -RZ + 0.13); sub.mat.opacity = 0.8; g.add(sub.mesh);
+    this.signs.push({ mat: sub.mat, light: null, base: new T.Color(accent), lbase: 0, type: 'soft', t: Math.random(), dur: 2, mode: 'on', ph: Math.random() * 6 });
+
+    const ex = this.makeSignMesh('EXIT', '#cfd6e6', 1.2, 0.36, 70, 512, 170);
+    ex.mesh.position.set(0, 2.5, RZ - 0.14); ex.mesh.rotation.y = Math.PI; g.add(ex.mesh);
+    g.add(this.box(1.36, 0.5, 0.06, this.matDark, 0, 2.5, RZ - 0.06));
+    this.signs.push({ mat: ex.mat, light: null, base: new T.Color('#cfd6e6'), lbase: 0, type: 'neon', t: Math.random(), dur: 0.8, mode: 'on', ph: Math.random() * 6 });
+
+    // glowing project artifact on a pedestal
+    g.add(this.box(1.2, 0.5, 1.2, this.matMetal, 0, 0.25, -0.5)); colliders.push(this.aabb(0, -0.5, 0.62, 0.62));
+    const cube = new T.Mesh(new T.BoxGeometry(0.5, 0.5, 0.5), new T.MeshBasicMaterial({ color: new T.Color(accent), fog: false }));
+    cube.position.set(0, 0.75, -0.5); g.add(cube);
+    const cl = new T.PointLight(new T.Color(accent), 0.7, 5, 2); cl.position.set(0, 1.1, -0.5); g.add(cl);
+
+    this.rooms[key] = {
+      group: g, colliders: colliders,
+      bounds: { RX: RX, RZ: RZ, doorsNegZ: [], doorsPosZ: [0] },
+      portals: [{ kind: 'posz', x: 0, target: 'hub', spawn: { x: hubDoorX, z: -5.7, yaw: Math.PI }, label: 'THE BASEMENT' }],
+      spawn: { x: 0, z: RZ - 1.3, yaw: 0 },
+    };
+  }
+
+  setActiveRoom(name) {
+    for (const k in this.rooms) { if (this.rooms[k].group) this.rooms[k].group.visible = (k === name); }
+    const r = this.rooms[name];
+    this.activeRoom = name; this.colliders = r.colliders; this.bounds = r.bounds; this.portals = r.portals;
+  }
+
+  go(target, spawn, label) {
+    if (this.transitioning) return;
+    this.transitioning = true;
+    if (this.fadeEl) this.fadeEl.style.opacity = '1';
+    setTimeout(() => {
+      this.setActiveRoom(target);
+      this.camera.position.set(spawn.x, 1.6, spawn.z);
+      this.yaw = spawn.yaw || 0; this.pitch = 0;
+      this.portalArmed = false;
+      if (this.fadeEl) this.fadeEl.style.opacity = '0';
+      if (label && this.roomLabelEl) {
+        this.roomLabelEl.textContent = label; this.roomLabelEl.style.opacity = '1';
+        clearTimeout(this._lblT); this._lblT = setTimeout(() => { if (this.roomLabelEl) this.roomLabelEl.style.opacity = '0'; }, 1300);
+      }
+      setTimeout(() => { this.transitioning = false; }, 380);
+    }, 360);
+  }
+
+  resolve(p) {
+    const r = 0.45, b = this.bounds;
+    if (p.x < -b.RX + r) p.x = -b.RX + r; if (p.x > b.RX - r) p.x = b.RX - r;
+    const inNeg = b.doorsNegZ && b.doorsNegZ.some((dx) => Math.abs(p.x - dx) < 0.8);
+    if (p.z < -b.RZ + r && !inNeg) p.z = -b.RZ + r;
+    if (p.z < -b.RZ - 0.7) p.z = -b.RZ - 0.7;
+    const inPos = b.doorsPosZ && b.doorsPosZ.some((dx) => Math.abs(p.x - dx) < 0.8);
+    if (p.z > b.RZ - r && !inPos) p.z = b.RZ - r;
+    if (p.z > b.RZ + 0.7) p.z = b.RZ + 0.7;
+    for (const c of this.colliders) {
+      const minX = c.minX - r, maxX = c.maxX + r, minZ = c.minZ - r, maxZ = c.maxZ + r;
+      if (p.x > minX && p.x < maxX && p.z > minZ && p.z < maxZ) {
+        const dl = p.x - minX, dr = maxX - p.x, dn = p.z - minZ, df = maxZ - p.z;
+        const m = Math.min(dl, dr, dn, df);
+        if (m === dl) p.x = minX; else if (m === dr) p.x = maxX; else if (m === dn) p.z = minZ; else p.z = maxZ;
+      }
+    }
+  }
+
+  checkPortals() {
+    const p = this.camera.position; const ports = this.portals || []; const b = this.bounds;
+    let hit = null;
+    for (const pt of ports) {
+      if (pt.kind === 'negz') { if (p.z < -(b.RZ + 0.25) && Math.abs(p.x - pt.x) < 0.8) { hit = pt; break; } }
+      else { if (p.z > (b.RZ + 0.25) && Math.abs(p.x - pt.x) < 0.8) { hit = pt; break; } }
+    }
+    if (!this.portalArmed) { if (!hit) this.portalArmed = true; return; }
+    if (hit) this.go(hit.target, hit.spawn, hit.label);
+  }
+
+  updateFluo(dt) {
+    const f = this.fluo; f.t += dt;
+    if (f.t >= f.dur) {
+      f.t = 0; const r = Math.random();
+      if (r < 0.60) { f.mode = 'on'; f.dur = 0.6 + Math.random() * 2.4; }
+      else if (r < 0.85) { f.mode = 'flick'; f.dur = 0.08 + Math.random() * 0.5; }
+      else { f.mode = 'off'; f.dur = 0.04 + Math.random() * 0.5; }
+    }
+    let v;
+    if (f.mode === 'on') v = 0.9 + 0.08 * Math.sin(this.time * 120) + 0.04 * Math.sin(this.time * 53);
+    else if (f.mode === 'off') v = Math.random() * 0.03;
+    else v = Math.random() < 0.5 ? (0.7 + Math.random() * 0.5) : (Math.random() * 0.2);
+    f.val = v < 0 ? 0 : v; return f.val;
+  }
+
+  updateSign(s, dt) {
+    s.t += dt;
+    if (s.t >= s.dur) {
+      s.t = 0; const r = Math.random();
+      if (s.type === 'neon') {
+        if (r < 0.7) { s.mode = 'on'; s.dur = 0.5 + Math.random() * 2.2; }
+        else if (r < 0.9) { s.mode = 'flick'; s.dur = 0.06 + Math.random() * 0.4; }
+        else { s.mode = 'off'; s.dur = 0.05 + Math.random() * 0.35; }
+      } else { s.mode = 'on'; s.dur = 1 + Math.random() * 2; }
+    }
+    let v;
+    if (s.mode === 'on') v = 0.85 + 0.12 * Math.sin(this.time * 8 + s.ph) + 0.03 * Math.sin(this.time * 60);
+    else if (s.mode === 'off') v = 0.04 + Math.random() * 0.05;
+    else v = Math.random() < 0.5 ? (0.7 + Math.random() * 0.4) : (Math.random() * 0.15);
+    if (v < 0) v = 0;
+    s.mat.color.copy(s.base).multiplyScalar(Math.min(1.4, v));
+    s.mat.opacity = Math.min(1, 0.45 + v * 0.55);
+    if (s.light) s.light.intensity = s.lbase * v;
+  }
+
+  // ---------- HUD (imperative, React-free) ----------
+  buildHUD() {
+    const hud = this.hudRef.current; if (!hud) return;
+    const fade = document.createElement('div');
+    fade.style.cssText = 'position:absolute;inset:0;background:#000;opacity:0;transition:opacity .35s ease;pointer-events:none;z-index:14';
+    hud.appendChild(fade); this.fadeEl = fade;
+
+    const rl = document.createElement('div');
+    rl.style.cssText = 'position:absolute;left:0;right:0;top:40%;text-align:center;pointer-events:none;font-family:VT323,monospace;font-size:56px;letter-spacing:11px;color:#e6dfce;opacity:0;transition:opacity .5s ease;text-shadow:0 0 18px rgba(0,0,0,.85);z-index:13';
+    hud.appendChild(rl); this.roomLabelEl = rl;
+
+    const hint = document.createElement('div');
+    hint.style.cssText = 'position:absolute;left:0;right:0;bottom:24px;text-align:center;pointer-events:none;font-family:VT323,monospace;font-size:17px;letter-spacing:3px;color:#8a90a0;text-shadow:0 1px 3px #000;display:none;z-index:11';
+    hint.innerHTML = 'DRAG TO LOOK&nbsp;&middot;&nbsp;CLICK = CAPTURE MOUSE&nbsp;&middot;&nbsp;[WASD] MOVE&nbsp;&middot;&nbsp;[M] MUTE&nbsp;&middot;&nbsp;WALK INTO A DOOR';
+    hud.appendChild(hint); this.hintEl = hint;
+
+    const mute = document.createElement('div');
+    mute.style.cssText = 'position:absolute;top:16px;right:18px;pointer-events:auto;cursor:pointer;font-family:VT323,monospace;font-size:20px;letter-spacing:2px;color:#cfc9ba;background:rgba(8,10,16,.55);border:1px solid rgba(180,200,230,.25);padding:5px 12px;z-index:30;user-select:none';
+    mute.textContent = 'SOUND: ON';
+    mute.addEventListener('click', (e) => { e.stopPropagation(); this.toggleMute(); });
+    hud.appendChild(mute); this.muteEl = mute;
+
+    const intro = document.createElement('div');
+    intro.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;cursor:pointer;pointer-events:auto;z-index:12;background:radial-gradient(circle at 50% 44%,rgba(10,11,16,.42),rgba(2,2,4,.94));font-family:VT323,monospace';
+    intro.innerHTML = '<div style="font-size:66px;letter-spacing:11px;color:#e6dfce;text-shadow:0 0 18px rgba(255,150,60,.22)">THE BASEMENT</div><div style="font-size:20px;letter-spacing:7px;color:#7d8aa0">SECTOR 00 &nbsp;//&nbsp; ARCHIVE</div><div style="margin-top:12px;font-size:27px;letter-spacing:5px;color:#ffb066;animation:introflick 3.2s steps(1) infinite">&#9658;&nbsp;&nbsp;CLICK TO ENTER</div><div style="margin-top:24px;font-size:18px;letter-spacing:3px;color:#6f7686">[ W A S D ] MOVE&nbsp;&middot;&nbsp;[ MOUSE ] LOOK&nbsp;&middot;&nbsp;[ M ] MUTE&nbsp;&middot;&nbsp;[ ESC ] RELEASE</div>';
+    hud.appendChild(intro); this.introEl = intro;
+  }
+
+  showError(msg) {
+    const hud = this.hudRef.current; if (!hud) { return; }
+    const e = document.createElement('div');
+    e.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:40px;text-align:center;background:rgba(2,2,4,.95);color:#ff8a8a;font-family:VT323,monospace;font-size:22px;letter-spacing:2px;z-index:40';
+    e.textContent = msg; hud.appendChild(e);
+  }
+
+  updateHint() { if (this.hintEl) this.hintEl.style.display = (this.phase === 'playing' && !this.locked) ? 'block' : 'none'; }
+
+  // ---------- init ----------
+  init() {
+    if (!this.mountRef.current) { setTimeout(() => this.init(), 50); return; }
+    const T = window.THREE; const P = this.props || {};
+    const w = window.innerWidth, h = window.innerHeight;
+    this.RENDER_SCALE = this.scaleFromPixel(P.pixelation != null ? P.pixelation : 4);
+
+    const scene = new T.Scene();
+    scene.background = new T.Color(0x05060a);
+    scene.fog = new T.FogExp2(0x05060a, 0.055);
+    this.scene = scene;
+
+    const camera = new T.PerspectiveCamera(74, w / h, 0.05, 200);
+    camera.rotation.order = 'YXZ';
+    scene.add(camera);
+    this.camera = camera;
+
+    const renderer = new T.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(1);
+    renderer.setSize(Math.max(1, Math.floor(w * this.RENDER_SCALE)), Math.max(1, Math.floor(h * this.RENDER_SCALE)), false);
+    renderer.setClearColor(0x05060a, 1);
+    const cv = renderer.domElement;
+    cv.style.position = 'absolute'; cv.style.inset = '0'; cv.style.width = '100%'; cv.style.height = '100%';
+    this.mountRef.current.appendChild(cv);
+    this.renderer = renderer;
+
+    this.ambient = new T.AmbientLight(0x2a2f3c, 0.5);
+    scene.add(this.ambient);
+
+    // materials
+    const floorTex = this.makeConcrete('#23242a', 120); floorTex.repeat.set(6, 5);
+    const wallTex = this.makeConcrete('#33343c', 150); wallTex.repeat.set(3, 1.4);
+    const ceilTex = this.makeConcrete('#1c1d22', 90); ceilTex.repeat.set(6, 5);
+    this.matFloor = new T.MeshStandardMaterial({ map: floorTex, roughness: 1, metalness: 0 });
+    this.matWall = new T.MeshStandardMaterial({ map: wallTex, roughness: 1, metalness: 0 });
+    this.matCeil = new T.MeshStandardMaterial({ map: ceilTex, roughness: 1, metalness: 0 });
+    this.matMetal = new T.MeshStandardMaterial({ color: 0x4a4a52, roughness: 0.5, metalness: 0.6 });
+    this.matWood = new T.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.9, metalness: 0 });
+    this.matCol = new T.MeshStandardMaterial({ map: this.makeConcrete('#2c2d34', 120), roughness: 1 });
+    this.matPipe = new T.MeshStandardMaterial({ color: 0x3a3a40, roughness: 0.6, metalness: 0.5 });
+    this.matFix = new T.MeshStandardMaterial({ color: 0x35363c, roughness: 0.7, metalness: 0.4 });
+    this.matDark = new T.MeshBasicMaterial({ color: 0x050608 });
+    this.neonColor = new T.Color(P.neonColor || '#bcd4ff');
+
+    // lantern (child of camera)
+    const lanternColor = new T.Color(P.lanternColor || '#ff8a3c');
+    const lantern = new T.Group(); lantern.position.set(0.32, -0.30, -0.55);
+    const cap = new T.Mesh(new T.CylinderGeometry(0.055, 0.07, 0.09, 8), new T.MeshStandardMaterial({ color: 0x6a6a72, roughness: 0.5, metalness: 0.7 }));
+    cap.position.y = 0.16; lantern.add(cap);
+    const ring = new T.Mesh(new T.TorusGeometry(0.04, 0.012, 6, 10), new T.MeshStandardMaterial({ color: 0x6a6a72, roughness: 0.5, metalness: 0.7 }));
+    ring.position.y = 0.225; ring.rotation.x = Math.PI / 2; lantern.add(ring);
+    this.glassMat = new T.MeshBasicMaterial({ color: lanternColor.clone().multiplyScalar(0.6), transparent: true, opacity: 0.34, fog: false });
+    lantern.add(new T.Mesh(new T.CylinderGeometry(0.10, 0.105, 0.22, 10), this.glassMat));
+    const base = new T.Mesh(new T.CylinderGeometry(0.11, 0.12, 0.05, 10), new T.MeshStandardMaterial({ color: 0x55555c, roughness: 0.5, metalness: 0.7 }));
+    base.position.y = -0.12; lantern.add(base);
+    this.flameMat = new T.MeshBasicMaterial({ color: 0xffd9a0, fog: false });
+    this.flame = new T.Mesh(new T.SphereGeometry(0.045, 8, 8), this.flameMat); lantern.add(this.flame);
+    camera.add(lantern); this.lantern = lantern;
+    this.lanternLight = new T.PointLight(lanternColor.clone(), 2.5, 17, 1.5);
+    this.lanternLight.position.set(0.3, -0.15, -0.4); camera.add(this.lanternLight);
+
+    // build UI + rooms
+    this.buildHUD();
+    this.buildProject('nautichess', 'NAUTICHESS', '#6fe3ff', -5);
+    this.buildProject('minishell', 'MINISHELL', '#8dff6f', 0);
+    this.buildProject('foreman', 'FOREMAN', '#ffb43c', 5);
+    this.buildHub();
+    this.setActiveRoom('hub');
+    const sp = this.rooms.hub.spawn;
+    camera.position.set(sp.x, 1.6, sp.z); this.yaw = sp.yaw; this.pitch = 0;
+
+    if (this.grainRef.current) this.grainRef.current.style.display = (P.grain === false) ? 'none' : 'block';
+    this.atmoApply(P.atmosphere != null ? P.atmosphere : 7);
+
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mousedown', this.onMouseDown);
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('keyup', this.onKeyUp);
+    document.addEventListener('pointerlockchange', this.onPLC);
+    window.addEventListener('resize', this.onResize);
+
+    this.clock = new T.Clock();
+    this.inited = true;
+    this.animate();
+  }
+
+  componentDidUpdate() {
+    if (!this.inited) return;
+    const T = window.THREE; const P = this.props || {};
+    if (P.lanternColor) { const c = new T.Color(P.lanternColor); this.lanternLight.color.set(c); this.glassMat.color.copy(c).multiplyScalar(0.6); }
+    if (P.neonColor) { this.neonColor = new T.Color(P.neonColor); if (this.fluoLight) this.fluoLight.color.set(this.neonColor); }
+    this.atmoApply(P.atmosphere != null ? P.atmosphere : 7);
+    if (this.grainRef.current) this.grainRef.current.style.display = (P.grain === false) ? 'none' : 'block';
+    const sc = this.scaleFromPixel(P.pixelation != null ? P.pixelation : 4);
+    if (sc !== this.RENDER_SCALE) { this.RENDER_SCALE = sc; this.onResize(); }
+  }
+
+  onResize = () => {
+    if (!this.renderer || !this.camera) return;
+    const w = window.innerWidth, h = window.innerHeight;
+    this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
+    this.renderer.setSize(Math.max(1, Math.floor(w * this.RENDER_SCALE)), Math.max(1, Math.floor(h * this.RENDER_SCALE)), false);
+    const cv = this.renderer.domElement; cv.style.width = '100%'; cv.style.height = '100%';
+  };
+
+  onKeyDown = (e) => { if (e.code === 'KeyM') { if (!this.keys['KeyM']) this.toggleMute(); } this.keys[e.code] = true; };
+  onKeyUp = (e) => { this.keys[e.code] = false; };
+
+  onMouseMove = (e) => {
+    const locked = document.pointerLockElement === this.containerRef.current;
+    if (!locked && !this.dragging) return;
+    const s = 0.0021;
+    this.yaw -= (e.movementX || 0) * s; this.pitch -= (e.movementY || 0) * s;
+    const lim = Math.PI / 2 - 0.06;
+    if (this.pitch > lim) this.pitch = lim; if (this.pitch < -lim) this.pitch = -lim;
+  };
+  onMouseDown = () => { if (this.phase === 'playing' && document.pointerLockElement !== this.containerRef.current) { this.dragging = true; const el = this.containerRef.current; if (el) el.style.cursor = 'grabbing'; } };
+  onMouseUp = () => { if (this.dragging) { this.dragging = false; const el = this.containerRef.current; if (el) el.style.cursor = 'grab'; } };
+
+  onClick = () => {
+    if (this.phase === 'intro') { this.phase = 'playing'; if (this.introEl) this.introEl.style.display = 'none'; }
+    const el = this.containerRef.current; if (el) el.style.cursor = 'grab';
+    try { this.startAudio(); } catch (e) {}
+    try { if (el && document.pointerLockElement !== el && el.requestPointerLock) { const r = el.requestPointerLock(); if (r && r.catch) r.catch(() => {}); } } catch (e) {}
+    this.updateHint();
+  };
+
+  onPLC = () => {
+    this.locked = document.pointerLockElement === this.containerRef.current;
+    const el = this.containerRef.current;
+    if (el) el.style.cursor = this.locked ? 'none' : (this.phase === 'playing' ? 'grab' : 'pointer');
+    if (this.locked && this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
+    this.updateHint();
+  };
+
+  // ---------- audio ----------
+  makeNoise(ctx) {
+    if (!this._noiseBuf) { const b = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate); const d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; this._noiseBuf = b; }
+    const s = ctx.createBufferSource(); s.buffer = this._noiseBuf; s.loop = true; s.start(); return s;
+  }
+  startAudio() {
+    if (this.audio) { if (this.audio.ctx.state === 'suspended') this.audio.ctx.resume(); return; }
+    const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+    const ctx = new Ctx();
+    const muteGain = ctx.createGain(); muteGain.gain.value = this.muted ? 0 : 1;
+    const master = ctx.createGain(); master.gain.value = 0.9;
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 6;
+    master.connect(muteGain); muteGain.connect(comp); comp.connect(ctx.destination);
+
+    const droneGain = ctx.createGain(); droneGain.gain.value = 0.0; droneGain.connect(master);
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 320; lp.connect(droneGain);
+    const o1 = ctx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 46;
+    const o2 = ctx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 48.7;
+    const o3 = ctx.createOscillator(); o3.type = 'triangle'; o3.frequency.value = 92;
+    const g3 = ctx.createGain(); g3.gain.value = 0.5;
+    o1.connect(lp); o2.connect(lp); o3.connect(g3); g3.connect(lp);
+    const noise = this.makeNoise(ctx);
+    const nlp = ctx.createBiquadFilter(); nlp.type = 'lowpass'; nlp.frequency.value = 175;
+    const ng = ctx.createGain(); ng.gain.value = 0.35; noise.connect(nlp); nlp.connect(ng); ng.connect(droneGain);
+    const sh = ctx.createOscillator(); sh.type = 'sine'; sh.frequency.value = 523; sh.detune.value = 5;
+    const shg = ctx.createGain(); shg.gain.value = 0.006;
+    const shl = ctx.createOscillator(); shl.type = 'sine'; shl.frequency.value = 0.06;
+    const shla = ctx.createGain(); shla.gain.value = 0.012; shl.connect(shla); shla.connect(shg.gain); sh.connect(shg); shg.connect(master);
+    const buzz = ctx.createOscillator(); buzz.type = 'sawtooth'; buzz.frequency.value = 120;
+    const bbp = ctx.createBiquadFilter(); bbp.type = 'bandpass'; bbp.frequency.value = 1400; bbp.Q.value = 0.8;
+    const buzzGain = ctx.createGain(); buzzGain.gain.value = 0; buzz.connect(bbp); bbp.connect(buzzGain); buzzGain.connect(master);
+    [o1, o2, o3, sh, shl, buzz].forEach((o) => o.start());
+    droneGain.gain.setTargetAtTime(0.12, ctx.currentTime, 2.2);
+    this.audio = { ctx, master, muteGain, buzzGain, noiseBuffer: this._noiseBuf };
+  }
+  footstep() {
+    const a = this.audio; if (!a) return; const ctx = a.ctx; const t = ctx.currentTime;
+    const s = ctx.createBufferSource(); s.buffer = a.noiseBuffer; s.loop = true;
+    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 850 + Math.random() * 350; f.Q.value = 1.3;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.15, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+    s.connect(f); f.connect(g); g.connect(a.master); s.start(t); s.stop(t + 0.2);
+  }
+  toggleMute() {
+    this.muted = !this.muted;
+    if (this.audio && this.audio.muteGain) this.audio.muteGain.gain.setTargetAtTime(this.muted ? 0 : 1, this.audio.ctx.currentTime, 0.04);
+    if (this.muteEl) { this.muteEl.textContent = this.muted ? 'SOUND: OFF' : 'SOUND: ON'; this.muteEl.style.color = this.muted ? '#8a6060' : '#cfc9ba'; }
+  }
+
+  // ---------- loop ----------
+  animate = () => {
+    if (!this._mounted) return;
+    this._raf = requestAnimationFrame(this.animate);
+    const dt = Math.min(0.05, this.clock.getDelta()); this.time += dt;
+    this.camera.rotation.y = this.yaw; this.camera.rotation.x = this.pitch;
+
+    if (this.phase === 'playing' && !this.transitioning) {
+      const k = this.keys;
+      const f = (k['KeyW'] ? 1 : 0) - (k['KeyS'] ? 1 : 0);
+      const st = (k['KeyD'] ? 1 : 0) - (k['KeyA'] ? 1 : 0);
+      if (f || st) {
+        const sy = Math.sin(this.yaw), cy = Math.cos(this.yaw);
+        let mx = f * (-sy) + st * (cy); let mz = f * (-cy) + st * (-sy);
+        const len = Math.hypot(mx, mz) || 1; mx /= len; mz /= len;
+        const sp = 2.9, ox = this.camera.position.x, oz = this.camera.position.z;
+        const p = { x: ox + mx * sp * dt, z: oz + mz * sp * dt };
+        this.resolve(p);
+        this.camera.position.x = p.x; this.camera.position.z = p.z;
+        this.walkDist += Math.hypot(p.x - ox, p.z - oz);
+      }
+      if (this.walkDist >= 1.9) { this.walkDist = 0; this.footstep(); }
+      this.checkPortals();
+    }
+
+    const ln = 0.86 + 0.10 * Math.sin(this.time * 11) + 0.06 * Math.sin(this.time * 23.3) + 0.05 * (Math.random() - 0.5);
+    this.lanternLight.intensity = 2.5 * ln;
+    this.lanternLight.position.x = 0.3 + Math.sin(this.time * 7) * 0.012;
+    if (this.flame) this.flame.scale.set(1, 1 + 0.25 * Math.sin(this.time * 30) + 0.1 * Math.sin(this.time * 12), 1);
+    const lg = this.lantern, bobv = (this.keys['KeyW'] || this.keys['KeyA'] || this.keys['KeyS'] || this.keys['KeyD']) ? Math.sin(this.time * 9) * 0.012 : 0;
+    lg.position.y = -0.30 + Math.sin(this.time * 1.3) * 0.006 + bobv;
+    lg.position.x = 0.32 + Math.sin(this.time * 1.7) * 0.006;
+    lg.rotation.z = Math.sin(this.time * 1.1) * 0.05;
+
+    if (this.activeRoom === 'hub' && this.fluoLight) {
+      const fv = this.updateFluo(dt);
+      this.fluoLight.intensity = 2.8 * fv;
+      this.tubeMat.color.copy(this.neonColor).multiplyScalar(Math.min(1.3, fv));
+      if (this.audio && this.audio.buzzGain) this.audio.buzzGain.gain.value = 0.02 * fv * fv;
+    } else if (this.audio && this.audio.buzzGain) { this.audio.buzzGain.gain.value = 0; }
+
+    for (const s of this.signs) this.updateSign(s, dt);
+    this.renderer.render(this.scene, this.camera);
+  };
+}
+</script>
+</body>
+</html>
