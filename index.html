@@ -11,7 +11,7 @@
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #05060a; overflow: hidden; }
   * { box-sizing: border-box; }
-  canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+  canvas { image-rendering: auto; }
   @keyframes grainmove { 0%{transform:translate(0,0)}10%{transform:translate(-4%,-6%)}20%{transform:translate(-8%,4%)}30%{transform:translate(6%,-8%)}40%{transform:translate(-6%,8%)}50%{transform:translate(8%,6%)}60%{transform:translate(-8%,-6%)}70%{transform:translate(6%,8%)}80%{transform:translate(-6%,-8%)}90%{transform:translate(8%,-4%)}100%{transform:translate(0,0)} }
   @keyframes introflick { 0%,93%,100%{opacity:1}94%{opacity:.35}96%{opacity:.9}97%{opacity:.5} }
 </style>
@@ -20,9 +20,8 @@
 <body>
 <div id="container" data-screen-label="Basement" style="position:fixed;inset:0;background:#05060a;overflow:hidden;font-family:'VT323',monospace;color:#cfc9ba;cursor:pointer;user-select:none">
   <div id="mount" style="position:absolute;inset:0;z-index:1"></div>
-  <div id="grain" style="position:absolute;inset:-50%;width:200%;height:200%;background:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%27 height=%27100%27 filter=%27url(%23n)%27/%3E%3C/svg%3E');background-size:128px 128px;opacity:.10;mix-blend-mode:screen;pointer-events:none;animation:grainmove .55s steps(1) infinite;z-index:5"></div>
-  <div style="position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,.16) 3px);opacity:.45;mix-blend-mode:multiply;pointer-events:none;z-index:6"></div>
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 36%,rgba(0,0,0,.82) 100%);pointer-events:none;z-index:7"></div>
+  <div id="grain" style="position:absolute;inset:-50%;width:200%;height:200%;background:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%27 height=%27100%27 filter=%27url(%23n)%27/%3E%3C/svg%3E');background-size:180px 180px;opacity:.035;mix-blend-mode:screen;pointer-events:none;animation:grainmove .9s steps(1) infinite;z-index:5"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 44%,rgba(0,0,0,.55) 100%);pointer-events:none;z-index:7"></div>
   <div style="position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:rgba(255,240,210,.22);box-shadow:0 0 3px rgba(255,200,120,.4);pointer-events:none;z-index:8"></div>
   <div id="hud" style="position:absolute;inset:0;z-index:10;pointer-events:none"></div>
 </div>
@@ -115,7 +114,8 @@ class Basement {
     }
     const tex = new T.CanvasTexture(c);
     tex.wrapS = tex.wrapT = T.RepeatWrapping;
-    tex.magFilter = T.NearestFilter; tex.minFilter = T.NearestMipmapNearestFilter;
+    tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearMipmapLinearFilter;
+    tex.anisotropy = this.maxAniso || 1;
     return tex;
   }
 
@@ -128,7 +128,7 @@ class Basement {
     x.shadowColor = '#ffffff'; x.shadowBlur = Math.round(fontSize * 0.18); x.fillStyle = '#ffffff';
     x.fillText(text, cw / 2, ch / 2); x.shadowBlur = 0; x.fillText(text, cw / 2, ch / 2);
     const T = window.THREE;
-    const tex = new T.CanvasTexture(c); tex.magFilter = T.NearestFilter; tex.minFilter = T.LinearFilter;
+    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter;
     return tex;
   }
   makeSignMesh(text, accentHex, planeW, planeH, fontSize, cw, ch) {
@@ -144,6 +144,7 @@ class Basement {
     const T = window.THREE;
     const tex = new T.TextureLoader().load(path);
     tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter;
+    tex.anisotropy = this.maxAniso || 1;
     return tex;
   }
 
@@ -240,8 +241,8 @@ class Basement {
     g.add(this.box(0.4, H, RZ * 2, this.matWall, RX + 0.2, H / 2, 0));
 
     const doors = [-5, 0, 5];
-    const targets = ['nautichess', 'minishell', 'foreman'];
-    const names = ['NAUTICHESS', 'MINISHELL', 'FOREMAN'];
+    const targets = ['notichess', 'minishell', 'foreman'];
+    const names = ['NOTICHESS', 'MINISHELL', 'FOREMAN'];
     const cols = ['#6fe3ff', '#8dff6f', '#ffb43c'];
     const segs = [[-7.425, 3.15], [-2.5, 3.3], [2.5, 3.3], [7.425, 3.15]];
     for (const s of segs) g.add(this.box(s[1], H, 0.4, this.matWall, s[0], H / 2, -RZ - 0.2));
@@ -460,7 +461,7 @@ class Basement {
     if (!this.mountRef.current) { setTimeout(() => this.init(), 50); return; }
     const T = window.THREE; const P = this.props || {};
     const w = window.innerWidth, h = window.innerHeight;
-    this.RENDER_SCALE = this.scaleFromPixel(P.pixelation != null ? P.pixelation : 4);
+    this.RENDER_SCALE = 1; // modern: render at full resolution (no pixelation)
 
     const scene = new T.Scene();
     scene.background = new T.Color(0x05060a);
@@ -472,10 +473,11 @@ class Basement {
     scene.add(camera);
     this.camera = camera;
 
-    const renderer = new T.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(1);
+    const renderer = new T.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(Math.max(1, Math.floor(w * this.RENDER_SCALE)), Math.max(1, Math.floor(h * this.RENDER_SCALE)), false);
     renderer.setClearColor(0x05060a, 1);
+    this.maxAniso = renderer.capabilities.getMaxAnisotropy();
     const cv = renderer.domElement;
     cv.style.position = 'absolute'; cv.style.inset = '0'; cv.style.width = '100%'; cv.style.height = '100%';
     this.mountRef.current.appendChild(cv);
@@ -518,16 +520,16 @@ class Basement {
 
     // build UI + rooms
     this.buildHUD();
-    this.buildProject('nautichess', 'NAUTICHESS', '#6fe3ff', -5, {
-      kicker: 'ARCHIVE // 01 · CHESS', title: 'NAUTICHESS', tagline: 'PLAY · ANALYZE · TRAIN',
+    this.buildProject('notichess', 'NOTICHESS', '#6fe3ff', -5, {
+      kicker: 'ARCHIVE // 01 · CHESS', title: 'NOTICHESS', tagline: 'PLAY · ANALYZE · TRAIN',
       lines: [
-        'Desktop chess studio (NotiChess).',
+        'A modern desktop chess studio.',
         'Play, import and organize games, with a',
         'tactics trainer over ~4.1M real games —',
         'live Elo, spaced repetition, hidden themes.',
       ],
       tech: 'Tauri 2 · React · TypeScript · Rust', link: 'notidev · desktop · private',
-      kind: 'image', image: 'assets/projects/nautichess.png',
+      kind: 'image', image: 'assets/projects/notichess.png',
     });
     this.buildProject('minishell', 'MINISHELL', '#8dff6f', 0, {
       kicker: 'ARCHIVE // 02 · SYSTEMS', title: 'MINISHELL', tagline: 'A UNIX SHELL, IN C',

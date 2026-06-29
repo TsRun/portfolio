@@ -43,7 +43,7 @@ Then open <http://localhost:8000/>.
 ```
 index.html              ← the site (standalone three.js, no dependencies bundled)
 assets/projects/        ← in-world exhibit visuals shown on each room's monitor
-  nautichess.png        ← NotiChess tactics-trainer screenshot
+  notichess.png         ← NotiChess tactics-trainer screenshot
   foreman.png           ← Foreman v2 workspace UI (rendered from its design)
 design/                 ← source-of-truth design export, kept for re-sync
   The Basement.dc.html  ← original Claude Design Component (<x-dc> + logic class)
@@ -65,10 +65,15 @@ was already pure three.js + imperative DOM — React/`DCLogic` were only a thin
 mount shell — so the port keeps the entire tuned game verbatim and replaces only
 the shell:
 
-- design-editor props (`atmosphere`, `lanternColor`, `neonColor`, `pixelation`,
-  `grain`) become their defaults,
+- design-editor props (`atmosphere`, `lanternColor`, `neonColor`, `grain`) become
+  their defaults,
 - the `ref`-bound template nodes become real DOM elements, and
 - the React lifecycle becomes a single boot call.
+
+The standalone also **modernises the look**: it renders at full resolution with
+antialiasing and anisotropic, smoothly-filtered textures (the original's
+low-res `pixelation` pass is dropped), and the retro CRT overlays are toned down
+(scanlines removed, grain and vignette eased back).
 
 The result runs with **no React, no Design Component runtime, and no build** —
 just three.js from a CDN. The original export is kept under `design/` so the
@@ -83,7 +88,7 @@ monitor's glowing bezel matches the door's accent colour.
 
 | Door | Project | Visual | What it is |
 | --- | --- | --- | --- |
-| `NAUTICHESS` | [NotiChess](https://github.com/TsRun) | tactics-trainer screenshot | Desktop chess studio — play/import/organize games + a tactics trainer over ~4.1M real games (Tauri 2 · React · Rust). |
+| `NOTICHESS` | [NotiChess](https://github.com/TsRun) | tactics-trainer screenshot | Desktop chess studio — play/import/organize games + a tactics trainer over ~4.1M real games (Tauri 2 · React · Rust). |
 | `MINISHELL` | [minishell](https://github.com/TsRun/minishell) | procedural CRT terminal | École 42 systems project — a Bash-like shell in C (pipes, redirections, env, signals, builtins). |
 | `FOREMAN` | [foreman](https://github.com/TsRun) | live workspace UI | macOS task queue for AI coding agents — auto-classifies & routes tasks to role agents that run in parallel and coordinate (Tauri 2 · React · Rust · SQLite). |
 
