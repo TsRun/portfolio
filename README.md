@@ -75,6 +75,24 @@ antialiasing and anisotropic, smoothly-filtered textures (the original's
 low-res `pixelation` pass is dropped), and the retro CRT overlays are toned down
 (scanlines removed, grain and vignette eased back).
 
+The render is **fill-bound** (≈800 triangles, ~40 draw calls — geometry is free;
+device-pixel count and per-fragment shading are the whole cost), so the scene is
+tuned accordingly:
+
+- **Adaptive resolution.** Rendering starts at the crisp cap (`min(devicePixelRatio, 2)`)
+  and a governor steps the render scale down a notch only if it can't hold ~60fps,
+  then settles. A capable GPU stays at full sharpness; weak / high-DPI / on-battery
+  machines stay smooth instead of dropping frames.
+- **Cheaper shading.** The large matte surfaces (floor, walls, ceiling, columns,
+  wood) use `MeshPhongMaterial` instead of the full PBR `MeshStandardMaterial` —
+  visually identical for rough non-metal concrete under these point lights, but a
+  much lighter fragment shader where it matters most. Metallic fixtures keep PBR.
+- **Shared geometry.** Box/plane sizes recur across the four rooms (door frames,
+  walls, exhibit panels), so one `BufferGeometry` is reused per size — roughly
+  halves the GPU buffer count (43 → 23 in the hub).
+- **Texture hygiene.** UI/screenshot textures skip mipmap generation, and project-
+  room textures are uploaded up front so the first door transition doesn't hitch.
+
 The result runs with **no React, no Design Component runtime, and no build** —
 just three.js from a CDN. The original export is kept under `design/` so the
 component can still be edited in claude.ai/design and re-synced later.

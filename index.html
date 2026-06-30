@@ -54,6 +54,8 @@ class Basement {
   signs = []; rooms = {}; activeRoom = 'hub';
   colliders = []; bounds = { RX: 9, RZ: 7 };
   inited = false;
+  _geoCache = {};   // shared BufferGeometries, keyed by dimensions
+  _warmTex = [];    // textures to upload up front (avoid first-room hitch)
 
   componentDidMount() {
     this._mounted = true;
@@ -91,8 +93,14 @@ class Basement {
   }
 
   // ---------- geometry helpers ----------
-  box(w, h, d, mat, x, y, z) { const m = new window.THREE.Mesh(new window.THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); return m; }
-  plane(w, h, mat, x, y, z, rx) { const m = new window.THREE.Mesh(new window.THREE.PlaneGeometry(w, h), mat); m.position.set(x, y, z); m.rotation.x = rx; return m; }
+  // identical box/plane sizes recur a lot (door frames, walls, exhibit panels are
+  // the same across all four rooms), so share one BufferGeometry per size: fewer
+  // GPU buffers + uploads, lower memory. Geometry is read-only; the transform
+  // lives on the Mesh, so sharing is safe.
+  boxGeo(w, h, d) { const k = 'b|' + w + '|' + h + '|' + d; let g = this._geoCache[k]; if (!g) { g = new window.THREE.BoxGeometry(w, h, d); this._geoCache[k] = g; } return g; }
+  planeGeo(w, h) { const k = 'p|' + w + '|' + h; let g = this._geoCache[k]; if (!g) { g = new window.THREE.PlaneGeometry(w, h); this._geoCache[k] = g; } return g; }
+  box(w, h, d, mat, x, y, z) { const m = new window.THREE.Mesh(this.boxGeo(w, h, d), mat); m.position.set(x, y, z); return m; }
+  plane(w, h, mat, x, y, z, rx) { const m = new window.THREE.Mesh(this.planeGeo(w, h), mat); m.position.set(x, y, z); m.rotation.x = rx; return m; }
   aabb(x, z, hx, hz) { return { minX: x - hx, maxX: x + hx, minZ: z - hz, maxZ: z + hz }; }
 
   makeConcrete(base, speckle) {
@@ -128,14 +136,14 @@ class Basement {
     x.shadowColor = '#ffffff'; x.shadowBlur = Math.round(fontSize * 0.18); x.fillStyle = '#ffffff';
     x.fillText(text, cw / 2, ch / 2); x.shadowBlur = 0; x.fillText(text, cw / 2, ch / 2);
     const T = window.THREE;
-    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter;
+    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter; tex.generateMipmaps = false;
     return tex;
   }
   makeSignMesh(text, accentHex, planeW, planeH, fontSize, cw, ch) {
     const T = window.THREE;
     const tex = this.makeSignTex(text, fontSize, cw, ch);
     const mat = new T.MeshBasicMaterial({ map: tex, color: new T.Color(accentHex), transparent: true, opacity: 1, fog: false, blending: T.AdditiveBlending, depthWrite: false });
-    const mesh = new T.Mesh(new T.PlaneGeometry(planeW, planeH), mat);
+    const mesh = new T.Mesh(this.planeGeo(planeW, planeH), mat);
     return { mesh, mat };
   }
 
@@ -143,7 +151,7 @@ class Basement {
   loadTex(path) {
     const T = window.THREE;
     const tex = new T.TextureLoader().load(path);
-    tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter;
+    tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter; tex.generateMipmaps = false;
     tex.anisotropy = this.maxAniso || 1;
     return tex;
   }
@@ -154,9 +162,9 @@ class Basement {
     const grp = new T.Group();
     grp.add(this.box(w + 0.18, h + 0.18, 0.08, this.matDark, 0, 0, -0.02));
     const bezelMat = new T.MeshBasicMaterial({ color: new T.Color(accentHex), fog: false, transparent: true, opacity: 0.55, blending: T.AdditiveBlending, depthWrite: false });
-    const bezel = new T.Mesh(new T.PlaneGeometry(w + 0.14, h + 0.14), bezelMat); bezel.position.z = 0.012; grp.add(bezel);
+    const bezel = new T.Mesh(this.planeGeo(w + 0.14, h + 0.14), bezelMat); bezel.position.z = 0.012; grp.add(bezel);
     const scrMat = new T.MeshBasicMaterial({ map: tex, fog: false });
-    const scr = new T.Mesh(new T.PlaneGeometry(w, h), scrMat); scr.position.z = 0.03; grp.add(scr);
+    const scr = new T.Mesh(this.planeGeo(w, h), scrMat); scr.position.z = 0.03; grp.add(scr);
     grp.position.set(x, y, z); grp.rotation.y = ry;
     return grp;
   }
@@ -200,7 +208,7 @@ class Basement {
     x.fillStyle = 'rgba(0,0,0,0.18)';
     for (let i = 52; i < ch; i += 4) x.fillRect(0, i, cw, 2);
     const T = window.THREE;
-    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter;
+    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter; tex.generateMipmaps = false;
     return tex;
   }
 
@@ -225,7 +233,7 @@ class Basement {
     x.font = '700 28px monospace'; x.fillStyle = accentHex; x.fillText(info.tech, pad, yy); yy += 44;
     x.font = '400 27px monospace'; x.fillStyle = 'rgba(150,162,184,0.92)'; x.fillText(info.link, pad, yy);
     const T = window.THREE;
-    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter;
+    const tex = new T.CanvasTexture(c); tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter; tex.generateMipmaps = false;
     return tex;
   }
 
@@ -315,10 +323,12 @@ class Basement {
 
     // ---- exhibits: visual monitor (left wall) + description placard (right wall) ----
     const scrTex = info.kind === 'terminal' ? this.makeTerminalTex() : this.loadTex(info.image);
+    this._warmTex.push(scrTex);
     g.add(this.makeScreenGroup(scrTex, accent, 3.5, 2.18, -RX + 0.12, 1.62, -0.6, Math.PI / 2));
     const ml = new T.PointLight(new T.Color(accent), 0.5, 6.5, 1.7); ml.position.set(-RX + 1.5, 1.7, -0.6); g.add(ml);
 
     const plTex = this.makePlacardTex(info, accent);
+    this._warmTex.push(plTex);
     g.add(this.makeScreenGroup(plTex, accent, 3.5, 2.32, RX - 0.12, 1.6, -0.6, -Math.PI / 2));
     const pl = new T.PointLight(new T.Color(accent), 0.4, 6.5, 1.7); pl.position.set(RX - 1.5, 1.7, -0.6); g.add(pl);
 
@@ -474,7 +484,14 @@ class Basement {
     this.camera = camera;
 
     const renderer = new T.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // Adaptive resolution: the scene is fill-bound, so device-pixel count is the
+    // dominant cost. Start at the crisp cap (min(DPR,2)) — a capable GPU stays
+    // there at full sharpness — and only step the render scale down a notch if we
+    // can't hold ~60fps, protecting weak / high-DPI / on-battery machines.
+    this._prCap = Math.min(window.devicePixelRatio || 1, 2);
+    this._pr = this._prCap;
+    this._adapt = { warm: 0, samples: [] };
+    renderer.setPixelRatio(this._pr);
     renderer.setSize(Math.max(1, Math.floor(w * this.RENDER_SCALE)), Math.max(1, Math.floor(h * this.RENDER_SCALE)), false);
     renderer.setClearColor(0x05060a, 1);
     this.maxAniso = renderer.capabilities.getMaxAnisotropy();
@@ -490,12 +507,18 @@ class Basement {
     const floorTex = this.makeConcrete('#23242a', 120); floorTex.repeat.set(6, 5);
     const wallTex = this.makeConcrete('#33343c', 150); wallTex.repeat.set(3, 1.4);
     const ceilTex = this.makeConcrete('#1c1d22', 90); ceilTex.repeat.set(6, 5);
-    this.matFloor = new T.MeshStandardMaterial({ map: floorTex, roughness: 1, metalness: 0 });
-    this.matWall = new T.MeshStandardMaterial({ map: wallTex, roughness: 1, metalness: 0 });
-    this.matCeil = new T.MeshStandardMaterial({ map: ceilTex, roughness: 1, metalness: 0 });
+    // Large matte surfaces (floor/walls/ceiling/columns/wood) cover most of the
+    // screen, so they dominate fragment cost. They're pure rough non-metal — the
+    // full PBR (Cook-Torrance) shader buys nothing here, so use the much cheaper
+    // Blinn-Phong shader with no specular. Visually identical under these point
+    // lights; the fragment shader is far lighter, which is the real win in this
+    // fill-bound scene. Metallic fixtures keep PBR (small meshes, metalness matters).
+    this.matFloor = new T.MeshPhongMaterial({ map: floorTex, specular: 0x000000, shininess: 0 });
+    this.matWall = new T.MeshPhongMaterial({ map: wallTex, specular: 0x000000, shininess: 0 });
+    this.matCeil = new T.MeshPhongMaterial({ map: ceilTex, specular: 0x000000, shininess: 0 });
+    this.matCol = new T.MeshPhongMaterial({ map: this.makeConcrete('#2c2d34', 120), specular: 0x000000, shininess: 0 });
+    this.matWood = new T.MeshPhongMaterial({ color: 0x5a4632, specular: 0x000000, shininess: 0 });
     this.matMetal = new T.MeshStandardMaterial({ color: 0x4a4a52, roughness: 0.5, metalness: 0.6 });
-    this.matWood = new T.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.9, metalness: 0 });
-    this.matCol = new T.MeshStandardMaterial({ map: this.makeConcrete('#2c2d34', 120), roughness: 1 });
     this.matPipe = new T.MeshStandardMaterial({ color: 0x3a3a40, roughness: 0.6, metalness: 0.5 });
     this.matFix = new T.MeshStandardMaterial({ color: 0x35363c, roughness: 0.7, metalness: 0.4 });
     this.matDark = new T.MeshBasicMaterial({ color: 0x050608 });
@@ -559,6 +582,9 @@ class Basement {
     const sp = this.rooms.hub.spawn;
     camera.position.set(sp.x, 1.6, sp.z); this.yaw = sp.yaw; this.pitch = 0;
 
+    // pre-upload project-room textures so the first door transition doesn't hitch
+    try { for (const t of this._warmTex) this.renderer.initTexture(t); } catch (e) {}
+
     if (this.grainRef.current) this.grainRef.current.style.display = (P.grain === false) ? 'none' : 'block';
     this.atmoApply(P.atmosphere != null ? P.atmosphere : 7);
 
@@ -575,10 +601,31 @@ class Basement {
     this.animate();
   }
 
+  // downscale-only resolution governor: keeps a ~60fps budget on weak GPUs while
+  // a capable GPU stays at the full crisp cap. Settles after a few adjustments.
+  adaptResolution(dt) {
+    const a = this._adapt; if (!a) return;
+    a.warm += dt; if (a.warm < 1.2) return;            // skip startup/compile/upload spikes
+    a.samples.push(dt * 1000);
+    if (a.samples.length < 45) return;
+    a.samples.sort((x, y) => x - y);
+    const med = a.samples[Math.floor(a.samples.length / 2)];
+    a.samples.length = 0;
+    if (med > 20 && this._pr > 1.0) {                  // under ~50fps → drop the render scale a notch
+      this._pr = Math.max(1.0, +(this._pr - 0.25).toFixed(2));
+      this.renderer.setPixelRatio(this._pr);
+      this.renderer.setSize(Math.max(1, Math.floor(window.innerWidth * this.RENDER_SCALE)), Math.max(1, Math.floor(window.innerHeight * this.RENDER_SCALE)), false);
+    }
+  }
+
   onResize = () => {
     if (!this.renderer || !this.camera) return;
     const w = window.innerWidth, h = window.innerHeight;
     this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
+    // a new window size changes the fill cost — restore the crisp cap and let the
+    // governor re-settle for the new resolution
+    this._pr = this._prCap; this.renderer.setPixelRatio(this._pr);
+    if (this._adapt) { this._adapt.warm = 0; this._adapt.samples.length = 0; }
     this.renderer.setSize(Math.max(1, Math.floor(w * this.RENDER_SCALE)), Math.max(1, Math.floor(h * this.RENDER_SCALE)), false);
     const cv = this.renderer.domElement; cv.style.width = '100%'; cv.style.height = '100%';
   };
@@ -667,6 +714,7 @@ class Basement {
     if (!this._mounted) return;
     this._raf = requestAnimationFrame(this.animate);
     const dt = Math.min(0.05, this.clock.getDelta()); this.time += dt;
+    this.adaptResolution(dt);
     this.camera.rotation.y = this.yaw; this.camera.rotation.x = this.pitch;
 
     if (this.phase === 'playing' && !this.transitioning) {
