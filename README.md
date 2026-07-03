@@ -16,6 +16,16 @@ The design medium is **HTML/CSS/JS** — these are prototypes, not production co
 
 **Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
 
+## Deployment (tsrun.dev)
+
+This repo deploys to Railway (project `Portfolio`, service `portfolio`) as a static site: the root `Staticfile` points Railpack's static provider at `project/`, and Caddy serves `project/index.html`.
+
+**`project/index.html` is a copy of `project/Portfolio.dc.html`** (the prototype is self-booting — `support.js` loads React from a CDN). After editing `Portfolio.dc.html`, regenerate it before pushing:
+
+```sh
+cp project/Portfolio.dc.html project/index.html
+```
+
 ## Bundle contents
 
 - `portfolio/README.md` — this file

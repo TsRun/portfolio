@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Mathis Serrier — Portfolio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='14' y='22' width='72' height='16' rx='8' fill='%23d97757'/%3E%3Crect x='14' y='44' width='56' height='16' rx='8' fill='%2322201b'/%3E%3Crect x='14' y='66' width='40' height='16' rx='8' fill='%23b9b2a2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5/500.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5/600.css">
+  <style>
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#f0eee6;color:#22201b;--accent:#d97757;font-family:"Newsreader",Georgia,serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    *,*::before,*::after{box-sizing:border-box}
+    ::selection{background:var(--accent);color:#faf9f5}
+    @keyframes rise{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes riseIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+    @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+    @keyframes spin360{to{transform:rotate(360deg)}}
+    @keyframes dotpulse{0%,100%{box-shadow:0 0 0 0 rgba(201,100,66,.35)}50%{box-shadow:0 0 0 5px rgba(201,100,66,0)}}
+    @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+    @keyframes breathe{0%,100%{width:58%}50%{width:74%}}
+    @keyframes drift{from{transform:translateY(-40px)}to{transform:translateY(48px)}}
+    image-slot{display:block;width:100%;height:100%}
+  </style>
+</helmet>
+
+<div id="top" style="position:relative">
+
+  <!-- scroll progress hairline -->
+  <div style="position:fixed;top:0;left:0;right:0;height:3px;background:var(--accent);transform-origin:0 50%;z-index:200;animation:grow 1s linear both;animation-timeline:scroll()"></div>
+
+  <!-- ======================= NAV ======================= -->
+  <nav style="position:fixed;top:3px;left:0;right:0;z-index:100;background:rgba(240,238,230,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(34,32,27,.08)">
+    <div style="max-width:1240px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <a href="#top" style="font-family:'Iosevka',ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;font-weight:600;letter-spacing:.02em;color:#22201b;text-decoration:none">mathis serrier<span style="color:var(--accent)">.</span></a>
+      <div style="display:flex;gap:22px;margin-left:auto;align-items:center;flex-wrap:wrap">
+        <a href="#work" style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6f6a5e;text-decoration:none;transition:color .2s" style-hover="color:#22201b"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Work</sc-if><sc-if value="{{ fr }}">Projets</sc-if></a>
+        <a href="#about" style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6f6a5e;text-decoration:none;transition:color .2s" style-hover="color:#22201b"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">About</sc-if><sc-if value="{{ fr }}">À propos</sc-if></a>
+        <a href="#stack" style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6f6a5e;text-decoration:none;transition:color .2s" style-hover="color:#22201b">Stack</a>
+        <a href="#contact" style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6f6a5e;text-decoration:none;transition:color .2s" style-hover="color:#22201b">Contact</a>
+        <div style="display:flex;gap:2px;border:1px solid rgba(34,32,27,.18);border-radius:999px;padding:2px">
+          <button onClick="{{ setEn }}" style="{{ enBtn }}">EN</button>
+          <button onClick="{{ setFr }}" style="{{ frBtn }}">FR</button>
+        </div>
+        <a href="https://github.com/TsRun" target="_blank" rel="noopener" style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:#22201b;text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======================= HERO ======================= -->
+  <header data-screen-label="Hero" style="position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:130px 28px 90px">
+    <div aria-hidden="true" style="position:absolute;right:min(5vw,80px);top:calc(50% - 140px);width:min(36vw,440px);display:flex;flex-direction:column;gap:clamp(12px,1.6vw,22px);z-index:1;animation:drift 1s linear both;animation-timeline:scroll()">
+      <div style="height:clamp(40px,5.2vw,74px);width:66%;border-radius:999px;background:var(--accent);animation:breathe 5.5s ease-in-out infinite"></div>
+      <div style="height:clamp(40px,5.2vw,74px);width:80%;border-radius:999px;background:#e4dfd1"></div>
+      <div style="height:clamp(40px,5.2vw,74px);width:48%;border-radius:999px;background:#e4dfd1"></div>
+    </div>
+    <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto;width:100%">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#6f6a5e;animation:riseIn .7s .1s cubic-bezier(.2,.7,.2,1) both">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Full-stack engineer · AI dev tools</sc-if>
+        <sc-if value="{{ fr }}">Ingénieur full-stack · Outils de dev IA</sc-if>
+      </div>
+      <h1 style="font-weight:400;font-size:clamp(52px,7.4vw,114px);line-height:1.04;letter-spacing:-.02em;margin:26px 0 30px;max-width:920px">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">
+          <span style="display:inline-block;animation:riseIn .8s .15s cubic-bezier(.2,.7,.2,1) both">Building</span> <span style="display:inline-block;animation:riseIn .8s .21s cubic-bezier(.2,.7,.2,1) both">tools</span> <span style="display:inline-block;animation:riseIn .8s .27s cubic-bezier(.2,.7,.2,1) both">that</span> <span style="display:inline-block;animation:riseIn .8s .33s cubic-bezier(.2,.7,.2,1) both">put</span> <span style="display:inline-block;animation:riseIn .8s .39s cubic-bezier(.2,.7,.2,1) both"><em style="font-style:italic;color:var(--accent)">AI&nbsp;agents</em></span> <span style="display:inline-block;animation:riseIn .8s .45s cubic-bezier(.2,.7,.2,1) both">to</span> <span style="display:inline-block;animation:riseIn .8s .51s cubic-bezier(.2,.7,.2,1) both">work.</span>
+        </sc-if>
+        <sc-if value="{{ fr }}">
+          <span style="display:inline-block;animation:riseIn .8s .15s cubic-bezier(.2,.7,.2,1) both">Des</span> <span style="display:inline-block;animation:riseIn .8s .21s cubic-bezier(.2,.7,.2,1) both">outils</span> <span style="display:inline-block;animation:riseIn .8s .27s cubic-bezier(.2,.7,.2,1) both">qui</span> <span style="display:inline-block;animation:riseIn .8s .33s cubic-bezier(.2,.7,.2,1) both">mettent</span> <span style="display:inline-block;animation:riseIn .8s .39s cubic-bezier(.2,.7,.2,1) both">les</span> <span style="display:inline-block;animation:riseIn .8s .45s cubic-bezier(.2,.7,.2,1) both"><em style="font-style:italic;color:var(--accent)">agents&nbsp;IA</em></span> <span style="display:inline-block;animation:riseIn .8s .51s cubic-bezier(.2,.7,.2,1) both">au</span> <span style="display:inline-block;animation:riseIn .8s .57s cubic-bezier(.2,.7,.2,1) both">travail.</span>
+        </sc-if>
+      </h1>
+      <p style="font-size:18.5px;line-height:1.65;color:#55503f;max-width:600px;margin:0 0 40px;animation:riseIn .8s .6s cubic-bezier(.2,.7,.2,1) both">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">I'm Mathis Serrier — Python day to day, C++ close to the metal, and a taste for calm interfaces. Currently building <em style="font-style:italic">Foreman</em>, a desktop task queue for AI coding agents.</sc-if>
+        <sc-if value="{{ fr }}">Moi, c'est Mathis Serrier — Python au quotidien, C++ près du métal, et le goût des interfaces calmes. En ce moment : <em style="font-style:italic">Foreman</em>, une file de tâches de bureau pour agents de code IA.</sc-if>
+      </p>
+      <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap;animation:riseIn .8s .72s cubic-bezier(.2,.7,.2,1) both">
+        <a href="#work" style="font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;font-weight:600;letter-spacing:.06em;background:#22201b;color:#f1eee4;padding:15px 26px;border-radius:999px;text-decoration:none;transition:background .25s" style-hover="background:var(--accent)">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">See the work ↓</sc-if><sc-if value="{{ fr }}">Voir les projets ↓</sc-if>
+        </a>
+        <a href="mailto:mathis.serrier@gmail.com" style="font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;color:#6f6a5e;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--accent);transition:color .2s" style-hover="color:#22201b">mathis.serrier@gmail.com</a>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:26px;left:28px;font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:#a49c8a;animation:pulse 2.6s ease-in-out infinite">
+      <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">scroll ↓</sc-if><sc-if value="{{ fr }}">défiler ↓</sc-if>
+    </div>
+  </header>
+
+  <!-- ======================= MARQUEE ======================= -->
+  <div aria-hidden="true" style="border-top:1px solid #ddd6c8;border-bottom:1px solid #ddd6c8;overflow:hidden">
+    <div style="display:flex;gap:44px;width:max-content;padding:15px 0;animation:marq 28s linear infinite">
+      <div style="display:flex;gap:44px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;color:#4d493f">
+        <span>Python</span><span style="color:var(--accent);font-size:10px">✦</span><span>C++</span><span style="color:var(--accent);font-size:10px">✦</span><span>C</span><span style="color:var(--accent);font-size:10px">✦</span><span>TypeScript</span><span style="color:var(--accent);font-size:10px">✦</span><span>Rust</span><span style="color:var(--accent);font-size:10px">✦</span><span>React 18</span><span style="color:var(--accent);font-size:10px">✦</span><span>Vue 3</span><span style="color:var(--accent);font-size:10px">✦</span><span>Tauri 2</span><span style="color:var(--accent);font-size:10px">✦</span><span>Electron</span><span style="color:var(--accent);font-size:10px">✦</span><span>Node</span><span style="color:var(--accent);font-size:10px">✦</span><span>SQLite</span><span style="color:var(--accent);font-size:10px">✦</span><span>Claude API</span><span style="color:var(--accent);font-size:10px">✦</span><span>Groq</span><span style="color:var(--accent);font-size:10px">✦</span><span>Web Speech</span><span style="color:var(--accent);font-size:10px">✦</span>
+      </div>
+      <div style="display:flex;gap:44px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;color:#4d493f">
+        <span>Python</span><span style="color:var(--accent);font-size:10px">✦</span><span>C++</span><span style="color:var(--accent);font-size:10px">✦</span><span>C</span><span style="color:var(--accent);font-size:10px">✦</span><span>TypeScript</span><span style="color:var(--accent);font-size:10px">✦</span><span>Rust</span><span style="color:var(--accent);font-size:10px">✦</span><span>React 18</span><span style="color:var(--accent);font-size:10px">✦</span><span>Vue 3</span><span style="color:var(--accent);font-size:10px">✦</span><span>Tauri 2</span><span style="color:var(--accent);font-size:10px">✦</span><span>Electron</span><span style="color:var(--accent);font-size:10px">✦</span><span>Node</span><span style="color:var(--accent);font-size:10px">✦</span><span>SQLite</span><span style="color:var(--accent);font-size:10px">✦</span><span>Claude API</span><span style="color:var(--accent);font-size:10px">✦</span><span>Groq</span><span style="color:var(--accent);font-size:10px">✦</span><span>Web Speech</span><span style="color:var(--accent);font-size:10px">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 01 — FIL DE FER ======================= -->
+  <section id="work" data-screen-label="Fil de Fer" style="padding:110px 28px 100px;scroll-margin-top:40px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Work — 01</sc-if><sc-if value="{{ fr }}">Projets — 01</sc-if>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:22px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+        <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Fil de Fer</h2>
+        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#8a8474">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a 3D wireframe renderer, in C</sc-if>
+          <sc-if value="{{ fr }}">un rendu 3D fil de fer, en C</sc-if>
+        </span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#8a8474">C · MiniLibX · École 42</span>
+        <a href="https://github.com/TsRun/Fil-de-Fers" target="_blank" rel="noopener" style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#22201b;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--accent)">code ↗</a>
+      </div>
+      <p style="font-size:17px;line-height:1.7;color:#55503f;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">The 42 classic: read a heightmap, project every point, draw every edge — no OpenGL, just lines. This one runs the same math in your browser. Grab it.</sc-if>
+        <sc-if value="{{ fr }}">Le classique de 42 : lire une carte d'altitudes, projeter chaque point, tracer chaque arête — sans OpenGL, rien que des lignes. Celui-ci refait les mêmes maths dans votre navigateur. Attrapez-le.</sc-if>
+      </p>
+      <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap;margin-top:56px">
+        <div style="flex:1 1 560px;min-width:min(100%,320px);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 40%">
+          <div style="background:#000;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.25);box-shadow:0 24px 60px rgba(0,0,0,.35)">
+            <div style="position:relative;display:flex;align-items:center;height:28px;background:#ececec;border-bottom:1px solid #d0d0d0">
+              <div style="display:flex;gap:8px;padding-left:10px;position:relative;z-index:1">
+                <span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#febc2e;display:inline-block"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block"></span>
+              </div>
+              <span style="position:absolute;left:0;right:0;text-align:center;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:13px;font-weight:500;color:#4a4a4a;pointer-events:none">{{ fdfTitle }}</span>
+            </div>
+            <canvas ref="{{ fdfRef }}" style="width:100%;height:400px;display:block;touch-action:none"></canvas>
+          </div>
+          <div style="display:flex;gap:18px;row-gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">carte</sc-if></span>
+              <sc-for list="{{ fdfMapChips }}" as="mc" hint-placeholder-count="3">
+                <button onClick="{{ mc.click }}" style="{{ mc.style }}">{{ mc.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">view</sc-if><sc-if value="{{ fr }}">vue</sc-if></span>
+              <sc-for list="{{ fdfViewChips }}" as="vc" hint-placeholder-count="2">
+                <button onClick="{{ vc.click }}" style="{{ vc.style }}">{{ vc.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">color</sc-if><sc-if value="{{ fr }}">couleur</sc-if></span>
+              <sc-for list="{{ fdfColorChips }}" as="cc" hint-placeholder-count="2">
+                <button onClick="{{ cc.click }}" style="{{ cc.style }}">{{ cc.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px;align-items:center;margin-top:12px;flex-wrap:wrap">
+            <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474">zoom
+              <input type="range" min="6" max="24" step="0.5" value="{{ fdfZoom }}" onChange="{{ onFdfZoom }}" style="accent-color:var(--accent);width:110px">
+            </label>
+            <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">relief</sc-if><sc-if value="{{ fr }}">relief</sc-if>
+              <input type="range" min="0" max="70" value="{{ fdfRelief }}" onChange="{{ onFdfRelief }}" style="accent-color:var(--accent);width:110px">
+            </label>
+            <button onClick="{{ fdfReset }}" style="margin-left:auto;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid #b9b2a2;border-radius:999px;padding:5px 13px;background:transparent;color:#55503f;cursor:pointer;transition:all .2s" style-hover="background:#22201b;color:#f1eee4;border-color:#22201b">reset</button>
+          </div>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#8a8474;margin-top:14px">
+            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ a MiniLibX-style window running real 42 maps — drag to orbit, scroll or pinch to zoom, not a screenshot</sc-if>
+            <sc-if value="{{ fr }}">↑ une fenêtre façon MiniLibX avec de vraies cartes 42 — glissez pour pivoter, molette ou pincez pour zoomer, pas une capture</sc-if>
+          </div>
+        </div>
+        <div style="flex:1 1 300px;min-width:280px;display:flex;flex-direction:column;gap:36px">
+          <div style="animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">01</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Isometric, by hand</sc-if><sc-if value="{{ fr }}">L'isométrique, à la main</sc-if>
+            </h3>
+            <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Parse the grid, center it, rotate, project. The whole pipeline is sixty lines of math — the same ones running in this canvas.</sc-if>
+              <sc-if value="{{ fr }}">Parser la grille, la centrer, pivoter, projeter. Toute la chaîne tient en soixante lignes de maths — les mêmes qui tournent dans ce canvas.</sc-if>
+            </p>
+          </div>
+          <div style="border-top:1px solid #ddd6c8;padding-top:32px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">02</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Line by line</sc-if><sc-if value="{{ fr }}">Ligne à ligne</sc-if>
+            </h3>
+            <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">In C every edge is Bresenham, pixel by pixel into an image buffer. Height picks the color — coral peaks over ivory plains.</sc-if>
+              <sc-if value="{{ fr }}">En C, chaque arête c'est Bresenham, pixel par pixel dans un buffer d'image. L'altitude choisit la couleur — crêtes corail sur plaines ivoire.</sc-if>
+            </p>
+          </div>
+          <div style="border-top:1px solid #ddd6c8;padding-top:32px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">03</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">No allocations wasted</sc-if><sc-if value="{{ fr }}">Pas un octet de trop</sc-if>
+            </h3>
+            <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">42 rules: no leaks, no libraries, every malloc accounted for. The kind of discipline that stays with you in any language.</sc-if>
+              <sc-if value="{{ fr }}">Les règles de 42 : zéro fuite, zéro lib, chaque malloc justifié. Le genre de discipline qui vous suit dans n'importe quel langage.</sc-if>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 02 — SAVANA ======================= -->
+  <section data-screen-label="Savana" style="padding:110px 28px 100px;border-top:1px solid #ddd6c8">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Work — 02</sc-if><sc-if value="{{ fr }}">Projets — 02</sc-if>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:22px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+        <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Savana</h2>
+        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#8a8474">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a League of Legends account manager</sc-if>
+          <sc-if value="{{ fr }}">un gestionnaire de comptes League of Legends</sc-if>
+        </span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#8a8474">Electron · Vue 3 · Express · SQLite</span>
+        <a href="https://github.com/TsRun/Savana" target="_blank" rel="noopener" style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#22201b;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--accent)">code ↗</a>
+      </div>
+      <p style="font-size:17px;line-height:1.7;color:#55503f;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A desktop companion that holds all your League accounts and swaps between them in one click — sessions injected straight into the Riot client, ranked stats pulled live from the Riot API.</sc-if>
+        <sc-if value="{{ fr }}">Un compagnon de bureau qui garde tous vos comptes League et bascule de l'un à l'autre en un clic — sessions injectées directement dans le client Riot, stats classées tirées en direct de l'API Riot.</sc-if>
+      </p>
+      <div style="display:flex;flex-direction:row-reverse;gap:56px;align-items:flex-start;flex-wrap:wrap;margin-top:56px">
+        <div style="flex:1 1 560px;min-width:min(100%,320px);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 40%">
+          <div style="max-width:100%">
+            <div ref="{{ savZoomRef }}" style="width:1104px;background:#0a0a0f;color:#f8fafc;font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.4)">
+              <!-- titlebar -->
+              <div style="display:flex;align-items:center;height:32px;background:#12121a;border-bottom:1px solid rgba(255,255,255,.04);padding-left:16px">
+                <span style="position:relative;width:20px;height:20px;border-radius:4px;overflow:hidden;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">S<img src="https://raw.githubusercontent.com/TsRun/Savana/master/public/SavanaLogo.jpg" alt="" style="position:absolute;inset:0;width:20px;height:20px;object-fit:cover"></span>
+                <span style="font-size:0.75rem;color:#94a3b8;margin-left:8px">Savana</span>
+                <span style="margin-left:auto;display:flex;height:32px">
+                  <span style="width:46px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;transition:background .15s" style-hover="background:#1a1a25">—</span>
+                  <span style="width:46px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:10px;transition:background .15s" style-hover="background:#1a1a25">▢</span>
+                  <span style="width:46px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;transition:all .15s" style-hover="background:#ef4444;color:#fff">✕</span>
+                </span>
+              </div>
+              <div style="display:flex;height:700px">
+                <!-- sidebar -->
+                <div style="width:260px;flex:none;background:#12121a;border-right:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column">
+                  <div style="display:flex;align-items:center;gap:16px;padding:24px;border-bottom:1px solid rgba(255,255,255,.04)">
+                    <span style="position:relative;width:40px;height:40px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">S<img src="https://raw.githubusercontent.com/TsRun/Savana/master/public/SavanaLogo.jpg" alt="" style="position:absolute;inset:0;width:40px;height:40px;object-fit:cover"></span>
+                    <span style="display:flex;flex-direction:column">
+                      <span style="font-weight:700;font-size:1rem;color:#f8fafc">Savana</span>
+                      <span style="font-size:0.75rem;color:#64748b">v2.0</span>
+                    </span>
+                  </div>
+                  <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:4px">
+                    <span style="display:flex;align-items:center;gap:16px;padding:8px 16px;border-radius:10px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:#fff;font-weight:500;font-size:0.875rem">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg>
+                      Accounts
+                    </span>
+                    <span style="display:flex;align-items:center;gap:16px;padding:8px 16px;border-radius:10px;color:#94a3b8;font-weight:500;font-size:0.875rem;cursor:pointer;transition:all .15s" style-hover="background:#1a1a25;color:#f8fafc">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                      Friends
+                    </span>
+                  </div>
+                  <div style="padding:16px;border-top:1px solid rgba(255,255,255,.04)">
+                    <div style="display:flex;align-items:center;gap:16px;padding:8px;border-radius:10px;background:#1a1a25">
+                      <span style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;flex:none">T</span>
+                      <span style="display:flex;flex-direction:column;flex:1;min-width:0">
+                        <span style="font-size:0.875rem;font-weight:500;color:#f8fafc">TsRun</span>
+                        <span style="font-size:0.75rem;color:#22c55e">Online</span>
+                      </span>
+                      <span style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;cursor:pointer;transition:all .15s" style-hover="background:#ef4444;color:#fff">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- content -->
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#0a0a0f">
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 32px;background:#12121a;border-bottom:1px solid rgba(255,255,255,.04)">
+                    <div>
+                      <div style="font-size:1.5rem;font-weight:700;color:#f8fafc">My Accounts</div>
+                      <div style="font-size:0.875rem;color:#64748b">{{ savCount }} accounts</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:16px">
+                      <input placeholder="Search..." style="width:200px;padding:8px 16px;background:#1a1a25;border:1px solid rgba(255,255,255,.04);border-radius:10px;color:#f8fafc;font-family:inherit;font-size:0.875rem;outline:none">
+                      <span style="display:flex;align-items:center;gap:8px;width:100px;padding:8px 12px;background:#1a1a25;border:1px solid rgba(255,255,255,.04);border-radius:8px;color:#f8fafc;font-size:0.875rem">SoloQ<span style="margin-left:auto;color:#64748b;font-size:10px">▾</span></span>
+                      <button style="padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.875rem;font-family:inherit;cursor:pointer;background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(5,150,105,.15));color:#10b981;border:1px solid rgba(16,185,129,.4)">+ Add Account</button>
+                      <button style="padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.875rem;font-family:inherit;cursor:pointer;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:#fff;border:none">Resave All</button>
+                    </div>
+                  </div>
+                  <div style="flex:1;display:grid;grid-template-columns:repeat(2,380px);justify-content:center;gap:24px;padding:32px;overflow-y:auto;align-content:start">
+                    <sc-for list="{{ savCards }}" as="c" hint-placeholder-count="4">
+                      <div onClick="{{ c.flip }}" style="width:380px;min-height:400px;perspective:1000px;cursor:pointer">
+                        <div style="{{ c.flipInner }}">
+                          <!-- front -->
+                          <div style="backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:400px;padding:24px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(145deg,rgba(22,22,31,.9),rgba(18,18,26,.95));border:1px solid rgba(255,255,255,.04);border-radius:16px;transition:border-color .25s,box-shadow .25s" style-hover="border-color:rgba(99,102,241,.25);box-shadow:0 12px 40px rgba(0,0,0,.25),0 0 0 1px rgba(99,102,241,.3)">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                              <div style="display:flex;flex-direction:column;gap:2px">
+                                <span style="font-size:1.25rem;font-weight:700;color:#f8fafc">{{ c.name }}</span>
+                                <span style="font-size:0.875rem;color:#64748b">{{ c.tag }}</span>
+                              </div>
+                              <span style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);border-radius:10px">
+                                <span style="font-size:1.125rem;font-weight:700;color:#fff;line-height:1.2">{{ c.level }}</span>
+                                <span style="font-size:0.625rem;font-weight:500;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.5px">LVL</span>
+                              </span>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.04)">
+                              <div style="display:flex;align-items:center;gap:16px">
+                                <img src="{{ c.rankImg }}" alt="" style="width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));transform:scale(1.1);flex:none">
+                                <div style="display:flex;flex-direction:column;gap:2px">
+                                  <span style="font-size:1rem;font-weight:600;color:#f8fafc">{{ c.rankTier }}</span>
+                                  <span style="font-size:0.875rem;color:#94a3b8">{{ c.rankLp }}</span>
+                                </div>
+                              </div>
+                              <div style="display:flex;gap:24px">
+                                <span style="display:flex;flex-direction:column;align-items:center">
+                                  <span style="{{ c.wrStyle }}">{{ c.wr }}</span>
+                                  <span style="font-size:0.7rem;color:#64748b">WR</span>
+                                </span>
+                                <span style="display:flex;flex-direction:column;align-items:center">
+                                  <span style="font-size:1.125rem;font-weight:700;color:#f8fafc">{{ c.games }}</span>
+                                  <span style="font-size:0.7rem;color:#64748b">Games</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                              <span style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:#1a1a25;border-radius:10px">
+                                <img src="{{ c.roleImg }}" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1);opacity:.9">
+                                <span style="font-size:0.75rem;font-weight:600;color:#fff">{{ c.rolePct }}</span>
+                              </span>
+                              <span style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#1a1a25;border-radius:10px">
+                                <span style="font-size:0.8rem;font-weight:600"><span style="color:#22c55e">{{ c.kdaK }}</span><span style="color:#64748b;font-size:0.7rem"> / </span><span style="color:#ef4444">{{ c.kdaD }}</span><span style="color:#64748b;font-size:0.7rem"> / </span><span style="color:#3b82f6">{{ c.kdaA }}</span></span>
+                                <span style="{{ c.kdaRatioStyle }}">{{ c.kdaRatio }}</span>
+                              </span>
+                              <span style="margin-left:auto;display:flex;gap:4px">
+                                <sc-for list="{{ c.champs }}" as="ch" hint-placeholder-count="3">
+                                  <span style="display:flex;flex-direction:column;align-items:center;gap:1px">
+                                    <span style="position:relative;width:32px;height:32px;border-radius:4px;overflow:hidden;border:2px solid rgba(255,255,255,.04);background:#1a1a25;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#94a3b8;flex:none">{{ ch.letter }}<img src="{{ ch.img }}" alt="" style="position:absolute;inset:0;width:32px;height:32px;object-fit:cover"></span>
+                                    <span style="{{ ch.wrStyle }}">{{ ch.wr }}</span>
+                                  </span>
+                                </sc-for>
+                              </span>
+                            </div>
+                            <div style="display:flex;gap:8px;margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)">
+                              <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:rgba(30,30,42,.8);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#a1a1aa;transition:all .15s" style-hover="background:rgba(50,50,65,.9);color:#fff">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+                                <span style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px">User</span>
+                              </span>
+                              <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:rgba(30,30,42,.8);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#a1a1aa;transition:all .15s" style-hover="background:rgba(50,50,65,.9);color:#fff">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+                                <span style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Pass</span>
+                              </span>
+                              <span title="Sauvegarder la session actuelle" style="flex:none;display:flex;align-items:center;justify-content:center;padding:10px;background:rgba(34,197,94,.25);border:1px solid rgba(34,197,94,.5);border-radius:8px;color:#22c55e">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
+                              </span>
+                              <button onClick="{{ c.load }}" title="Charger la session" style="{{ c.loadStyle }}">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                                <span style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px">{{ c.loadLabel }}</span>
+                              </button>
+                              <span style="flex:none;display:flex;align-items:center;justify-content:center;padding:10px;background:rgba(30,30,42,.8);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#a1a1aa;transition:all .15s" style-hover="background:#ef4444;color:#fff;border-color:#ef4444">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                              </span>
+                            </div>
+                          </div>
+                          <!-- back -->
+                          <div style="position:absolute;inset:0;transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:24px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(145deg,rgba(22,22,31,.9),rgba(18,18,26,.95));border:1px solid rgba(255,255,255,.04);border-radius:16px">
+                            <div style="display:flex;flex-direction:column;gap:2px">
+                              <span style="font-size:1.25rem;font-weight:700;color:#f8fafc">{{ c.name }}</span>
+                              <span style="font-size:0.875rem;color:#64748b">{{ c.tag }}</span>
+                            </div>
+                            <div style="background:rgba(0,0,0,.2);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:12px">
+                              <div style="display:flex;flex-direction:column;gap:5px">
+                                <span style="font-size:0.7rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Username / Email</span>
+                                <span style="background:#1a1a25;border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:8px 12px;font-size:0.85rem;color:#f8fafc">{{ c.backUser }}</span>
+                              </div>
+                              <div style="display:flex;flex-direction:column;gap:5px">
+                                <span style="font-size:0.7rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Password</span>
+                                <span style="background:#1a1a25;border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:8px 12px;font-size:0.85rem;color:#f8fafc;letter-spacing:2px">••••••••••••</span>
+                              </div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)">
+                              <span style="padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.875rem;color:#ef4444;border:1px solid #ef4444;background:transparent">Delete Session</span>
+                              <span style="padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.875rem;color:#fff;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%)">Save</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+              <!-- toasts -->
+              <div style="position:absolute;top:56px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:10;pointer-events:none">
+                <sc-for list="{{ savToasts }}" as="tt" hint-placeholder-count="0">
+                  <div style="{{ tt.style }}">{{ tt.text }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#8a8474;margin-top:14px">
+            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ the real app, miniaturized — click a card to flip it, hit Load to launch</sc-if>
+            <sc-if value="{{ fr }}">↑ la vraie app, miniaturisée — cliquez une carte pour la retourner, Load pour lancer</sc-if>
+          </div>
+        </div>
+        <div style="flex:1 1 300px;min-width:280px;display:flex;flex-direction:column;gap:36px">
+          <div style="animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">01</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">One click, no passwords</sc-if><sc-if value="{{ fr }}">Un clic, zéro mot de passe</sc-if>
+            </h3>
+            <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Savana injects the session straight into the Riot client — no retyping credentials, no clipboard gymnastics. Switching takes seconds.</sc-if>
+              <sc-if value="{{ fr }}">Savana injecte la session directement dans le client Riot — pas de mot de passe à retaper, pas de gymnastique presse-papiers. La bascule prend quelques secondes.</sc-if>
+            </p>
+          </div>
+          <div style="border-top:1px solid #ddd6c8;padding-top:32px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">02</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Stats that stay fresh</sc-if><sc-if value="{{ fr }}">Des stats toujours fraîches</sc-if>
+            </h3>
+            <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Rank, LP and winrate per account, straight from the Riot API — so you know which smurf is climbing before you log in.</sc-if>
+              <sc-if value="{{ fr }}">Rang, LP et taux de victoire par compte, directement depuis l'API Riot — pour savoir quel smurf grimpe avant même de se connecter.</sc-if>
+            </p>
+          </div>
+          <div style="border-top:1px solid #ddd6c8;padding-top:32px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">03</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A compact stack</sc-if><sc-if value="{{ fr }}">Une pile compacte</sc-if>
+            </h3>
+            <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Electron shell, Vue 3 front, a small Express service for the Riot API, SQLite for the vault. Everything local, nothing phones home.</sc-if>
+              <sc-if value="{{ fr }}">Coquille Electron, front Vue 3, un petit service Express pour l'API Riot, SQLite pour le coffre. Tout en local, rien ne fuite.</sc-if>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 03 — FOREMAN ======================= -->
+  <section id="foreman" data-screen-label="Foreman" style="background:#262421;color:#f1eee4;padding:110px 28px 100px;scroll-margin-top:40px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Work — 03</sc-if><sc-if value="{{ fr }}">Projets — 03</sc-if>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:22px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+        <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Foreman</h2>
+        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#a49e92">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a personal task queue for AI coding agents</sc-if>
+          <sc-if value="{{ fr }}">une file de tâches personnelle pour agents de code IA</sc-if>
+        </span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#a49e92">Tauri 2 · Rust · React 18 · SQLite</span>
+        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#c9c3b6;border:1px dashed rgba(241,238,228,.3);border-radius:999px;padding:4px 12px">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">private repo — ask me for a demo</sc-if>
+          <sc-if value="{{ fr }}">dépôt privé — demandez une démo</sc-if>
+        </span>
+      </div>
+      <p style="font-size:17px;line-height:1.7;color:#c9c3b6;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A macOS desktop app that turns plain-English intent into shipped code: queue tasks under a project, let a classifier route them to specialised agents, and watch them run — in parallel across agents, strictly serial within one.</sc-if>
+        <sc-if value="{{ fr }}">Une app de bureau macOS qui transforme une intention en code livré : des tâches en file sous un projet, un classifieur qui les route vers des agents spécialisés, et une exécution en parallèle entre agents — strictement séquentielle au sein d'un même agent.</sc-if>
+      </p>
+
+      <div style="display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;margin-top:70px">
+
+        <!-- sticky live mock -->
+        <div style="flex:1 1 520px;min-width:0;position:sticky;top:92px;align-self:flex-start">
+          <div style="max-width:100%">
+          <div ref="{{ fmZoomRef }}" style="width:1060px;background:#f5f4ed;color:#141413;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;font-size:13px;line-height:1.5;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.25);box-shadow:0 30px 70px rgba(0,0,0,.4)">
+            <!-- TopBar -->
+            <div style="height:54px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid #f0eee6;background:#faf9f5">
+              <span style="display:flex;align-items:center;gap:9px">
+                <svg width="25" height="25" viewBox="0 0 1024 1024" style="border-radius:7px;overflow:hidden;flex:none"><rect width="1024" height="1024" rx="229" fill="#f1eee4"></rect><rect width="1022" height="1022" x="1" y="1" rx="228" fill="none" stroke="#1f1e1c" stroke-opacity=".09" stroke-width="2"></rect><rect x="300" y="290" width="424" height="118" rx="59" fill="#c96442"></rect><rect x="300" y="453" width="340" height="118" rx="59" fill="#211f1b"></rect><rect x="300" y="616" width="262" height="118" rx="59" fill="#211f1b"></rect></svg>
+                <span style="font-family:'Newsreader',Georgia,serif;font-size:16px;font-weight:500">Foreman</span>
+              </span>
+              <span style="color:#87867f">/</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid #e8e6dc;background:#f5f4ed;padding:5px 11px;border-radius:8px;cursor:pointer">
+                <span style="font-family:'Newsreader',Georgia,serif;font-size:14px;font-weight:500">portfolio-site</span>
+                <span style="display:inline-flex;align-items:center;border:1px solid #e8e6dc;border-radius:5px;padding:0 6px;font-size:10.5px;color:#5e5d59;font-family:'Iosevka',ui-monospace,monospace">⎇ main</span>
+                <span style="color:#87867f;font-size:11px">▾</span>
+              </span>
+              <span style="margin-left:auto;display:flex;gap:10px;align-items:center">
+                <span style="display:inline-flex;border:1px solid #e8e6dc;border-radius:8px;overflow:hidden">
+                  <span style="font-size:11px;padding:5px 12px;background:#141413;color:#faf9f5">Tasks</span>
+                  <span style="font-size:11px;padding:5px 12px;background:#f5f4ed;color:#5e5d59;border-left:1px solid #e8e6dc;cursor:pointer">Map</span>
+                </span>
+                <span style="border:1px solid #e8e6dc;background:#f5f4ed;color:#5e5d59;font-size:11.5px;padding:5px 10px;border-radius:7px;cursor:pointer">Accounts</span>
+                <span style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;color:#5e5d59;font-size:15px;cursor:pointer">⚙</span>
+              </span>
+            </div>
+            <!-- 3-pane grid -->
+            <div style="display:grid;grid-template-columns:312px minmax(0,1fr) 318px;height:534px">
+              <!-- TaskListPane -->
+              <div style="background:#efece1;border-right:1px solid #f0eee6;display:flex;flex-direction:column;min-height:0">
+                <div style="display:flex;align-items:center;gap:8px;padding:13px 15px 11px;border-bottom:1px solid #f0eee6">
+                  <span style="font-family:'Newsreader',Georgia,serif;font-size:16px;font-weight:500">Tasks</span>
+                  <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;color:#87867f">{{ fmCount }}</span>
+                  <span style="margin-left:auto;display:inline-flex;border:1px solid #e8e6dc;border-radius:7px;overflow:hidden">
+                    <span style="font-size:11px;padding:4px 11px;background:#141413;color:#faf9f5">All</span>
+                    <span style="font-size:11px;padding:4px 11px;background:#f5f4ed;color:#5e5d59;border-left:1px solid #e8e6dc;cursor:pointer">Active</span>
+                    <span style="font-size:11px;padding:4px 11px;background:#f5f4ed;color:#5e5d59;border-left:1px solid #e8e6dc;cursor:pointer">Done</span>
+                  </span>
+                </div>
+                <div style="flex:1;overflow-y:auto;padding:11px 11px 14px;display:flex;flex-direction:column;gap:7px">
+                  <sc-for list="{{ fmTasks }}" as="t" hint-placeholder-count="3">
+                    <div onClick="{{ t.select }}" style="{{ t.cardStyle }}">
+                      <div style="display:flex;align-items:flex-start;gap:8px">
+                        <span style="{{ t.badgeStyle }}">{{ t.cx }}</span>
+                        <span style="flex:1;font-size:12.5px;line-height:1.4">{{ t.title }}</span>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:7px;margin-top:11px">
+                        <span style="{{ t.avStyle }}">{{ t.avLetter }}</span>
+                        <span style="font-size:11px;color:#5e5d59;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.agent }}</span>
+                        <span style="flex:1"></span>
+                        <span style="{{ t.pillStyle }}"><sc-if value="{{ t.pillSpin }}"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;border-top-color:transparent;display:inline-block;animation:spin360 .7s linear infinite"></span></sc-if><sc-if value="{{ t.pillIcon }}"><span style="font-size:10px;line-height:1">{{ t.pillIcon }}</span></sc-if>{{ t.pillText }}</span>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="flex:none;border-top:1px solid #f0eee6;background:#faf9f5;padding:11px 12px 12px">
+                  <textarea rows="2" value="{{ goal }}" onChange="{{ onGoal }}" onKeyDown="{{ onGoalKey }}" placeholder="Give Foreman a goal — it picks the agent…" style="width:100%;background:#f5f4ed;border:1px solid #e8e6dc;border-radius:9px;font-size:12.5px;line-height:1.45;padding:9px 11px;resize:none;outline:none;font-family:inherit;color:#141413;display:block"></textarea>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+                    <sc-if value="{{ fmRouted }}"><span style="font-size:11px;color:#6e8d45">✓ routed to {{ fmRouted }}</span></sc-if>
+                    <button onClick="{{ fmDelegate }}" style="margin-left:auto;background:#141413;border:1px solid #141413;color:#faf9f5;font-size:12px;padding:7px 14px;border-radius:8px;cursor:pointer;font-family:inherit">Delegate ↵</button>
+                  </div>
+                </div>
+              </div>
+              <!-- RoomTimeline -->
+              <div style="background:#f5f4ed;display:flex;flex-direction:column;min-width:0;min-height:0">
+                <div style="display:flex;align-items:center;gap:13px;padding:12px 22px;border-bottom:1px solid #f0eee6">
+                  <span>
+                    <span style="display:block;font-family:'Newsreader',Georgia,serif;font-size:16px;font-weight:500;line-height:1.05">Room</span>
+                    <span style="display:block;font-size:11px;color:#87867f;margin-top:2px">agents coordinating</span>
+                  </span>
+                  <span style="margin-left:auto;display:flex">
+                    <sc-for list="{{ fmRoomAvs }}" as="ra" hint-placeholder-count="4">
+                      <span style="{{ ra.style }}">{{ ra.letter }}</span>
+                    </sc-for>
+                  </span>
+                </div>
+                <div ref="{{ logRef }}" style="flex:1;overflow-y:auto;padding:18px 22px 8px">
+                  <div style="max-width:760px;margin:0 auto;position:relative">
+                    <div style="position:absolute;left:14px;top:10px;bottom:10px;width:2px;background:#e8e6dc"></div>
+                    <sc-for list="{{ fmRoomMsgs }}" as="rm" hint-placeholder-count="4">
+                      <div style="display:flex;gap:13px;margin-bottom:17px;position:relative">
+                        <span style="{{ rm.avStyle }}">{{ rm.avLetter }}</span>
+                        <span style="flex:1;min-width:0">
+                          <span style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+                            <span style="font-weight:700;font-size:13px">{{ rm.name }}</span>
+                            <span style="{{ rm.kindStyle }}">{{ rm.kindLabel }}</span>
+                            <span style="font-weight:500;font-size:12px;color:#5e5d59">{{ rm.recipient }}</span>
+                            <span style="margin-left:auto;font-family:'Iosevka',ui-monospace,monospace;font-size:9.5px;color:#87867f">{{ rm.time }}</span>
+                          </span>
+                          <span style="display:block;font-size:13px;line-height:1.58;color:#3d3d3a;max-width:640px">{{ rm.body }}</span>
+                        </span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+              <!-- TaskDetailPane -->
+              <div style="background:#faf9f5;border-left:1px solid #f0eee6;display:flex;flex-direction:column;min-height:0">
+                <div style="padding:13px 16px;border-bottom:1px solid #f0eee6">
+                  <div style="display:flex;align-items:flex-start;gap:8px">
+                    <span style="{{ fmSelBadgeStyle }}">{{ fmSelCx }}</span>
+                    <span style="flex:1;min-width:0">
+                      <span style="display:block;font-family:'Newsreader',Georgia,serif;font-size:15px;font-weight:500;line-height:1.25">{{ fmSelTitle }}</span>
+                      <span style="display:flex;align-items:center;gap:7px;margin-top:7px">
+                        <span style="{{ fmSelAvStyle }}">{{ fmSelAvLetter }}</span>
+                        <span style="font-size:11px;color:#5e5d59">{{ fmSelAgent }}</span>
+                        <span style="{{ fmSelPillStyle }}"><sc-if value="{{ fmSelPillSpin }}"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;border-top-color:transparent;display:inline-block;animation:spin360 .7s linear infinite"></span></sc-if><sc-if value="{{ fmSelPillIcon }}"><span style="font-size:10px;line-height:1">{{ fmSelPillIcon }}</span></sc-if>{{ fmSelPillText }}</span>
+                      </span>
+                    </span>
+                  </div>
+                  <div style="display:flex;gap:7px;margin-top:12px">
+                    <sc-if value="{{ fmRunnable }}"><button onClick="{{ fmRunClick }}" style="background:#141413;border:1px solid #141413;color:#faf9f5;font-size:11.5px;padding:6px 13px;border-radius:7px;cursor:pointer;font-family:inherit">▶ Run</button></sc-if>
+                    <button style="border:1px solid #d1cfc5;background:#f5f4ed;color:#141413;font-size:11.5px;padding:6px 13px;border-radius:7px;cursor:pointer;font-family:inherit">↻ Retry</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:2px;padding:9px 14px 0;border-bottom:1px solid #f0eee6">
+                  <button onClick="{{ fmTabChangesClick }}" style="{{ fmTabChangesStyle }}">Changes <span style="font-family:'Iosevka',ui-monospace,monospace">{{ fmChangesCount }}</span></button>
+                  <button onClick="{{ fmTabRunClick }}" style="{{ fmTabRunStyle }}">Run</button>
+                  <button onClick="{{ fmTabFilesClick }}" style="{{ fmTabFilesStyle }}">Files</button>
+                </div>
+                <div style="flex:1;overflow-y:auto;padding:12px 14px 18px">
+                  <sc-if value="{{ fmTabIsRun }}">
+                    <div style="display:flex;flex-direction:column;gap:14px">
+                      <div style="display:flex;flex-direction:column;gap:5px">
+                        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#87867f">You</span>
+                        <span style="align-self:flex-start;background:#141413;color:#fff;border-radius:9px;padding:9px 13px;font-size:12.5px;max-width:80%;white-space:pre-wrap;line-height:1.45">{{ fmYouText }}</span>
+                      </div>
+                      <div style="display:flex;flex-direction:column;gap:5px">
+                        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#87867f">Claude</span>
+                        <span style="background:#efece1;border:1px solid #f0eee6;border-left:2px solid #d1cfc5;border-radius:9px;padding:11px 14px;font-size:11.5px;line-height:1.8;white-space:pre-wrap;font-family:'Iosevka',ui-monospace,monospace">
+                          <sc-for list="{{ fmLogLines }}" as="line" hint-placeholder-count="4">
+                            <span style="{{ line.style }}">{{ line.text }}</span>
+                          </sc-for>
+                          <sc-if value="{{ fmCursor }}"><span style="display:inline-block;width:7px;height:12px;background:#141413;vertical-align:-2px;animation:blink 1s steps(1) infinite"></span></sc-if>
+                        </span>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ fmTabIsChanges }}">
+                    <sc-if value="{{ fmHasChanges }}">
+                      <div style="border:1px solid #e8e6dc;border-radius:9px;background:#efece1;overflow:hidden">
+                        <sc-for list="{{ fmChanges }}" as="gc" hint-placeholder-count="3">
+                          <div style="display:flex;gap:12px;padding:8px 12px;font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;border-bottom:1px solid #f0eee6">
+                            <span style="{{ gc.codeStyle }}">{{ gc.code }}</span>
+                            <span style="color:#3d3d3a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ gc.path }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ fmNoChanges }}">
+                      <div style="border:1px dashed #d1cfc5;border-radius:9px;padding:16px;text-align:center;font-size:11.5px;color:#87867f">No file changes yet.</div>
+                    </sc-if>
+                  </sc-if>
+                  <sc-if value="{{ fmTabIsFiles }}">
+                    <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px">
+                      <div style="padding:5px 6px;font-weight:500"><span style="color:#87867f">▸</span> src</div>
+                      <div style="padding:5px 6px 5px 22px"><span style="color:#87867f">▸</span> components</div>
+                      <div style="padding:5px 6px 5px 38px"><span style="color:#87867f">·</span> StatusStrip.tsx</div>
+                      <div style="padding:5px 6px 5px 38px"><span style="color:#87867f">·</span> TaskListPane.tsx</div>
+                      <div style="padding:5px 6px 5px 22px"><span style="color:#87867f">·</span> index.css</div>
+                      <div style="padding:5px 6px;font-weight:500"><span style="color:#87867f">▸</span> src-tauri</div>
+                      <div style="padding:5px 6px 5px 22px"><span style="color:#87867f">·</span> executor.rs</div>
+                      <div style="padding:5px 6px 5px 22px"><span style="color:#87867f">·</span> queue.rs</div>
+                      <div style="padding:5px 6px"><span style="color:#87867f">·</span> CLAUDE.md</div>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+            <!-- StatusStrip -->
+            <div style="height:32px;padding:0 16px;display:flex;gap:16px;align-items:center;border-top:1px solid #f0eee6;background:#faf9f5;font-size:11px;color:#5e5d59">
+              <span style="display:flex;align-items:center;gap:6px"><span style="{{ fmStripDot }}"></span>{{ fmWorking }} working</span>
+              <span style="color:#87867f">·</span>
+              <span>{{ fmCount }} tasks · {{ fmDone }} done</span>
+              <span style="color:#87867f">·</span>
+              <span style="font-family:'Iosevka',ui-monospace,monospace">⎇ main</span>
+              <span style="margin-left:auto;font-family:'Iosevka',ui-monospace,monospace;color:#87867f">{{ costToday }} today</span>
+              <span style="color:#87867f">·</span>
+              <span style="font-family:'Iosevka',ui-monospace,monospace;color:#87867f">foreman v2</span>
+            </div>
+          </div>
+          </div>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#a49e92;margin-top:14px">
+            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ the real app, miniaturized — click a task, or type a goal and press ↵ Delegate</sc-if>
+            <sc-if value="{{ fr }}">↑ la vraie app, miniaturisée — cliquez une tâche, ou tapez un objectif puis ↵ Delegate</sc-if>
+          </div>
+        </div>
+
+        <!-- scrolling notes -->
+        <div style="flex:1 1 360px;min-width:300px">
+          <div style="padding:4vh 0 9vh;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">01</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:26px;margin:10px 0 12px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Type a goal, get a plan</sc-if><sc-if value="{{ fr }}">Un objectif tapé, un plan</sc-if>
+            </h3>
+            <p style="font-size:16px;line-height:1.7;color:#c9c3b6;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Every task is auto-classified by Claude Haiku or Gemini Flash: a complexity grade plus a route to the right role agent — Frontend, Backend, Tests. Low-complexity work runs itself; bigger jobs wait for a click.</sc-if>
+              <sc-if value="{{ fr }}">Chaque tâche est classée par Claude Haiku ou Gemini Flash : un niveau de complexité et un agent de rôle — Frontend, Backend, Tests. Le simple s'exécute tout seul ; le reste attend un clic.</sc-if>
+            </p>
+          </div>
+          <div style="padding:9vh 0;border-top:1px solid rgba(241,238,228,.14);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">02</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:26px;margin:10px 0 12px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A provider per agent</sc-if><sc-if value="{{ fr }}">Un provider par agent</sc-if>
+            </h3>
+            <p style="font-size:16px;line-height:1.7;color:#c9c3b6;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Claude, Codex, Gemini or Aider — each agent runs on the CLI you choose, spawned in the project directory, its output streamed back as a conversation with token costs tracked per run.</sc-if>
+              <sc-if value="{{ fr }}">Claude, Codex, Gemini ou Aider — chaque agent tourne sur le CLI de votre choix, lancé dans le dossier du projet, sa sortie streamée comme une conversation, coût en tokens suivi par run.</sc-if>
+            </p>
+          </div>
+          <div style="padding:9vh 0;border-top:1px solid rgba(241,238,228,.14);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">03</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:26px;margin:10px 0 12px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">The room</sc-if><sc-if value="{{ fr }}">La room</sc-if>
+            </h3>
+            <p style="font-size:16px;line-height:1.7;color:#c9c3b6;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Agents coordinate: hand a sub-task to a teammate, depth-bounded so delegation never spirals. Parallel across agents, serial within one — a session can't do two things at once.</sc-if>
+              <sc-if value="{{ fr }}">Les agents se coordonnent : une sous-tâche se délègue à un coéquipier, avec un garde-fou de profondeur. Parallèle entre agents, séquentiel au sein d'un agent — une session ne fait qu'une chose à la fois.</sc-if>
+            </p>
+          </div>
+          <div style="padding:9vh 0 4vh;border-top:1px solid rgba(241,238,228,.14);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
+            <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">04</div>
+            <h3 style="font-weight:400;font-style:italic;font-size:26px;margin:10px 0 12px">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Honest engineering</sc-if><sc-if value="{{ fr }}">De l'ingénierie honnête</sc-if>
+            </h3>
+            <p style="font-size:16px;line-height:1.7;color:#c9c3b6;margin:0">
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A Rust backend under Tauri 2, a React 18 front in plain CSS. Read-only git status, an editable CLAUDE.md per project, SQLite for everything — and the same UI runs in the browser on a mocked backend for fast iteration.</sc-if>
+              <sc-if value="{{ fr }}">Un backend Rust sous Tauri 2, un front React 18 en CSS simple. Statut git en lecture seule, un CLAUDE.md éditable par projet, SQLite pour tout — et la même UI tourne dans le navigateur sur un backend mocké.</sc-if>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ALSO — 04 · 05 ======================= -->
+  <section data-screen-label="More projects" style="padding:100px 28px 30px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Also — 04 · 05</sc-if><sc-if value="{{ fr }}">Aussi — 04 · 05</sc-if>
+      </div>
+      <h2 style="font-weight:400;font-size:clamp(30px,3.6vw,46px);letter-spacing:-.015em;margin:18px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Smaller builds, same care.</sc-if>
+        <sc-if value="{{ fr }}">Plus petits — le même soin.</sc-if>
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:22px;margin-top:44px">
+        <div style="border:1px solid #ddd6c8;border-radius:14px;padding:16px;background:#f6f4ec;transition:box-shadow .3s,border-color .3s;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%" style-hover="box-shadow:0 18px 40px rgba(34,32,27,.12);border-color:var(--accent)">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="shot-chessvoice" shape="rounded" radius="8" placeholder="ChessVoice — drop a screenshot" hint-size="100%,200px" style="width:100%;height:200px;display:block"></x-import>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-top:16px;flex-wrap:wrap">
+            <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;font-weight:600;color:var(--accent)">04</span>
+            <span style="font-size:22px;letter-spacing:-.01em">ChessVoice</span>
+            <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px dashed #b9b2a2;border-radius:999px;padding:2.5px 9px;color:#8a8474;margin-left:auto"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">private</sc-if><sc-if value="{{ fr }}">privé</sc-if></span>
+          </div>
+          <p style="font-style:italic;font-size:15px;line-height:1.6;color:#55503f;margin:8px 0 12px">
+            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Chess played entirely by voice — browser STT/TTS, hybrid local-grammar + LLM move parsing, on chess.com and lichess.</sc-if>
+            <sc-if value="{{ fr }}">Les échecs entièrement à la voix — STT/TTS navigateur, parsing des coups hybride grammaire locale + LLM, sur chess.com et lichess.</sc-if>
+          </p>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#8a8474">Chrome MV3 · Web Speech · Groq</div>
+        </div>
+        <div style="border:1px solid #ddd6c8;border-radius:14px;padding:16px;background:#f6f4ec;transition:box-shadow .3s,border-color .3s;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%" style-hover="box-shadow:0 18px 40px rgba(34,32,27,.12);border-color:var(--accent)">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="shot-minishell" shape="rounded" radius="8" placeholder="minishell — drop a screenshot" hint-size="100%,200px" style="width:100%;height:200px;display:block"></x-import>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-top:16px;flex-wrap:wrap">
+            <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;font-weight:600;color:var(--accent)">05</span>
+            <span style="font-size:22px;letter-spacing:-.01em">minishell</span>
+            <a href="https://github.com/TsRun/minishell" target="_blank" rel="noopener" style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#22201b;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--accent);margin-left:auto">code ↗</a>
+          </div>
+          <p style="font-style:italic;font-size:15px;line-height:1.6;color:#55503f;margin:8px 0 12px">
+            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A small Bash rebuilt from scratch in C — parsing, pipes, signals, builtins, and not a byte leaked. With Adrien Mori.</sc-if>
+            <sc-if value="{{ fr }}">Un petit Bash réécrit de zéro en C — parsing, pipes, signaux, builtins, sans un octet de fuite. Avec Adrien Mori.</sc-if>
+          </p>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#8a8474">C · syscalls · École 42</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ABOUT ======================= -->
+  <section id="about" data-screen-label="About" style="padding:110px 28px;scroll-margin-top:40px">
+    <div style="max-width:1240px;margin:0 auto;display:flex;gap:64px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:0 1 380px;min-width:280px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="portrait" shape="rounded" radius="18" placeholder="drop a portrait here" hint-size="100%,460px" style="width:100%;height:460px;display:block"></x-import>
+        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.1em;color:#a49c8a;margin-top:12px">mathis serrier — france</div>
+      </div>
+      <div style="flex:1 1 440px;min-width:300px">
+        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">About</sc-if><sc-if value="{{ fr }}">À propos</sc-if>
+        </div>
+        <h2 style="font-weight:400;font-size:clamp(34px,4.4vw,58px);line-height:1.08;letter-spacing:-.02em;margin:20px 0 26px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Full-stack, <em style="font-style:italic;color:var(--accent)">end to end</em>.</sc-if>
+          <sc-if value="{{ fr }}">Full-stack, <em style="font-style:italic;color:var(--accent)">de bout en bout</em>.</sc-if>
+        </h2>
+        <p style="font-size:17.5px;line-height:1.75;color:#55503f;margin:0 0 20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">I like owning the whole stack — Python day to day, a Rust core or a typed React front when the tool calls for it, and the design in between. I cut my teeth at École 42, in C and C++: memory, processes, a shell rebuilt from scratch. Lately it's agentic tooling — queues, classifiers and specialised agents that turn plain-English intent into working software.</sc-if>
+          <sc-if value="{{ fr }}">J'aime posséder toute la pile — Python au quotidien, un cœur Rust ou un front React typé quand l'outil le demande, et le design entre les deux. J'ai fait mes armes à l'École 42, en C et C++ : la mémoire, les processus, un shell réécrit de zéro. Ces temps-ci : l'outillage agentique — des files, des classifieurs et des agents qui transforment une intention en logiciel qui tourne.</sc-if>
+        </p>
+        <p style="font-size:17.5px;line-height:1.75;color:#55503f;margin:0 0 30px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">I care about calm interfaces, warm typography and software that respects your attention. This site is set in Newsreader and Iosevka — the same pair Foreman ships with.</sc-if>
+          <sc-if value="{{ fr }}">J'aime les interfaces calmes, la typographie chaleureuse et les logiciels qui respectent l'attention. Ce site est composé en Newsreader et Iosevka — la même paire que Foreman embarque.</sc-if>
+        </p>
+        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;line-height:2.2;color:#22201b;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+          <div><span style="color:var(--accent)">→</span> Python · C++/C · TypeScript · Rust</div>
+          <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Trained at École 42</sc-if><sc-if value="{{ fr }}">Formé à l'École 42</sc-if></div>
+          <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Desktop apps — Tauri 2 &amp; Electron</sc-if><sc-if value="{{ fr }}">Apps de bureau — Tauri 2 &amp; Electron</sc-if></div>
+          <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Based in France</sc-if><sc-if value="{{ fr }}">Basé en France</sc-if></div>
+          <div><span style="color:var(--accent)">→</span> <a href="https://github.com/TsRun" target="_blank" rel="noopener" style="color:#22201b;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--accent)">github.com/TsRun ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= STACK ======================= -->
+  <section id="stack" data-screen-label="Stack" style="padding:110px 28px;border-top:1px solid #ddd6c8;scroll-margin-top:40px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">Stack</div>
+      <h2 style="font-weight:400;font-size:clamp(34px,4.4vw,58px);letter-spacing:-.02em;margin:20px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Tools I reach for.</sc-if>
+        <sc-if value="{{ fr }}">Mes outils de prédilection.</sc-if>
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:#ddd6c8;border:1px solid #ddd6c8;border-radius:14px;overflow:hidden;margin-top:48px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 40%">
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Python</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">the daily driver</sc-if><sc-if value="{{ fr }}">l'outil du quotidien</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">C++ / C</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">close to the metal — since 42</sc-if><sc-if value="{{ fr }}">près du métal — depuis 42</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">TypeScript</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">typed end to end</sc-if><sc-if value="{{ fr }}">typé de bout en bout</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Rust</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">the heavy lifting</sc-if><sc-if value="{{ fr }}">le gros œuvre</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">React 18</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">calm UI, plain CSS</sc-if><sc-if value="{{ fr }}">UI calme, CSS simple</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Vue 3</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Savana's front end</sc-if><sc-if value="{{ fr }}">le front de Savana</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Tauri 2 · Electron</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">desktop, two ways</sc-if><sc-if value="{{ fr }}">le desktop, deux façons</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Node · Express</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">servers &amp; proxies</sc-if><sc-if value="{{ fr }}">serveurs &amp; proxys</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">SQLite</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">one honest file</sc-if><sc-if value="{{ fr }}">un seul fichier honnête</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Claude · Groq</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">agents, classifiers, NLU</sc-if><sc-if value="{{ fr }}">agents, classifieurs, NLU</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Web Speech API</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">hands-free interfaces</sc-if><sc-if value="{{ fr }}">des interfaces mains libres</sc-if></div>
+        </div>
+        <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Git</div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">read, parsed, respected</sc-if><sc-if value="{{ fr }}">lu, parsé, respecté</sc-if></div>
+        </div>
+      </div>
+      <div style="margin-top:56px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#8a8474">
+          <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">TsRun/foreman — repo languages</sc-if>
+          <sc-if value="{{ fr }}">TsRun/foreman — langages du repo</sc-if>
+        </div>
+        <div style="display:flex;height:12px;border-radius:999px;overflow:hidden;margin-top:14px">
+          <div style="width:45.5%;background:var(--accent)"></div>
+          <div style="width:43.3%;background:#22201b"></div>
+          <div style="width:10.8%;background:#b9b2a2"></div>
+          <div style="width:0.4%;background:#d8d2c4"></div>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:12px;font-family:'Iosevka',ui-monospace,monospace;font-size:11px;color:#55503f">
+          <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent);display:inline-block"></span>TypeScript 45.5%</span>
+          <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:#22201b;display:inline-block"></span>Rust 43.3%</span>
+          <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:#b9b2a2;display:inline-block"></span>CSS 10.8%</span>
+          <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:#d8d2c4;display:inline-block"></span>HTML 0.4%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= CONTACT ======================= -->
+  <section id="contact" data-screen-label="Contact" style="background:var(--accent);color:#2a1a12;padding:130px 28px 0;scroll-margin-top:40px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(42,26,18,.65);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">Contact</div>
+      <h2 style="font-weight:400;font-style:italic;font-size:clamp(46px,7.4vw,102px);line-height:1.02;letter-spacing:-.02em;margin:24px 0 44px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
+        <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Let's build something.</sc-if>
+        <sc-if value="{{ fr }}">Construisons quelque chose.</sc-if>
+      </h2>
+      <div style="animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
+        <a href="mailto:mathis.serrier@gmail.com" style="font-family:'Iosevka',ui-monospace,monospace;font-size:clamp(16px,2.6vw,26px);font-weight:600;color:#2a1a12;text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px;transition:color .25s" style-hover="color:#faf9f5">mathis.serrier@gmail.com</a>
+        <div style="display:flex;gap:28px;margin-top:30px;font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;letter-spacing:.06em;flex-wrap:wrap">
+          <a href="https://github.com/TsRun" target="_blank" rel="noopener" style="color:#2a1a12;text-decoration:none;border-bottom:1px solid rgba(42,26,18,.4);padding-bottom:2px;transition:color .25s" style-hover="color:#faf9f5">github.com/TsRun ↗</a>
+          <span style="color:rgba(42,26,18,.65)"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">CV — on request</sc-if><sc-if value="{{ fr }}">CV — sur demande</sc-if></span>
+        </div>
+      </div>
+      <div style="margin-top:100px;border-top:1px solid rgba(42,26,18,.25);padding:22px 0 28px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:'Iosevka',ui-monospace,monospace;font-size:11px;color:rgba(42,26,18,.7)">
+        <span>© 2026 Mathis Serrier</span>
+        <span>Newsreader &amp; Iosevka</span>
+        <a href="#top" style="color:#2a1a12;text-decoration:none"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Back to top ↑</sc-if><sc-if value="{{ fr }}">Haut de page ↑</sc-if></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- cursor ring -->
+  <div ref="{{ cursorRef }}" aria-hidden="true" style="position:fixed;top:-15px;left:-15px;width:30px;height:30px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;opacity:0;will-change:transform"></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#d97757&quot;,&quot;options&quot;:[&quot;#d97757&quot;,&quot;#c2884b&quot;,&quot;#7d9b76&quot;,&quot;#6a89b7&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;fr&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;\&quot;en\&quot; | \&quot;fr\&quot;&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = {
+    lang: null, goal: '', tasks: null, selectedId: 1, nextId: 4,
+    fdfZoom: 12, fdfRelief: 42, fdfMapKey: 'pyra', fdfProj: 'iso', fdfHeat: false,
+    fmTab: 'run', fmRouted: null, fmRoom: null,
+    savFlipped: null, savToasts: [], savLoading: null, savConnected: null,
+  };
+
+  /* ---------- Foreman mock ---------- */
+
+  pools() {
+    return {
+      Backend: [
+        '⏺ Reading src-tauri/src/executor.rs',
+        '⏺ Plan — wire cost events into the strip',
+        '⏺ Editing src-tauri/src/queue.rs',
+        '⏺ Editing src/components/workspace/StatusStrip.tsx',
+        '✓ 3 files changed',
+        '⏺ cargo test — 11 passed',
+        '✓ Done · 14.2k tokens · $0.09',
+      ],
+      Frontend: [
+        '⏺ Reading src/components/common/SettingsModal.tsx',
+        '⏺ Plan — tokenize colors, add data-theme variants',
+        '⏺ Editing src/index.css',
+        '⏺ Editing src/components/common/SettingsModal.tsx',
+        '✓ 2 files changed',
+        '⏺ vitest — 14 passed',
+        '✓ Done · 9.8k tokens · $0.06',
+      ],
+      Tests: [
+        '⏺ Reading src/components/workspace/TaskListPane.tsx',
+        '→ Room — asked Backend for a fixture',
+        '⏺ Editing vitest.setup.ts',
+        '✓ 1 file changed',
+        '⏺ vitest — stable across 20 runs',
+        '✓ Done · 6.1k tokens · $0.04',
+      ],
+      General: [
+        '⏺ Reading the project…',
+        '⏺ Plan — 2 steps',
+        '⏺ Editing files…',
+        '✓ 2 files changed',
+        '⏺ Checks passed',
+        '✓ Done · 8.4k tokens · $0.05',
+      ],
+    };
+  }
+
+  seed() {
+    const p = this.pools();
+    return [
+      { id: 1, title: 'Stream token costs to the status strip', agent: 'Backend', provider: 'claude', cx: 'Low', status: 'running', log: p.Backend.slice(0, 2), pending: p.Backend.slice(2) },
+      { id: 2, title: 'Dark theme for the settings modal', agent: 'Frontend', provider: 'codex', cx: 'Medium', status: 'waiting', log: [], pending: p.Frontend.slice() },
+      { id: 3, title: 'Fix the flaky sidebar test', agent: 'Tests', provider: 'gemini', cx: 'Low', status: 'done', log: p.Tests.slice(), pending: [] },
+    ];
+  }
+
+  getTasks() { return this.state.tasks || this.seed(); }
+
+  tick() {
+    const tasks = this.getTasks();
+    if (!tasks.some((t) => t.status === 'running')) return;
+    const reports = [];
+    const next = tasks.map((t) => {
+      if (t.status !== 'running') return t;
+      if (t.pending.length === 0) return Object.assign({}, t, { status: 'done' });
+      const n = Object.assign({}, t, { log: t.log.concat(t.pending[0]), pending: t.pending.slice(1) });
+      if (n.pending.length === 0) {
+        n.status = 'done';
+        reports.push({ p: n.provider, name: n.agent, kind: 'report', to: 'Foreman', body: 'Done — checks passed, changes are on the branch.', time: 'now' });
+      }
+      return n;
+    });
+    this.setState({ tasks: next, fmRoom: reports.length ? this.getRoom().concat(reports) : this.state.fmRoom });
+  }
+
+  classify(title) {
+    const s = title.toLowerCase();
+    let agent = 'General';
+    if (/(test|spec|flaky|vitest|cargo test)/.test(s)) agent = 'Tests';
+    else if (/(ui|css|theme|button|modal|front|style|design|component|anim)/.test(s)) agent = 'Frontend';
+    else if (/(db|sql|api|rust|server|back|queue|token|executor|provider)/.test(s)) agent = 'Backend';
+    let cx = 'Medium';
+    if (/(refactor|migrate|rewrite|redesign|v2|overhaul)/.test(s) || title.length > 90) cx = 'High';
+    else if (title.length < 42) cx = 'Low';
+    const provider = { Frontend: 'codex', Backend: 'claude', Tests: 'gemini', General: 'claude' }[agent];
+    return { agent: agent, cx: cx, provider: provider };
+  }
+
+  addGoal() {
+    const title = this.state.goal.trim();
+    if (!title) return;
+    const c = this.classify(title);
+    const p = this.pools();
+    const task = {
+      id: this.state.nextId, title: title, agent: c.agent, provider: c.provider, cx: c.cx,
+      status: c.cx === 'Low' ? 'running' : 'waiting', log: [], pending: (p[c.agent] || p.General).slice(),
+    };
+    const msg = { p: 'foreman', name: 'Foreman', kind: 'delegate', to: c.agent, body: title, time: 'now' };
+    this.setState({
+      tasks: this.getTasks().concat(task), selectedId: task.id, nextId: this.state.nextId + 1,
+      goal: '', fmTab: 'run', fmRouted: c.agent, fmRoom: this.getRoom().concat(msg),
+    });
+    if (this.fmRoutedT) clearTimeout(this.fmRoutedT);
+    this.fmRoutedT = setTimeout(() => this.setState({ fmRouted: null }), 2600);
+  }
+
+  runTask(id, e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    this.setState({
+      tasks: this.getTasks().map((t) => (t.id === id && t.status === 'waiting' ? Object.assign({}, t, { status: 'running' }) : t)),
+      selectedId: id, fmTab: 'run',
+    });
+  }
+
+  /* ---------- Fil de Fer canvas ---------- */
+
+  accentRgb() {
+    const hex = (this.props.accent || '#d97757').replace('#', '');
+    const n = parseInt(hex.length === 3 ? hex.split('').map((c) => c + c).join('') : hex, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  fdfGrid() {
+    // Three real 42 FdF heightmaps (pbondoer/42-FdF), the same files the C
+    // renderer parses. Normalised to 0…1 so the relief slider sculpts genuine
+    // terrain and height drives the colour ramp.
+    const key = this.state.fdfMapKey || 'pyra';
+    this._fdfGrids = this._fdfGrids || {};
+    if (this._fdfGrids[key]) return this._fdfGrids[key];
+    let raw;
+    if (key === '42') {
+      // 42.fdf — 11×19, the subject's logo map ('1' = height 10)
+      raw = [
+        '0000000000000000000',
+        '0000000000000000000',
+        '0011001100011111000',
+        '0011001100000001100',
+        '0011001100000001100',
+        '0011111100001111000',
+        '0001111100011000000',
+        '0000001100011000000',
+        '0000001100011111100',
+        '0000000000000000000',
+        '0000000000000000000',
+      ].map((r) => r.split('').map((c) => (c === '1' ? 10 : 0)));
+    } else if (key === 'pylone') {
+      // pylone.fdf — 47×48 stepped ziggurat; each char encodes a height -7…7
+      // (charCode − 104). The original file has one 47-wide row → padEnd fixes it.
+      raw = [
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhh',
+        'hhhhijjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjihhhh',
+        'hhhhijkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkjihhhh',
+        'hhhhijkllllllllllllllllllllllllllllllllllkjihhhh',
+        'hhhhijklmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlkjihhhh',
+        'hhhhijklmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnmlkjihhhh',
+        'hhhhijklmnoooooooooooooooooooooooooooonmlkjihhhh',
+        'hhhhijklmnonnnnnnnnnnnnnnnnnnnnnnnnnnonmlkjihhhh',
+        'hhhhijklmnonmmmmmmmmmmmmmmmmmmmmmmmmnonmlkjihhhh',
+        'hhhhijklmnonmllllllllllllllllllllllmnonmlkjihhhh',
+        'hhhhijklmnonmlkkkkkkkkkkkkkkkkkkkklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjjjjjjjjjjjjjjjjjjklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiiiiiiiiiiiiiiiijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiggggggggggggggijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfgggggffffffgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeeeeeeeeeefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeddddddddefgijklmnonmlkjihhh',
+        'hhhhijklmnonmlkjigfedccccccdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbbbbcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbaabcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbaabcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbbbbcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedccccccdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeddddddddefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeeeeeeeeeefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigffffffffffffgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiggggggggggggggijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiiiiiiiiiiiiiiiijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjjjjjjjjjjjjjjjjjjklmnonmlkjihhhh',
+        'hhhhijklmnonmlkkkkkkkkkkkkkkkkkkkklmnonmlkjihhhh',
+        'hhhhijklmnonmllllllllllllllllllllllmnonmlkjihhhh',
+        'hhhhijklmnonmmmmmmmmmmmmmmmmmmmmmmmmnonmlkjihhhh',
+        'hhhhijklmnonnnnnnnnnnnnnnnnnnnnnnnnnnonmlkjihhhh',
+        'hhhhijklmnoooooooooooooooooooooooooooonmlkjihhhh',
+        'hhhhijklmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnmlkjihhhh',
+        'hhhhijklmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlkjihhhh',
+        'hhhhijkllllllllllllllllllllllllllllllllllkjihhhh',
+        'hhhhijkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkjihhhh',
+        'hhhhijjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjihhhh',
+        'hhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+      ].map((r) => r.padEnd(48, 'h').split('').map((c) => c.charCodeAt(0) - 104));
+    } else {
+      // pyra.fdf — 27×27 pyramid terrain (elevations -13 … +13)
+      raw = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [-3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -2, -1, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [-4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [-5, -5, -5, -5, -5, -5, -5, -5, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+      [-6, -6, -6, -6, -6, -6, -6, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6],
+      [-7, -7, -7, -7, -7, -7, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7],
+      [-8, -8, -8, -8, -8, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8],
+      [-9, -9, -9, -9, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9],
+      [-10, -10, -10, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10],
+      [-11, -11, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 11],
+      [-12, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 11],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      ];
+    }
+    let min = Infinity, max = -Infinity;
+    for (let y = 0; y < raw.length; y++) for (let x = 0; x < raw[y].length; x++) { const v = raw[y][x]; if (v < min) min = v; if (v > max) max = v; }
+    const span = (max - min) || 1;
+    this._fdfGrids[key] = raw.map((row) => row.map((v) => (v - min) / span));
+    return this._fdfGrids[key];
+  }
+
+  initFdf(el) {
+    if (!el || this.fdfEl === el) return;
+    if (this.fdfRaf) cancelAnimationFrame(this.fdfRaf);
+    if (this.fdfObs) this.fdfObs.disconnect();
+    this.fdfEl = el;
+    this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfPhase = 0; this.fdfAuto = true; this.fdfVis = true; this.fdfDrag = null;
+    this.fdfMix = 0; this.fdfPtrs = new Map(); this.fdfPinch = null;
+    el.style.cursor = 'grab';
+    const pinchDist = () => {
+      const p = Array.from(this.fdfPtrs.values());
+      return p.length < 2 ? 0 : Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    };
+    el.addEventListener('pointerdown', (e) => {
+      this.fdfAuto = false;
+      if (this.fdfIdle) clearTimeout(this.fdfIdle);
+      this.fdfPtrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (this.fdfPtrs.size === 2) { this.fdfDrag = null; this.fdfPinch = pinchDist(); }
+      else this.fdfDrag = { x: e.clientX, y: e.clientY };
+      try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      el.style.cursor = 'grabbing';
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (!this.fdfPtrs.has(e.pointerId)) return;
+      this.fdfPtrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (this.fdfPtrs.size >= 2) {
+        const d = pinchDist();
+        if (this.fdfPinch) this.zoomFdf((d / this.fdfPinch - 1) * 14);
+        this.fdfPinch = d;
+        return;
+      }
+      if (!this.fdfDrag) return;
+      this.fdfA += (e.clientX - this.fdfDrag.x) * 0.008;
+      this.fdfTilt = Math.min(1.1, Math.max(0.22, this.fdfTilt + (e.clientY - this.fdfDrag.y) * 0.004));
+      this.fdfDrag = { x: e.clientX, y: e.clientY };
+    });
+    const up = (e) => {
+      if (!this.fdfPtrs.has(e.pointerId)) return;
+      this.fdfPtrs.delete(e.pointerId);
+      this.fdfPinch = null;
+      if (this.fdfPtrs.size === 1) {
+        const p = Array.from(this.fdfPtrs.values())[0];
+        this.fdfDrag = { x: p.x, y: p.y };
+        return;
+      }
+      this.fdfDrag = null;
+      if (this.fdfPtrs.size) return;
+      el.style.cursor = 'grab';
+      if (this.fdfIdle) clearTimeout(this.fdfIdle);
+      this.fdfIdle = setTimeout(() => { this.fdfAuto = true; }, 2600);
+    };
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      this.zoomFdf(e.deltaY * -0.015);
+    }, { passive: false });
+    if (typeof IntersectionObserver !== 'undefined') {
+      this.fdfObs = new IntersectionObserver((entries) => { this.fdfVis = !!(entries[0] && entries[0].isIntersecting); });
+      this.fdfObs.observe(el);
+    }
+    const loop = () => {
+      if (this.fdfVis && this.fdfEl && this.fdfEl.isConnected) {
+        if (this.fdfAuto && !this.fdfDrag) this.fdfA += 0.0035;
+        this.fdfPhase += 0.02;
+        this.drawFdf();
+      }
+      this.fdfRaf = requestAnimationFrame(loop);
+    };
+    this.fdfRaf = requestAnimationFrame(loop);
+  }
+
+  zoomFdf(delta) {
+    const z = Math.min(24, Math.max(6, (this.state.fdfZoom || 12) + delta));
+    const snapped = Math.round(z * 2) / 2;
+    if (snapped !== this.state.fdfZoom) this.setState({ fdfZoom: snapped });
+  }
+
+  fdfChip(on) {
+    return {
+      fontFamily: "'Iosevka',ui-monospace,monospace", fontSize: '10px', fontWeight: '600',
+      letterSpacing: '.06em', border: '1px solid ' + (on ? '#22201b' : '#b9b2a2'),
+      borderRadius: '999px', padding: '4px 11px', background: on ? '#22201b' : 'transparent',
+      color: on ? '#f1eee4' : '#55503f', cursor: 'pointer', transition: 'all .2s',
+    };
+  }
+
+  drawFdf() {
+    const el = this.fdfEl;
+    if (!el) return;
+    const w = el.clientWidth, h = el.clientHeight;
+    if (!w || !h) return;
+    const dpr = window.devicePixelRatio || 1;
+    if (el.width !== Math.round(w * dpr) || el.height !== Math.round(h * dpr)) {
+      el.width = Math.round(w * dpr);
+      el.height = Math.round(h * dpr);
+    }
+    const ctx = el.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const grid = this.fdfGrid();
+    const rows = grid.length, cols = grid[0].length;
+    const cx = (cols - 1) / 2, cy = (rows - 1) / 2;
+    const fit = 27 / Math.max(rows, cols);
+    const zoom = (this.state.fdfZoom || 22) * fit * Math.min(1.3, w / 640);
+    const relief = this.state.fdfRelief != null ? this.state.fdfRelief : 38;
+    const ca = Math.cos(this.fdfA), sa = Math.sin(this.fdfA);
+    const tilt = this.fdfTilt, ph = this.fdfPhase;
+    const target = this.state.fdfProj === 'top' ? 1 : 0;
+    this.fdfMix = (this.fdfMix || 0) + (target - (this.fdfMix || 0)) * 0.08;
+    if (Math.abs(target - this.fdfMix) < 0.002) this.fdfMix = target;
+    const m = this.fdfMix;
+    const heat = !!this.state.fdfHeat;
+    const ac = this.accentRgb();
+    const px = [], py = [], pz = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const rx = (x - cx) * ca - (y - cy) * sa;
+        const ry = (x - cx) * sa + (y - cy) * ca;
+        const z = grid[y][x] * relief + Math.sin(x * 0.7 + ph) * Math.sin(y * 0.7 + ph) * 2.4;
+        const ix = (rx - ry) * 0.866 * zoom;
+        const iy = relief * 0.3 + (rx + ry) * 0.5 * zoom * tilt - z;
+        px.push(w / 2 + ix + (rx * zoom * 0.92 - ix) * m);
+        py.push(h / 2 + iy + (ry * zoom * 0.92 - iy) * m);
+        pz.push(grid[y][x]);
+      }
+    }
+    ctx.lineWidth = 1;
+    const seg = (i, j) => {
+      const t = (pz[i] + pz[j]) / 2;
+      ctx.strokeStyle = heat
+        ? 'hsla(' + Math.round(215 - 195 * t) + ',85%,' + Math.round(42 + 22 * t) + '%,' + (0.45 + 0.55 * t).toFixed(2) + ')'
+        : t > 0.01
+          ? 'rgba(' + ac[0] + ',' + ac[1] + ',' + ac[2] + ',' + (0.35 + 0.55 * t).toFixed(2) + ')'
+          : 'rgba(241,238,228,0.26)';
+      ctx.beginPath();
+      ctx.moveTo(px[i], py[i]);
+      ctx.lineTo(px[j], py[j]);
+      ctx.stroke();
+    };
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const i = y * cols + x;
+        if (x < cols - 1) seg(i, i + 1);
+        if (y < rows - 1) seg(i, i + cols);
+      }
+    }
+  }
+
+  /* ---------- Savana replica ---------- */
+
+  savData() {
+    // Shaped after Savana's real model (TsRun/Savana): each account is a "smurf"
+    // with a Riot ID (name#tag), soloq tier/division/LP, level, main role and best
+    // champions. rankFile/roleFile map to the app's real asset filenames.
+    return [
+      { id: 1, name: 'Midlane Diff', tag: '#EUW', tier: 'DIAMOND', div: 'III', rankFile: 'diamond', lp: 63,
+        wins: 148, losses: 129, wr: 54, level: 214, roleFile: 'middle', rolePct: 76,
+        k: 8.1, d: 5.0, a: 9.9, kda: 3.6, uname: 'mid.diff.main',
+        mains: [{ c: 'Ahri', wr: 63 }, { c: 'Syndra', wr: 58 }, { c: 'Hwei', wr: 52 }] },
+      { id: 2, name: 'Kayn Enjoyer', tag: '#KAYN', tier: 'EMERALD', div: 'II', rankFile: 'emerald', lp: 74,
+        wins: 96, losses: 71, wr: 61, level: 88, roleFile: 'jungle', rolePct: 83,
+        k: 9.4, d: 4.2, a: 7.8, kda: 4.1, uname: 'kayn.smurf.02',
+        mains: [{ c: 'Kayn', wr: 66 }, { c: 'Viego', wr: 60 }, { c: 'Briar', wr: 55 }] },
+      { id: 3, name: 'ward diff', tag: '#0000', tier: 'PLATINUM', div: 'IV', rankFile: 'platinum', lp: 31,
+        wins: 52, losses: 49, wr: 51, level: 143, roleFile: 'support', rolePct: 71,
+        k: 2.1, d: 4.6, a: 11.7, kda: 3.0, uname: 'warddiff.acc',
+        mains: [{ c: 'Thresh', wr: 55 }, { c: 'Rakan', wr: 57 }, { c: 'Renata', wr: 50 }] },
+      { id: 4, name: 'ADC Andy', tag: '#EUW', tier: 'GOLD', div: 'I', rankFile: 'gold', lp: 12,
+        wins: 38, losses: 41, wr: 48, level: 67, roleFile: 'bottom', rolePct: 68,
+        k: 6.8, d: 5.9, a: 9.1, kda: 2.7, uname: 'adc.andy.eu',
+        mains: [{ c: 'Jinx', wr: 53 }, { c: 'Caitlyn', wr: 46 }, { c: 'Smolder', wr: 50 }] },
+    ];
+  }
+
+  savLoad(id, e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (this.state.savLoading != null) return;
+    this.setState({ savLoading: id, savToasts: [{ text: 'Recovering session...', k: 'info' }] });
+    this.savT1 = setTimeout(() => {
+      this.setState({
+        savLoading: null, savConnected: id,
+        savToasts: [{ text: 'Recovering session...', k: 'info' }, { text: 'League is starting', k: 'success' }],
+      });
+    }, 1200);
+    this.savT2 = setTimeout(() => this.setState({ savToasts: [] }), 3800);
+  }
+
+  /* ---------- Foreman replica helpers ---------- */
+
+  prov(p) {
+    return {
+      claude: { L: 'C', c: '#c96442', t: '#f3e3db' },
+      codex: { L: 'X', c: '#46443f', t: '#e7e5dd' },
+      gemini: { L: 'G', c: '#5b6ea8', t: '#e2e6f1' },
+      aider: { L: 'A', c: '#6e8d45', t: '#e6eed8' },
+      foreman: { L: 'F', c: '#c96442', t: '#f3e3db' },
+    }[p] || { L: '?', c: '#5e5d59', t: '#e8e6dc' };
+  }
+
+  avChip(p, size) {
+    const pr = this.prov(p);
+    return {
+      width: size + 'px', height: size + 'px', borderRadius: Math.round(size * 0.28) + 'px',
+      background: pr.t, color: pr.c, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: "'Iosevka',ui-monospace,monospace", fontSize: Math.round(size * 0.42) + 'px', fontWeight: 600, flex: 'none',
+    };
+  }
+
+  badge(cx) {
+    const m = {
+      Low: { c: '#6e8d45', b: 'rgba(110,141,69,.4)', bg: 'rgba(110,141,69,.12)' },
+      Medium: { c: '#b58238', b: 'rgba(181,130,56,.42)', bg: 'rgba(181,130,56,.13)' },
+      High: { c: '#aa4434', b: 'rgba(170,68,52,.42)', bg: 'rgba(170,68,52,.12)' },
+    }[cx] || { c: '#5e5d59', b: '#d1cfc5', bg: 'transparent' };
+    return {
+      fontSize: '10px', fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase',
+      padding: '2px 7px', borderRadius: '5px', border: '1px solid ' + m.b, background: m.bg, color: m.c,
+      flex: 'none', marginTop: '1px', whiteSpace: 'nowrap',
+    };
+  }
+
+  pillFor(status) {
+    const base = {
+      display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '10.5px', fontWeight: 600,
+      letterSpacing: '.02em', padding: '2px 8px', borderRadius: '11px', border: '1px solid #d1cfc5',
+      whiteSpace: 'nowrap', background: '#faf9f5', color: '#5e5d59', flex: 'none',
+    };
+    if (status === 'running') return { style: Object.assign(base, { background: '#141413', color: '#faf9f5', borderColor: '#141413' }), text: 'running', spin: true, icon: '' };
+    if (status === 'done') return { style: Object.assign(base, { color: '#6e8d45', borderColor: 'rgba(110,141,69,.42)', background: 'rgba(110,141,69,.1)' }), text: 'done', spin: false, icon: '✓' };
+    return { style: Object.assign(base, { color: '#87867f' }), text: 'ready', spin: false, icon: '' };
+  }
+
+  rtab(active) {
+    return {
+      border: 'none', background: 'none', fontSize: '12px', padding: '7px 11px', cursor: 'pointer', fontFamily: 'inherit',
+      borderBottom: '2px solid ' + (active ? '#141413' : 'transparent'),
+      color: active ? '#141413' : '#5e5d59', fontWeight: active ? 600 : 400,
+    };
+  }
+
+  changesFor(agent) {
+    return {
+      Backend: [{ code: 'M', path: 'src-tauri/src/queue.rs' }, { code: 'M', path: 'src-tauri/src/executor.rs' }, { code: 'M', path: 'src/components/workspace/StatusStrip.tsx' }],
+      Frontend: [{ code: 'M', path: 'src/index.css' }, { code: 'M', path: 'src/components/common/SettingsModal.tsx' }],
+      Tests: [{ code: 'M', path: 'vitest.setup.ts' }, { code: 'A', path: 'fixtures/queue_two.json' }],
+      General: [{ code: 'M', path: 'src/App.tsx' }, { code: 'M', path: 'src/index.css' }],
+    }[agent] || [];
+  }
+
+  seedRoom() {
+    return [
+      { p: 'foreman', name: 'Foreman', kind: 'delegate', to: 'Backend', body: 'Stream token costs to the status strip — low complexity, run it.', time: '2m' },
+      { p: 'gemini', name: 'Tests', kind: 'ask', to: 'Backend', body: 'Need a fixture with two queued runs for the flaky sidebar test.', time: '2m' },
+      { p: 'claude', name: 'Backend', kind: 'answer', to: 'Tests', body: 'Pushed fixtures/queue_two.json — build it with mock_queue().', time: '1m' },
+      { p: 'gemini', name: 'Tests', kind: 'report', to: 'Foreman', body: 'Sidebar test stable across 20 runs. Closing it out.', time: 'now' },
+    ];
+  }
+
+  getRoom() { return this.state.fmRoom || this.seedRoom(); }
+
+  initZoom(el, w) {
+    if (!el || el.__zw === w) return;
+    el.__zw = w;
+    const apply = () => {
+      const p = el.parentElement;
+      if (!p || !p.clientWidth) return;
+      el.style.zoom = String(Math.min(1, p.clientWidth / w));
+    };
+    apply();
+    if (typeof ResizeObserver !== 'undefined' && el.parentElement) {
+      const ro = new ResizeObserver(apply);
+      ro.observe(el.parentElement);
+      this._ros = (this._ros || []).concat(ro);
+    }
+  }
+
+  /* ---------- lifecycle ---------- */
+
+  componentDidMount() {
+    this.applyAccent();
+    if (!this.state.tasks) this.setState({ tasks: this.seed() });
+    this.timer = setInterval(() => this.tick(), 900);
+    if (typeof window !== 'undefined' && window.matchMedia && matchMedia('(pointer:fine)').matches) {
+      this.mx = -100; this.my = -100; this.px2 = -100; this.py2 = -100; this.sc = 1; this.hov = false; this.shown = false;
+      this.onMove = (e) => { this.mx = e.clientX; this.my = e.clientY; this.shown = true; };
+      this.onOver = (e) => { this.hov = !!(e.target && e.target.closest && e.target.closest('a,button,input,canvas')); };
+      window.addEventListener('mousemove', this.onMove, { passive: true });
+      window.addEventListener('mouseover', this.onOver, { passive: true });
+      const loop = () => {
+        this.px2 += (this.mx - this.px2) * 0.16;
+        this.py2 += (this.my - this.py2) * 0.16;
+        const target = this.hov ? 1.9 : 1;
+        this.sc += (target - this.sc) * 0.2;
+        if (this.cEl) {
+          this.cEl.style.transform = 'translate(' + this.px2 + 'px,' + this.py2 + 'px) scale(' + this.sc.toFixed(3) + ')';
+          this.cEl.style.opacity = this.shown ? '1' : '0';
+        }
+        this.cRaf = requestAnimationFrame(loop);
+      };
+      this.cRaf = requestAnimationFrame(loop);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+    if (this.cRaf) cancelAnimationFrame(this.cRaf);
+    if (this.fdfRaf) cancelAnimationFrame(this.fdfRaf);
+    if (this.fdfObs) this.fdfObs.disconnect();
+    if (this.fdfIdle) clearTimeout(this.fdfIdle);
+    if (this.savT1) clearTimeout(this.savT1);
+    if (this.savT2) clearTimeout(this.savT2);
+    if (this.fmRoutedT) clearTimeout(this.fmRoutedT);
+    (this._ros || []).forEach((r) => r.disconnect());
+    if (this.onMove) window.removeEventListener('mousemove', this.onMove);
+    if (this.onOver) window.removeEventListener('mouseover', this.onOver);
+  }
+
+  componentDidUpdate() {
+    this.applyAccent();
+    if (this.logEl) this.logEl.scrollTop = this.logEl.scrollHeight;
+  }
+
+  applyAccent() {
+    if (typeof document !== 'undefined') {
+      document.body.style.setProperty('--accent', this.props.accent || '#d97757');
+    }
+  }
+
+  /* ---------- render ---------- */
+
+  renderVals() {
+    const lang = this.state.lang || this.props.defaultLang || 'en';
+    const en = lang === 'en';
+    const mono = "'Iosevka', ui-monospace, 'SF Mono', Menlo, monospace";
+    const tasks = this.getTasks();
+
+    /* ---- Foreman replica vals ---- */
+
+    const fmTasks = tasks.map((t) => {
+      const selected = t.id === this.state.selectedId;
+      const pill = this.pillFor(t.status);
+      return {
+        title: t.title, agent: t.agent, cx: t.cx,
+        select: () => this.setState({ selectedId: t.id, fmTab: 'run' }),
+        cardStyle: {
+          border: '1px solid ' + (selected ? '#141413' : '#f0eee6'),
+          borderLeft: '2px solid ' + (selected ? '#141413' : 'transparent'),
+          borderRadius: '9px', background: selected ? '#ece7d8' : '#f5f4ed',
+          padding: '10px 11px', cursor: 'pointer', flex: 'none',
+        },
+        badgeStyle: this.badge(t.cx),
+        avStyle: this.avChip(t.provider, 18),
+        avLetter: this.prov(t.provider).L,
+        pillStyle: pill.style, pillText: pill.text, pillSpin: pill.spin, pillIcon: pill.icon,
+      };
+    });
+
+    const sel = tasks.find((t) => t.id === this.state.selectedId) || tasks[0];
+    const selPill = this.pillFor(sel.status);
+    const tab = this.state.fmTab || 'run';
+    const changes = sel.status === 'done' ? this.changesFor(sel.agent) : [];
+
+    const logLine = (l) => {
+      let st = { display: 'block', color: '#3d3d3a' };
+      if (l.indexOf('✓ Done') === 0) st = { display: 'block', color: '#141413', fontWeight: 600, borderTop: '1px dashed #e8e6dc', marginTop: '5px', paddingTop: '6px' };
+      else if (l.indexOf('⏺') === 0) st = { display: 'block', color: '#141413', fontWeight: 600 };
+      else if (l.indexOf('→') === 0) st = { display: 'block', color: '#87867f' };
+      return { text: l, style: st };
+    };
+    const fmLogLines = sel.log.length
+      ? sel.log.map(logLine)
+      : [{ text: sel.status === 'waiting' ? 'No conversation yet — run this task to start talking to Claude.' : '…', style: { display: 'block', color: '#87867f', fontStyle: 'italic' } }];
+
+    const KIND = {
+      delegate: { label: 'delegates to', c: '#c96442' },
+      ask: { label: 'asks', c: '#b58238' },
+      answer: { label: 'answers', c: '#6e8d45' },
+      report: { label: 'reports to', c: '#5e5d59' },
+      blocked: { label: 'is blocked by', c: '#aa4434' },
+    };
+    const fmRoomMsgs = this.getRoom().map((m) => {
+      const k = KIND[m.kind] || KIND.report;
+      return {
+        name: m.name, recipient: m.to, time: m.time, body: m.body,
+        kindLabel: k.label,
+        kindStyle: { fontSize: '10px', fontWeight: 600, padding: '1.5px 8px', borderRadius: '6px', color: k.c, background: k.c + '21', whiteSpace: 'nowrap' },
+        avStyle: Object.assign(this.avChip(m.p, 30), { boxShadow: '0 0 0 3px #f5f4ed', position: 'relative', zIndex: 1 }),
+        avLetter: this.prov(m.p).L,
+      };
+    });
+    const fmRoomAvs = ['foreman', 'claude', 'codex', 'gemini'].map((p, i) => ({
+      style: Object.assign(this.avChip(p, 25), { marginLeft: i ? '-6px' : '0', boxShadow: '0 0 0 2px #f5f4ed', position: 'relative' }),
+      letter: this.prov(p).L,
+    }));
+
+    const nRunning = tasks.filter((t) => t.status === 'running').length;
+    const nDone = tasks.filter((t) => t.status === 'done').length;
+    const lines = tasks.reduce((n, t) => n + t.log.length, 0);
+    const cents = 6 + lines;
+    const costToday = cents < 100 ? '$0.' + String(cents).padStart(2, '0') : '$' + (cents / 100).toFixed(2);
+
+    const btnBase = {
+      padding: '4px 11px', borderRadius: '999px', border: 0, cursor: 'pointer',
+      fontFamily: mono, fontSize: '10.5px', fontWeight: 600, letterSpacing: '.06em',
+    };
+
+    /* ---- Savana replica vals ---- */
+
+    const accounts = this.savData();
+    const SAV_A = 'https://raw.githubusercontent.com/TsRun/Savana/master/public/assets/';
+    const wrColor = (w) => (w >= 60 ? '#22c55e' : w >= 50 ? '#f59e0b' : '#64748b');
+
+    const savCards = accounts.map((acc) => {
+      const loading = this.state.savLoading === acc.id;
+      const connected = this.state.savConnected === acc.id;
+      return {
+        name: acc.name, tag: acc.tag, level: acc.level,
+        rankImg: SAV_A + 'ranks/' + acc.rankFile + '.png',
+        rankTier: acc.tier + ' ' + acc.div,
+        rankLp: acc.lp + ' LP',
+        wr: acc.wr + '%',
+        wrStyle: { fontSize: '1.125rem', fontWeight: 700, color: wrColor(acc.wr) },
+        games: String(acc.wins + acc.losses),
+        roleImg: SAV_A + 'roles/' + acc.roleFile + '.svg',
+        rolePct: acc.rolePct + '%',
+        kdaK: acc.k.toFixed(1), kdaD: acc.d.toFixed(1), kdaA: acc.a.toFixed(1),
+        kdaRatio: acc.kda.toFixed(2),
+        kdaRatioStyle: {
+          fontSize: '0.75rem', fontWeight: 700, padding: '2px 6px', borderRadius: '4px', background: 'rgba(0,0,0,.2)',
+          color: acc.kda >= 4 ? '#ffd700' : acc.kda >= 3 ? '#22c55e' : acc.kda >= 2 ? '#94a3b8' : '#64748b',
+        },
+        champs: acc.mains.map((m) => ({
+          img: SAV_A + 'champions/' + m.c + '.png',
+          letter: m.c.slice(0, 1),
+          wr: m.wr + '%',
+          wrStyle: { fontSize: '0.6rem', fontWeight: 600, color: wrColor(m.wr) },
+        })),
+        backUser: acc.uname,
+        flip: () => this.setState({ savFlipped: this.state.savFlipped === acc.id ? null : acc.id }),
+        flipInner: {
+          position: 'relative', minHeight: '400px', transformStyle: 'preserve-3d',
+          transition: 'transform .5s cubic-bezier(.23,1,.32,1)',
+          transform: this.state.savFlipped === acc.id ? 'rotateY(180deg)' : 'none',
+        },
+        load: (e) => this.savLoad(acc.id, e),
+        loadStyle: Object.assign({
+          flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          gap: '4px', padding: '10px 8px', borderRadius: '8px', cursor: loading ? 'wait' : 'pointer',
+          fontFamily: 'inherit', transition: 'all .15s',
+        }, connected
+          ? { background: 'rgba(34,197,94,.25)', border: '1px solid rgba(34,197,94,.5)', color: '#22c55e' }
+          : { background: 'linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%)', border: 'none', color: '#fff', opacity: loading ? 0.7 : 1 }),
+        loadLabel: connected ? 'Loaded' : loading ? 'Loading' : 'Load',
+      };
+    });
+
+    const savToasts = this.state.savToasts.map((t) => ({
+      text: t.text,
+      style: {
+        background: '#16161f', border: '1px solid rgba(255,255,255,.06)',
+        borderLeft: '3px solid ' + (t.k === 'success' ? '#22c55e' : '#3b82f6'),
+        borderRadius: '10px', padding: '12px 20px', fontSize: '0.875rem', color: '#f8fafc',
+        boxShadow: '0 8px 24px rgba(0,0,0,.3)', animation: 'slideInRight .25s ease both', pointerEvents: 'auto',
+      },
+    }));
+
+    return {
+      en: en, fr: !en,
+      setEn: () => this.setState({ lang: 'en' }),
+      setFr: () => this.setState({ lang: 'fr' }),
+      enBtn: Object.assign({}, btnBase, en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
+      frBtn: Object.assign({}, btnBase, !en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
+
+      /* Foreman replica */
+      fmZoomRef: (el) => this.initZoom(el, 1060),
+      goal: this.state.goal,
+      onGoal: (e) => this.setState({ goal: e.target.value }),
+      onGoalKey: (e) => { if (e.key === 'Enter' && !e.shiftKey) { if (e.preventDefault) e.preventDefault(); this.addGoal(); } },
+      fmDelegate: () => this.addGoal(),
+      fmRouted: this.state.fmRouted,
+      fmTasks: fmTasks,
+      fmCount: tasks.length,
+      fmSelCx: sel.cx,
+      fmSelBadgeStyle: this.badge(sel.cx),
+      fmSelTitle: sel.title,
+      fmSelAvStyle: this.avChip(sel.provider, 18),
+      fmSelAvLetter: this.prov(sel.provider).L,
+      fmSelAgent: sel.agent,
+      fmSelPillStyle: selPill.style, fmSelPillText: selPill.text, fmSelPillSpin: selPill.spin, fmSelPillIcon: selPill.icon,
+      fmRunnable: sel.status === 'waiting',
+      fmRunClick: () => this.runTask(sel.id),
+      fmTabChangesClick: () => this.setState({ fmTab: 'changes' }),
+      fmTabRunClick: () => this.setState({ fmTab: 'run' }),
+      fmTabFilesClick: () => this.setState({ fmTab: 'files' }),
+      fmTabChangesStyle: this.rtab(tab === 'changes'),
+      fmTabRunStyle: this.rtab(tab === 'run'),
+      fmTabFilesStyle: this.rtab(tab === 'files'),
+      fmTabIsRun: tab === 'run',
+      fmTabIsChanges: tab === 'changes',
+      fmTabIsFiles: tab === 'files',
+      fmChangesCount: changes.length,
+      fmHasChanges: tab === 'changes' && changes.length > 0,
+      fmNoChanges: tab === 'changes' && changes.length === 0,
+      fmChanges: changes.map((gc) => ({
+        code: gc.code, path: gc.path,
+        codeStyle: { width: '20px', fontWeight: 600, flex: 'none', color: gc.code === '??' ? '#87867f' : '#141413' },
+      })),
+      fmYouText: sel.title,
+      fmLogLines: fmLogLines,
+      fmCursor: sel.status === 'running',
+      fmRoomMsgs: fmRoomMsgs,
+      fmRoomAvs: fmRoomAvs,
+      fmWorking: nRunning,
+      fmDone: nDone,
+      fmStripDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#c96442', display: 'inline-block', flex: 'none' },
+      costToday: costToday,
+
+      /* FdF */
+      fdfRef: (el) => this.initFdf(el),
+      fdfZoom: this.state.fdfZoom,
+      fdfRelief: this.state.fdfRelief,
+      onFdfZoom: (e) => this.setState({ fdfZoom: +e.target.value }),
+      onFdfRelief: (e) => this.setState({ fdfRelief: +e.target.value }),
+      fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = true; this.setState({ fdfZoom: 12, fdfRelief: 42, fdfProj: 'iso' }); },
+      fdfTitle: 'fdf — ' + (this.state.fdfMapKey || 'pyra') + '.fdf',
+      fdfMapChips: ['pyra', '42', 'pylone'].map((k) => ({
+        label: k + '.fdf',
+        style: this.fdfChip(k === (this.state.fdfMapKey || 'pyra')),
+        click: () => this.setState({ fdfMapKey: k }),
+      })),
+      fdfViewChips: ['iso', 'top'].map((k) => ({
+        label: k,
+        style: this.fdfChip((this.state.fdfProj || 'iso') === k),
+        click: () => this.setState({ fdfProj: k }),
+      })),
+      fdfColorChips: [{ heat: false, label: 'mono' }, { heat: true, label: 'altitude' }].map((o) => ({
+        label: o.label,
+        style: this.fdfChip(!!this.state.fdfHeat === o.heat),
+        click: () => this.setState({ fdfHeat: o.heat }),
+      })),
+
+      /* Savana replica */
+      savZoomRef: (el) => this.initZoom(el, 1104),
+      savCards: savCards,
+      savToasts: savToasts,
+      savCount: accounts.length,
+
+      cursorRef: (el) => { this.cEl = el; },
+      logRef: (el) => { this.logEl = el; },
+    };
+  }
+}
+</script>
+</body>
+</html>
