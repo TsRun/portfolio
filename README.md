@@ -26,6 +26,8 @@ This repo deploys to Railway (project `Portfolio`, service `portfolio`) as a sta
 cp project/Portfolio.dc.html project/index.html
 ```
 
+Assets are cached for 1 h (see `Caddyfile`), so **whenever `support.js` or `image-slot.js` changes, bump the `?v=N` query** on its `<script src>` in `Portfolio.dc.html` — otherwise returning visitors can run a stale script against fresh HTML/CSP.
+
 ## Bundle contents
 
 - `portfolio/README.md` — this file
