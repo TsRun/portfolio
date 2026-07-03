@@ -242,6 +242,12 @@
                   <span style="{{ savRankChip }}">{{ savRank }}</span>
                 </div>
                 <div style="padding:16px;display:flex;flex-direction:column;gap:15px;flex:1">
+                  <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.03em;color:#8a8474">
+                    <span>{{ savLevel }}</span>
+                    <span style="color:#22201b">{{ savRole }}</span>
+                    <span>{{ savKda }}</span>
+                    <span>{{ savRankedGames }}</span>
+                  </div>
                   <div>
                     <div style="display:flex;justify-content:space-between;font-family:'Iosevka',ui-monospace,monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a8474;margin-bottom:7px">
                       <span><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Ranked LP</sc-if><sc-if value="{{ fr }}">LP classés</sc-if></span><span>{{ savLp }}</span>
@@ -262,6 +268,20 @@
                       </sc-for>
                     </div>
                   </div>
+                  <div>
+                    <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a8474;margin-bottom:9px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Champion pool</sc-if><sc-if value="{{ fr }}">Pool de champions</sc-if></div>
+                    <div style="display:flex;flex-direction:column;gap:9px">
+                      <sc-for list="{{ savMains }}" as="m" hint-placeholder-count="3">
+                        <div style="display:flex;align-items:center;gap:10px">
+                          <span style="{{ m.iconStyle }}">{{ m.initial }}</span>
+                          <span style="font-size:14px">{{ m.name }}</span>
+                          <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;color:#8a8474">{{ m.games }}</span>
+                          <span style="flex:1"></span>
+                          <span style="{{ m.wrStyle }}">{{ m.wr }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
                   <div style="margin-top:auto">
                     <button onClick="{{ savSwitchClick }}" style="{{ savBtnStyle }}">{{ savBtnLabel }}</button>
                     <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;line-height:2;margin-top:10px;min-height:22px">
@@ -274,7 +294,7 @@
               </div>
             </div>
             <div style="border-top:1px solid #e6e1d3;background:#f5f2e9;padding:6px 14px;display:flex;gap:16px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;color:#8a8474">
-              <span>3 <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">accounts</sc-if><sc-if value="{{ fr }}">comptes</sc-if></span>
+              <span>{{ savCount }} <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">accounts</sc-if><sc-if value="{{ fr }}">comptes</sc-if></span>
               <span>Riot API ✓</span>
               <span style="margin-left:auto"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">sessions stored locally</sc-if><sc-if value="{{ fr }}">sessions stockées en local</sc-if></span>
             </div>
@@ -1093,6 +1113,23 @@ class Component extends DCLogic {
       savLog = [{ text: en ? '✓ session active' : '✓ session active', style: { color: '#5c7a55' } }];
     }
 
+    const savMains = sa.mains.map((m) => ({
+      name: m.c,
+      initial: m.c.slice(0, 1),
+      games: m.g + (en ? ' games' : ' parties'),
+      wr: m.wr + '%',
+      iconStyle: {
+        width: '24px', height: '24px', borderRadius: '6px', flex: 'none',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontFamily: mono, fontSize: '11px', fontWeight: 600,
+        background: sa.color, color: '#faf9f5',
+      },
+      wrStyle: {
+        fontFamily: mono, fontSize: '10.5px', fontWeight: 600,
+        color: m.wr >= 50 ? '#5c7a55' : '#b25638',
+      },
+    }));
+
     return {
       en: en, fr: !en,
       setEn: () => this.setState({ lang: 'en' }),
@@ -1126,9 +1163,15 @@ class Component extends DCLogic {
       fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = true; this.setState({ fdfZoom: 12, fdfRelief: 42 }); },
 
       savRows: savRows,
+      savCount: accounts.length,
       savName: sa.name,
       savTag: sa.tag,
       savRank: sa.rank,
+      savLevel: 'Lv ' + sa.level,
+      savRole: sa.role + ' · ' + sa.rolePct + '%',
+      savKda: sa.kda.toFixed(1) + ' KDA',
+      savRankedGames: (sa.wins + sa.losses) + (en ? ' ranked' : ' classées'),
+      savMains: savMains,
       savRankChip: {
         fontFamily: mono, fontSize: '9.5px', fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase',
         border: '1px solid ' + sa.color, color: sa.color, borderRadius: '999px', padding: '2.5px 8px',
