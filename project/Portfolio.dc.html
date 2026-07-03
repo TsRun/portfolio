@@ -137,13 +137,33 @@
                 <span style="width:12px;height:12px;border-radius:50%;background:#febc2e;display:inline-block"></span>
                 <span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block"></span>
               </div>
-              <span style="position:absolute;left:0;right:0;text-align:center;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:13px;font-weight:500;color:#4a4a4a;pointer-events:none">fdf — pyra.fdf</span>
+              <span style="position:absolute;left:0;right:0;text-align:center;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:13px;font-weight:500;color:#4a4a4a;pointer-events:none">{{ fdfTitle }}</span>
             </div>
             <canvas ref="{{ fdfRef }}" style="width:100%;height:400px;display:block;touch-action:none"></canvas>
           </div>
-          <div style="display:flex;gap:20px;align-items:center;margin-top:14px;flex-wrap:wrap">
+          <div style="display:flex;gap:18px;row-gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">carte</sc-if></span>
+              <sc-for list="{{ fdfMapChips }}" as="mc" hint-placeholder-count="3">
+                <button onClick="{{ mc.click }}" style="{{ mc.style }}">{{ mc.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">view</sc-if><sc-if value="{{ fr }}">vue</sc-if></span>
+              <sc-for list="{{ fdfViewChips }}" as="vc" hint-placeholder-count="2">
+                <button onClick="{{ vc.click }}" style="{{ vc.style }}">{{ vc.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">color</sc-if><sc-if value="{{ fr }}">couleur</sc-if></span>
+              <sc-for list="{{ fdfColorChips }}" as="cc" hint-placeholder-count="2">
+                <button onClick="{{ cc.click }}" style="{{ cc.style }}">{{ cc.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px;align-items:center;margin-top:12px;flex-wrap:wrap">
             <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474">zoom
-              <input type="range" min="7" max="20" value="{{ fdfZoom }}" onChange="{{ onFdfZoom }}" style="accent-color:var(--accent);width:110px">
+              <input type="range" min="6" max="24" step="0.5" value="{{ fdfZoom }}" onChange="{{ onFdfZoom }}" style="accent-color:var(--accent);width:110px">
             </label>
             <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">relief</sc-if><sc-if value="{{ fr }}">relief</sc-if>
@@ -152,8 +172,8 @@
             <button onClick="{{ fdfReset }}" style="margin-left:auto;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid #b9b2a2;border-radius:999px;padding:5px 13px;background:transparent;color:#55503f;cursor:pointer;transition:all .2s" style-hover="background:#22201b;color:#f1eee4;border-color:#22201b">reset</button>
           </div>
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#8a8474;margin-top:14px">
-            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ the actual projection in a MiniLibX-style window — drag to orbit, not a screenshot</sc-if>
-            <sc-if value="{{ fr }}">↑ la vraie projection dans une fenêtre façon MiniLibX — glissez pour pivoter, pas une capture</sc-if>
+            <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ a MiniLibX-style window running real 42 maps — drag to orbit, scroll or pinch to zoom, not a screenshot</sc-if>
+            <sc-if value="{{ fr }}">↑ une fenêtre façon MiniLibX avec de vraies cartes 42 — glissez pour pivoter, molette ou pincez pour zoomer, pas une capture</sc-if>
           </div>
         </div>
         <div style="flex:1 1 300px;min-width:280px;display:flex;flex-direction:column;gap:36px">
@@ -871,7 +891,7 @@
 class Component extends DCLogic {
   state = {
     lang: null, goal: '', tasks: null, selectedId: 1, nextId: 4,
-    fdfZoom: 12, fdfRelief: 42,
+    fdfZoom: 12, fdfRelief: 42, fdfMapKey: 'pyra', fdfProj: 'iso', fdfHeat: false,
     fmTab: 'run', fmRouted: null, fmRoom: null,
     savFlipped: null, savToasts: [], savLoading: null, savConnected: null,
   };
@@ -992,12 +1012,84 @@ class Component extends DCLogic {
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
   }
 
-  fdfMap() {
-    if (this._fdfMap) return this._fdfMap;
-    // pyra.fdf — a real 42 FdF heightmap (elevations -13 … +13), the same kind of
-    // file the C renderer parses. Normalised to 0…1 so the relief slider sculpts
-    // genuine terrain and height drives the colour ramp (coral peaks, ivory valleys).
-    const raw = [
+  fdfGrid() {
+    // Three real 42 FdF heightmaps (pbondoer/42-FdF), the same files the C
+    // renderer parses. Normalised to 0…1 so the relief slider sculpts genuine
+    // terrain and height drives the colour ramp.
+    const key = this.state.fdfMapKey || 'pyra';
+    this._fdfGrids = this._fdfGrids || {};
+    if (this._fdfGrids[key]) return this._fdfGrids[key];
+    let raw;
+    if (key === '42') {
+      // 42.fdf — 11×19, the subject's logo map ('1' = height 10)
+      raw = [
+        '0000000000000000000',
+        '0000000000000000000',
+        '0011001100011111000',
+        '0011001100000001100',
+        '0011001100000001100',
+        '0011111100001111000',
+        '0001111100011000000',
+        '0000001100011000000',
+        '0000001100011111100',
+        '0000000000000000000',
+        '0000000000000000000',
+      ].map((r) => r.split('').map((c) => (c === '1' ? 10 : 0)));
+    } else if (key === 'pylone') {
+      // pylone.fdf — 47×48 stepped ziggurat; each char encodes a height -7…7
+      // (charCode − 104). The original file has one 47-wide row → padEnd fixes it.
+      raw = [
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhh',
+        'hhhhijjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjihhhh',
+        'hhhhijkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkjihhhh',
+        'hhhhijkllllllllllllllllllllllllllllllllllkjihhhh',
+        'hhhhijklmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlkjihhhh',
+        'hhhhijklmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnmlkjihhhh',
+        'hhhhijklmnoooooooooooooooooooooooooooonmlkjihhhh',
+        'hhhhijklmnonnnnnnnnnnnnnnnnnnnnnnnnnnonmlkjihhhh',
+        'hhhhijklmnonmmmmmmmmmmmmmmmmmmmmmmmmnonmlkjihhhh',
+        'hhhhijklmnonmllllllllllllllllllllllmnonmlkjihhhh',
+        'hhhhijklmnonmlkkkkkkkkkkkkkkkkkkkklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjjjjjjjjjjjjjjjjjjklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiiiiiiiiiiiiiiiijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiggggggggggggggijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfgggggffffffgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeeeeeeeeeefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeddddddddefgijklmnonmlkjihhh',
+        'hhhhijklmnonmlkjigfedccccccdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbbbbcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbaabcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbaabcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedcbbbbcdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfedccccccdefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeddddddddefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigfeeeeeeeeeefgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjigffffffffffffgijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiggggggggggggggijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjiiiiiiiiiiiiiiiijklmnonmlkjihhhh',
+        'hhhhijklmnonmlkjjjjjjjjjjjjjjjjjjklmnonmlkjihhhh',
+        'hhhhijklmnonmlkkkkkkkkkkkkkkkkkkkklmnonmlkjihhhh',
+        'hhhhijklmnonmllllllllllllllllllllllmnonmlkjihhhh',
+        'hhhhijklmnonmmmmmmmmmmmmmmmmmmmmmmmmnonmlkjihhhh',
+        'hhhhijklmnonnnnnnnnnnnnnnnnnnnnnnnnnnonmlkjihhhh',
+        'hhhhijklmnoooooooooooooooooooooooooooonmlkjihhhh',
+        'hhhhijklmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnmlkjihhhh',
+        'hhhhijklmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlkjihhhh',
+        'hhhhijkllllllllllllllllllllllllllllllllllkjihhhh',
+        'hhhhijkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkjihhhh',
+        'hhhhijjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjihhhh',
+        'hhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+      ].map((r) => r.padEnd(48, 'h').split('').map((c) => c.charCodeAt(0) - 104));
+    } else {
+      // pyra.fdf — 27×27 pyramid terrain (elevations -13 … +13)
+      raw = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
@@ -1025,12 +1117,13 @@ class Component extends DCLogic {
       [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
       [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ];
+      ];
+    }
     let min = Infinity, max = -Infinity;
     for (let y = 0; y < raw.length; y++) for (let x = 0; x < raw[y].length; x++) { const v = raw[y][x]; if (v < min) min = v; if (v > max) max = v; }
     const span = (max - min) || 1;
-    this._fdfMap = raw.map((row) => row.map((v) => (v - min) / span));
-    return this._fdfMap;
+    this._fdfGrids[key] = raw.map((row) => row.map((v) => (v - min) / span));
+    return this._fdfGrids[key];
   }
 
   initFdf(el) {
@@ -1039,29 +1132,56 @@ class Component extends DCLogic {
     if (this.fdfObs) this.fdfObs.disconnect();
     this.fdfEl = el;
     this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfPhase = 0; this.fdfAuto = true; this.fdfVis = true; this.fdfDrag = null;
+    this.fdfMix = 0; this.fdfPtrs = new Map(); this.fdfPinch = null;
     el.style.cursor = 'grab';
+    const pinchDist = () => {
+      const p = Array.from(this.fdfPtrs.values());
+      return p.length < 2 ? 0 : Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    };
     el.addEventListener('pointerdown', (e) => {
       this.fdfAuto = false;
       if (this.fdfIdle) clearTimeout(this.fdfIdle);
-      this.fdfDrag = { x: e.clientX, y: e.clientY };
+      this.fdfPtrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (this.fdfPtrs.size === 2) { this.fdfDrag = null; this.fdfPinch = pinchDist(); }
+      else this.fdfDrag = { x: e.clientX, y: e.clientY };
       try { el.setPointerCapture(e.pointerId); } catch (err) {}
       el.style.cursor = 'grabbing';
     });
     el.addEventListener('pointermove', (e) => {
+      if (!this.fdfPtrs.has(e.pointerId)) return;
+      this.fdfPtrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (this.fdfPtrs.size >= 2) {
+        const d = pinchDist();
+        if (this.fdfPinch) this.zoomFdf((d / this.fdfPinch - 1) * 14);
+        this.fdfPinch = d;
+        return;
+      }
       if (!this.fdfDrag) return;
       this.fdfA += (e.clientX - this.fdfDrag.x) * 0.008;
       this.fdfTilt = Math.min(1.1, Math.max(0.22, this.fdfTilt + (e.clientY - this.fdfDrag.y) * 0.004));
       this.fdfDrag = { x: e.clientX, y: e.clientY };
     });
-    const up = () => {
-      if (!this.fdfDrag) return;
+    const up = (e) => {
+      if (!this.fdfPtrs.has(e.pointerId)) return;
+      this.fdfPtrs.delete(e.pointerId);
+      this.fdfPinch = null;
+      if (this.fdfPtrs.size === 1) {
+        const p = Array.from(this.fdfPtrs.values())[0];
+        this.fdfDrag = { x: p.x, y: p.y };
+        return;
+      }
       this.fdfDrag = null;
+      if (this.fdfPtrs.size) return;
       el.style.cursor = 'grab';
       if (this.fdfIdle) clearTimeout(this.fdfIdle);
       this.fdfIdle = setTimeout(() => { this.fdfAuto = true; }, 2600);
     };
     el.addEventListener('pointerup', up);
     el.addEventListener('pointercancel', up);
+    el.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      this.zoomFdf(e.deltaY * -0.015);
+    }, { passive: false });
     if (typeof IntersectionObserver !== 'undefined') {
       this.fdfObs = new IntersectionObserver((entries) => { this.fdfVis = !!(entries[0] && entries[0].isIntersecting); });
       this.fdfObs.observe(el);
@@ -1077,6 +1197,21 @@ class Component extends DCLogic {
     this.fdfRaf = requestAnimationFrame(loop);
   }
 
+  zoomFdf(delta) {
+    const z = Math.min(24, Math.max(6, (this.state.fdfZoom || 12) + delta));
+    const snapped = Math.round(z * 2) / 2;
+    if (snapped !== this.state.fdfZoom) this.setState({ fdfZoom: snapped });
+  }
+
+  fdfChip(on) {
+    return {
+      fontFamily: "'Iosevka',ui-monospace,monospace", fontSize: '10px', fontWeight: '600',
+      letterSpacing: '.06em', border: '1px solid ' + (on ? '#22201b' : '#b9b2a2'),
+      borderRadius: '999px', padding: '4px 11px', background: on ? '#22201b' : 'transparent',
+      color: on ? '#f1eee4' : '#55503f', cursor: 'pointer', transition: 'all .2s',
+    };
+  }
+
   drawFdf() {
     const el = this.fdfEl;
     if (!el) return;
@@ -1090,13 +1225,19 @@ class Component extends DCLogic {
     const ctx = el.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    const grid = this.fdfMap();
+    const grid = this.fdfGrid();
     const rows = grid.length, cols = grid[0].length;
     const cx = (cols - 1) / 2, cy = (rows - 1) / 2;
-    const zoom = (this.state.fdfZoom || 22) * Math.min(1.3, w / 640);
+    const fit = 27 / Math.max(rows, cols);
+    const zoom = (this.state.fdfZoom || 22) * fit * Math.min(1.3, w / 640);
     const relief = this.state.fdfRelief != null ? this.state.fdfRelief : 38;
     const ca = Math.cos(this.fdfA), sa = Math.sin(this.fdfA);
     const tilt = this.fdfTilt, ph = this.fdfPhase;
+    const target = this.state.fdfProj === 'top' ? 1 : 0;
+    this.fdfMix = (this.fdfMix || 0) + (target - (this.fdfMix || 0)) * 0.08;
+    if (Math.abs(target - this.fdfMix) < 0.002) this.fdfMix = target;
+    const m = this.fdfMix;
+    const heat = !!this.state.fdfHeat;
     const ac = this.accentRgb();
     const px = [], py = [], pz = [];
     for (let y = 0; y < rows; y++) {
@@ -1104,17 +1245,21 @@ class Component extends DCLogic {
         const rx = (x - cx) * ca - (y - cy) * sa;
         const ry = (x - cx) * sa + (y - cy) * ca;
         const z = grid[y][x] * relief + Math.sin(x * 0.7 + ph) * Math.sin(y * 0.7 + ph) * 2.4;
-        px.push(w / 2 + (rx - ry) * 0.866 * zoom);
-        py.push(h / 2 + relief * 0.3 + (rx + ry) * 0.5 * zoom * tilt - z);
+        const ix = (rx - ry) * 0.866 * zoom;
+        const iy = relief * 0.3 + (rx + ry) * 0.5 * zoom * tilt - z;
+        px.push(w / 2 + ix + (rx * zoom * 0.92 - ix) * m);
+        py.push(h / 2 + iy + (ry * zoom * 0.92 - iy) * m);
         pz.push(grid[y][x]);
       }
     }
     ctx.lineWidth = 1;
     const seg = (i, j) => {
       const t = (pz[i] + pz[j]) / 2;
-      ctx.strokeStyle = t > 0.01
-        ? 'rgba(' + ac[0] + ',' + ac[1] + ',' + ac[2] + ',' + (0.35 + 0.55 * t).toFixed(2) + ')'
-        : 'rgba(241,238,228,0.26)';
+      ctx.strokeStyle = heat
+        ? 'hsla(' + Math.round(215 - 195 * t) + ',85%,' + Math.round(42 + 22 * t) + '%,' + (0.45 + 0.55 * t).toFixed(2) + ')'
+        : t > 0.01
+          ? 'rgba(' + ac[0] + ',' + ac[1] + ',' + ac[2] + ',' + (0.35 + 0.55 * t).toFixed(2) + ')'
+          : 'rgba(241,238,228,0.26)';
       ctx.beginPath();
       ctx.moveTo(px[i], py[i]);
       ctx.lineTo(px[j], py[j]);
@@ -1504,7 +1649,23 @@ class Component extends DCLogic {
       fdfRelief: this.state.fdfRelief,
       onFdfZoom: (e) => this.setState({ fdfZoom: +e.target.value }),
       onFdfRelief: (e) => this.setState({ fdfRelief: +e.target.value }),
-      fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = true; this.setState({ fdfZoom: 12, fdfRelief: 42 }); },
+      fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = true; this.setState({ fdfZoom: 12, fdfRelief: 42, fdfProj: 'iso' }); },
+      fdfTitle: 'fdf — ' + (this.state.fdfMapKey || 'pyra') + '.fdf',
+      fdfMapChips: ['pyra', '42', 'pylone'].map((k) => ({
+        label: k + '.fdf',
+        style: this.fdfChip(k === (this.state.fdfMapKey || 'pyra')),
+        click: () => this.setState({ fdfMapKey: k }),
+      })),
+      fdfViewChips: ['iso', 'top'].map((k) => ({
+        label: k,
+        style: this.fdfChip((this.state.fdfProj || 'iso') === k),
+        click: () => this.setState({ fdfProj: k }),
+      })),
+      fdfColorChips: [{ heat: false, label: 'mono' }, { heat: true, label: 'altitude' }].map((o) => ({
+        label: o.label,
+        style: this.fdfChip(!!this.state.fdfHeat === o.heat),
+        click: () => this.setState({ fdfHeat: o.heat }),
+      })),
 
       /* Savana replica */
       savZoomRef: (el) => this.initZoom(el, 1104),
