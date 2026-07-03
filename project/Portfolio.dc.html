@@ -899,10 +899,27 @@ class Component extends DCLogic {
   /* ---------- Savana mock ---------- */
 
   savData() {
+    // Shaped after Savana's real model: each account is a "smurf" with a Riot ID
+    // (name#tag), soloq tier/division/LP, level, main role and best champions —
+    // the same fields the Vue card pulls from the Riot API. Region is EUW.
+    const tierColor = {
+      Iron: '#8a7a6a', Bronze: '#9a7a5c', Silver: '#9a9488', Gold: '#c2884b',
+      Platinum: '#5c9a8f', Emerald: '#7d9b76', Diamond: '#6a89b7', Master: '#9b7bb0',
+    };
+    const mk = (o) => Object.assign({ color: tierColor[o.tier] || '#8a8474', rank: o.tier + ' ' + o.div }, o);
     return [
-      { id: 1, name: 'TsRun', tag: '#EUW', rank: 'Diamond IV', lp: 42, wr: 58, form: ['W', 'W', 'L', 'W', 'W'], color: '#6a89b7' },
-      { id: 2, name: 'Kayn Only', tag: '#EUW', rank: 'Platinum II', lp: 67, wr: 53, form: ['L', 'W', 'W', 'W', 'L'], color: '#7d9b76' },
-      { id: 3, name: 'ARAM Enjoyer', tag: '#EUW', rank: 'Gold I', lp: 12, wr: 49, form: ['W', 'L', 'L', 'W', 'W'], color: '#c2884b' },
+      mk({ id: 1, name: 'Midlane Diff', tag: '#EUW', tier: 'Diamond', div: 'III', lp: 63, wins: 148, losses: 129,
+        wr: 54, level: 214, role: 'MID', rolePct: 76, kda: 3.6, form: ['W', 'L', 'W', 'W', 'L'],
+        mains: [{ c: 'Ahri', g: 19, wr: 63 }, { c: 'Syndra', g: 12, wr: 58 }, { c: 'Hwei', g: 7, wr: 52 }] }),
+      mk({ id: 2, name: 'Kayn Enjoyer', tag: '#KAYN', tier: 'Emerald', div: 'II', lp: 74, wins: 96, losses: 71,
+        wr: 61, level: 88, role: 'JGL', rolePct: 83, kda: 4.1, form: ['W', 'W', 'W', 'L', 'W'],
+        mains: [{ c: 'Kayn', g: 41, wr: 66 }, { c: 'Viego', g: 15, wr: 60 }, { c: 'Briar', g: 9, wr: 55 }] }),
+      mk({ id: 3, name: 'ward diff', tag: '#0000', tier: 'Platinum', div: 'IV', lp: 31, wins: 52, losses: 49,
+        wr: 51, level: 143, role: 'SUP', rolePct: 71, kda: 3.0, form: ['L', 'W', 'L', 'W', 'W'],
+        mains: [{ c: 'Thresh', g: 22, wr: 55 }, { c: 'Rakan', g: 14, wr: 57 }, { c: 'Renata', g: 6, wr: 50 }] }),
+      mk({ id: 4, name: 'ADC Andy', tag: '#EUW', tier: 'Gold', div: 'I', lp: 12, wins: 38, losses: 41,
+        wr: 48, level: 67, role: 'ADC', rolePct: 68, kda: 2.7, form: ['W', 'L', 'L', 'W', 'L'],
+        mains: [{ c: 'Jinx', g: 17, wr: 53 }, { c: 'Caitlyn', g: 13, wr: 46 }, { c: 'Smolder', g: 8, wr: 50 }] }),
     ];
   }
 
