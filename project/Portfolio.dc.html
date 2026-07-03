@@ -61,6 +61,11 @@
       html{scroll-behavior:auto}
       *,*::before,*::after{animation:none!important;transition:none!important}
     }
+    /* Native cursor hidden only where the orange ring actually runs
+       (same conditions as its JS gate: fine pointer + motion allowed). */
+    @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+      *,*::before,*::after{cursor:none!important}
+    }
   </style>
 </helmet>
 
@@ -176,7 +181,7 @@
           <div style="display:flex;gap:18px;row-gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
             <div style="display:flex;gap:6px;align-items:center">
               <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">carte</sc-if></span>
-              <sc-for list="{{ fdfMapChips }}" as="mc" hint-placeholder-count="3">
+              <sc-for list="{{ fdfMapChips }}" as="mc" hint-placeholder-count="2">
                 <button onClick="{{ mc.click }}" style="{{ mc.style }}">{{ mc.label }}</button>
               </sc-for>
             </div>
@@ -927,7 +932,7 @@
 class Component extends DCLogic {
   state = {
     lang: null, goal: '', tasks: null, selectedId: 1, nextId: 4,
-    fdfZoom: 12, fdfRelief: 42, fdfMapKey: 'pyra', fdfProj: 'iso', fdfHeat: false,
+    fdfZoom: 12, fdfRelief: 42, fdfMapKey: '42', fdfProj: 'iso', fdfHeat: false,
     fmTab: 'run', fmRouted: null, fmRoom: null,
     savFlipped: null, savToasts: [], savLoading: null, savConnected: null,
   };
@@ -1052,11 +1057,11 @@ class Component extends DCLogic {
     // Three real 42 FdF heightmaps (pbondoer/42-FdF), the same files the C
     // renderer parses. Normalised to 0…1 so the relief slider sculpts genuine
     // terrain and height drives the colour ramp.
-    const key = this.state.fdfMapKey || 'pyra';
+    const key = this.state.fdfMapKey || '42';
     this._fdfGrids = this._fdfGrids || {};
     if (this._fdfGrids[key]) return this._fdfGrids[key];
     let raw;
-    if (key === '42') {
+    if (key !== 'pylone') {
       // 42.fdf — 11×19, the subject's logo map ('1' = height 10)
       raw = [
         '0000000000000000000',
@@ -1071,7 +1076,7 @@ class Component extends DCLogic {
         '0000000000000000000',
         '0000000000000000000',
       ].map((r) => r.split('').map((c) => (c === '1' ? 10 : 0)));
-    } else if (key === 'pylone') {
+    } else {
       // pylone.fdf — 47×48 stepped ziggurat; each char encodes a height -7…7
       // (charCode − 104). The original file has one 47-wide row → padEnd fixes it.
       raw = [
@@ -1123,37 +1128,6 @@ class Component extends DCLogic {
         'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
         'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
       ].map((r) => r.padEnd(48, 'h').split('').map((c) => c.charCodeAt(0) - 104));
-    } else {
-      // pyra.fdf — 27×27 pyramid terrain (elevations -13 … +13)
-      raw = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-      [-3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -2, -1, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-      [-4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [-5, -5, -5, -5, -5, -5, -5, -5, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-      [-6, -6, -6, -6, -6, -6, -6, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6],
-      [-7, -7, -7, -7, -7, -7, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7],
-      [-8, -8, -8, -8, -8, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8],
-      [-9, -9, -9, -9, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9],
-      [-10, -10, -10, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10],
-      [-11, -11, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 11],
-      [-12, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 11],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-      [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      ];
     }
     let min = Infinity, max = -Infinity;
     for (let y = 0; y < raw.length; y++) for (let x = 0; x < raw[y].length; x++) { const v = raw[y][x]; if (v < min) min = v; if (v > max) max = v; }
@@ -1687,10 +1661,10 @@ class Component extends DCLogic {
       onFdfZoom: (e) => this.setState({ fdfZoom: +e.target.value }),
       onFdfRelief: (e) => this.setState({ fdfRelief: +e.target.value }),
       fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = !this.noMotion; this.setState({ fdfZoom: 12, fdfRelief: 42, fdfProj: 'iso' }); },
-      fdfTitle: 'fdf — ' + (this.state.fdfMapKey || 'pyra') + '.fdf',
-      fdfMapChips: ['pyra', '42', 'pylone'].map((k) => ({
+      fdfTitle: 'fdf — ' + (this.state.fdfMapKey || '42') + '.fdf',
+      fdfMapChips: ['42', 'pylone'].map((k) => ({
         label: k + '.fdf',
-        style: this.fdfChip(k === (this.state.fdfMapKey || 'pyra')),
+        style: this.fdfChip(k === (this.state.fdfMapKey || '42')),
         click: () => this.setState({ fdfMapKey: k }),
       })),
       fdfViewChips: ['iso', 'top'].map((k) => ({
