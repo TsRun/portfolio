@@ -18,7 +18,7 @@ The design medium is **HTML/CSS/JS** — these are prototypes, not production co
 
 ## Deployment (tsrun.dev)
 
-This repo deploys to Railway (project `Portfolio`, service `portfolio`) as a static site: the root `Staticfile` points Railpack's static provider at `project/`, and Caddy serves `project/index.html`.
+This repo deploys to Railway (project `Portfolio`, service `portfolio`) as a static site: the root `Staticfile` points Railpack's static provider at `project/`, and Caddy serves `project/index.html`. The root `Caddyfile` overrides Railpack's default one only to add `'unsafe-eval'` to the CSP `script-src` — the DC runtime compiles the page with Babel standalone, which the stock CSP blocks.
 
 **`project/index.html` is a copy of `project/Portfolio.dc.html`** (the prototype is self-booting — `support.js` loads React from a CDN). After editing `Portfolio.dc.html`, regenerate it before pushing:
 
