@@ -19,22 +19,35 @@
 
 	respond /health 200
 
-	# Security headers — Railpack's defaults, plus 'unsafe-eval' in script-src:
-	# the DC prototype runtime (support.js) compiles the page with Babel standalone,
-	# which evaluates strings as JS and is blocked by the stock CSP.
+	# Security headers.
+	# CSP notes:
+	# - script-src 'unsafe-eval': the DC prototype runtime (support.js) evaluates the page's
+	#   <script data-dc-script> logic via new Function. Babel is NOT loaded on this page —
+	#   it is only fetched for .jsx/.tsx x-imports, and ours are plain .js. If a .jsx import
+	#   is ever added, unpkg.com must be re-added to script-src.
+	# - React/ReactDOM are self-hosted under /vendor, so no script CDN origins are needed.
+	# - Fonts: Google Fonts + jsdelivr (Iosevka). Savana demo images: raw.githubusercontent.com.
+	# - frame-ancestors 'self' also neutralizes the runtime's origin-unchecked postMessage
+	#   listener (support.js) by preventing hostile embedding.
 	header {
-		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
 		Referrer-Policy "strict-origin-when-cross-origin"
-		Content-Security-Policy "default-src 'self'; img-src 'self' data: https: *; style-src 'self' 'unsafe-inline' https: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *; font-src 'self' data: https: *; connect-src 'self' https: *; media-src 'self' https: *; object-src 'none'; frame-src 'self' https: *;"
+		Strict-Transport-Security "max-age=31536000"
+		Content-Security-Policy "default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https://raw.githubusercontent.com; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'self'; form-action 'self'"
 		-Server
 	}
+
+	# HTML revalidates on every visit (deploys show immediately); assets cache for an hour.
+	@html path / *.html
+	header @html Cache-Control "no-cache"
+
+	@static path *.js *.css *.svg *.jpg *.jpeg *.png *.webp *.avif *.woff *.woff2 *.ico
+	header @static Cache-Control "public, max-age=3600, stale-while-revalidate=86400"
 
 	root * /app/project
 
 	file_server {
-		hide .git
-		hide .env*
+		hide .git .env* .thumbnail *.dc.html
 	}
 
 	encode {

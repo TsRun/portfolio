@@ -1,8 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portfolio of Mathis Serrier — freelance developer in Perpignan, France. Voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents. C/C++ at École 42, Python and TypeScript everywhere else.">
+<meta name="author" content="Mathis Serrier">
+<meta name="theme-color" content="#f0eee6">
+<link rel="canonical" href="https://tsrun.dev/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tsrun.dev/">
+<meta property="og:title" content="Mathis Serrier — Freelance developer">
+<meta property="og:description" content="Freelance developer in Perpignan. I build the tools I wish existed — voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents.">
+<meta property="og:image" content="https://tsrun.dev/assets/og.jpg">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mathis Serrier — Freelance developer">
+<meta name="twitter:description" content="Freelance developer in Perpignan. I build the tools I wish existed — voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents.">
+<meta name="twitter:image" content="https://tsrun.dev/assets/og.jpg">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -36,6 +51,16 @@
     @keyframes drift{from{transform:translateY(-40px)}to{transform:translateY(48px)}}
     image-slot{display:block;width:100%;height:100%}
     .sc-host-x:has(>image-slot[id^="shot-"]){height:auto;aspect-ratio:560/200}
+    /* Browsers without scroll-driven animations (Safari/Firefox): show content statically
+       instead of letting scroll-linked keyframes play once on load. */
+    @supports not (animation-timeline: scroll()) {
+      [style*="animation-timeline"]{animation:none!important}
+    }
+    /* Vestibular safety (WCAG 2.3.3): no motion when the user asked for none. */
+    @media (prefers-reduced-motion: reduce) {
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none!important;transition:none!important}
+    }
   </style>
 </helmet>
 
@@ -757,7 +782,7 @@
   <section id="about" data-screen-label="About" style="padding:110px 28px;scroll-margin-top:40px">
     <div style="max-width:1240px;margin:0 auto;display:flex;gap:64px;align-items:flex-start;flex-wrap:wrap">
       <div style="flex:0 1 380px;min-width:280px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="portrait" shape="rounded" radius="18" placeholder="drop a portrait here" hint-size="100%,460px" style="width:100%;height:460px;display:block"></x-import>
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="portrait" shape="rounded" radius="18" src="./assets/portrait.svg" placeholder="drop a portrait here" hint-size="100%,460px" style="width:100%;height:460px;display:block"></x-import>
         <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.1em;color:#a49c8a;margin-top:12px">mathis serrier — france</div>
       </div>
       <div style="flex:1 1 440px;min-width:300px">
@@ -1142,7 +1167,8 @@ class Component extends DCLogic {
     if (this.fdfRaf) cancelAnimationFrame(this.fdfRaf);
     if (this.fdfObs) this.fdfObs.disconnect();
     this.fdfEl = el;
-    this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfPhase = 0; this.fdfAuto = true; this.fdfVis = true; this.fdfDrag = null;
+    this.noMotion = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfPhase = 0; this.fdfAuto = !this.noMotion; this.fdfVis = true; this.fdfDrag = null;
     this.fdfMix = 0; this.fdfPtrs = new Map(); this.fdfPinch = null;
     el.style.cursor = 'grab';
     const pinchDist = () => {
@@ -1185,7 +1211,7 @@ class Component extends DCLogic {
       if (this.fdfPtrs.size) return;
       el.style.cursor = 'grab';
       if (this.fdfIdle) clearTimeout(this.fdfIdle);
-      this.fdfIdle = setTimeout(() => { this.fdfAuto = true; }, 2600);
+      this.fdfIdle = setTimeout(() => { this.fdfAuto = !this.noMotion; }, 2600);
     };
     el.addEventListener('pointerup', up);
     el.addEventListener('pointercancel', up);
@@ -1200,7 +1226,7 @@ class Component extends DCLogic {
     const loop = () => {
       if (this.fdfVis && this.fdfEl && this.fdfEl.isConnected) {
         if (this.fdfAuto && !this.fdfDrag) this.fdfA += 0.0035;
-        this.fdfPhase += 0.02;
+        if (!this.noMotion) this.fdfPhase += 0.02;
         this.drawFdf();
       }
       this.fdfRaf = requestAnimationFrame(loop);
@@ -1419,7 +1445,7 @@ class Component extends DCLogic {
     this.applyAccent();
     if (!this.state.tasks) this.setState({ tasks: this.seed() });
     this.timer = setInterval(() => this.tick(), 900);
-    if (typeof window !== 'undefined' && window.matchMedia && matchMedia('(pointer:fine)').matches) {
+    if (typeof window !== 'undefined' && window.matchMedia && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       this.mx = -100; this.my = -100; this.px2 = -100; this.py2 = -100; this.sc = 1; this.hov = false; this.shown = false;
       this.onMove = (e) => { this.mx = e.clientX; this.my = e.clientY; this.shown = true; };
       this.onOver = (e) => { this.hov = !!(e.target && e.target.closest && e.target.closest('a,button,input,canvas')); };
@@ -1605,8 +1631,8 @@ class Component extends DCLogic {
 
     return {
       en: en, fr: !en,
-      setEn: () => this.setState({ lang: 'en' }),
-      setFr: () => this.setState({ lang: 'fr' }),
+      setEn: () => { document.documentElement.lang = 'en'; this.setState({ lang: 'en' }); },
+      setFr: () => { document.documentElement.lang = 'fr'; this.setState({ lang: 'fr' }); },
       enBtn: Object.assign({}, btnBase, en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
       frBtn: Object.assign({}, btnBase, !en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
 
@@ -1660,7 +1686,7 @@ class Component extends DCLogic {
       fdfRelief: this.state.fdfRelief,
       onFdfZoom: (e) => this.setState({ fdfZoom: +e.target.value }),
       onFdfRelief: (e) => this.setState({ fdfRelief: +e.target.value }),
-      fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = true; this.setState({ fdfZoom: 12, fdfRelief: 42, fdfProj: 'iso' }); },
+      fdfReset: () => { this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfAuto = !this.noMotion; this.setState({ fdfZoom: 12, fdfRelief: 42, fdfProj: 'iso' }); },
       fdfTitle: 'fdf — ' + (this.state.fdfMapKey || 'pyra') + '.fdf',
       fdfMapChips: ['pyra', '42', 'pylone'].map((k) => ({
         label: k + '.fdf',
