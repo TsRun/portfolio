@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mathis Serrier — Freelance developer</title>
 <meta name="description" content="Portfolio of Mathis Serrier — freelance developer in Perpignan, France. Voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents. C/C++ at École 42, Python and TypeScript everywhere else.">
 <meta name="author" content="Mathis Serrier">
 <meta name="theme-color" content="#f0eee6">
@@ -18,13 +19,11 @@
 <meta name="twitter:title" content="Mathis Serrier — Freelance developer">
 <meta name="twitter:description" content="Freelance developer in Perpignan. I build the tools I wish existed — voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents.">
 <meta name="twitter:image" content="https://tsrun.dev/assets/og.jpg">
-<script src="./support.js?v=2"></script>
+<script src="./support.js?v=3"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-  <title>Mathis Serrier — Freelance developer</title>
-  <meta name="description" content="Mathis Serrier — freelance developer in Perpignan. Desktop tools, web apps and AI agent integrations. C/C++, Python, TypeScript, Rust.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='14' y='22' width='72' height='16' rx='8' fill='%23d97757'/%3E%3Crect x='14' y='44' width='56' height='16' rx='8' fill='%2322201b'/%3E%3Crect x='14' y='66' width='40' height='16' rx='8' fill='%23b9b2a2'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -43,7 +42,6 @@
     @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
     @keyframes spin360{to{transform:rotate(360deg)}}
-    @keyframes dotpulse{0%,100%{box-shadow:0 0 0 0 rgba(201,100,66,.35)}50%{box-shadow:0 0 0 5px rgba(201,100,66,0)}}
     @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
     @keyframes pulseGreen{0%,100%{box-shadow:0 0 0 0 rgba(110,141,69,.45)}50%{box-shadow:0 0 0 6px rgba(110,141,69,0)}}
     @keyframes slideInRight{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
@@ -66,6 +64,7 @@
     @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
       *,*::before,*::after{cursor:none!important}
     }
+    a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,canvas:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   </style>
 </helmet>
 
@@ -124,10 +123,10 @@
         <a href="#work" style="font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;font-weight:600;letter-spacing:.06em;background:#22201b;color:#f1eee4;padding:15px 26px;border-radius:999px;text-decoration:none;transition:background .25s" style-hover="background:var(--accent)">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">See the work ↓</sc-if><sc-if value="{{ fr }}">Voir les projets ↓</sc-if>
         </a>
-        <a href="mailto:mathis.serrier@gmail.com" style="font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;color:#6f6a5e;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--accent);transition:color .2s" style-hover="color:#22201b">mathis.serrier@gmail.com</a>
+        <a href="{{ mailtoHref }}" style="font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;color:#6f6a5e;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--accent);transition:color .2s" style-hover="color:#22201b">{{ email }}</a>
       </div>
     </div>
-    <div style="position:absolute;bottom:26px;left:28px;font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:#a49c8a;animation:pulse 2.6s ease-in-out infinite">
+    <div style="position:absolute;bottom:26px;left:28px;font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:#635e52;animation:pulse 2.6s ease-in-out infinite">
       <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">scroll ↓</sc-if><sc-if value="{{ fr }}">défiler ↓</sc-if>
     </div>
   </header>
@@ -152,13 +151,13 @@
       </div>
       <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:22px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
         <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Fil de Fer</h2>
-        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#8a8474">
+        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#6f6a5e">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a 3D wireframe renderer, in C</sc-if>
           <sc-if value="{{ fr }}">un rendu 3D fil de fer, en C</sc-if>
         </span>
       </div>
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
-        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#8a8474">C · MiniLibX · École 42</span>
+        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#6f6a5e">C · MiniLibX · École 42</span>
         <a href="https://github.com/TsRun/Fil-de-Fers" target="_blank" rel="noopener" style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#22201b;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--accent)">code ↗</a>
       </div>
       <p style="font-size:17px;line-height:1.7;color:#55503f;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
@@ -180,35 +179,35 @@
           </div>
           <div style="display:flex;gap:18px;row-gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
             <div style="display:flex;gap:6px;align-items:center">
-              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">carte</sc-if></span>
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">carte</sc-if></span>
               <sc-for list="{{ fdfMapChips }}" as="mc" hint-placeholder-count="2">
                 <button onClick="{{ mc.click }}" style="{{ mc.style }}">{{ mc.label }}</button>
               </sc-for>
             </div>
             <div style="display:flex;gap:6px;align-items:center">
-              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">view</sc-if><sc-if value="{{ fr }}">vue</sc-if></span>
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">view</sc-if><sc-if value="{{ fr }}">vue</sc-if></span>
               <sc-for list="{{ fdfViewChips }}" as="vc" hint-placeholder-count="2">
                 <button onClick="{{ vc.click }}" style="{{ vc.style }}">{{ vc.label }}</button>
               </sc-for>
             </div>
             <div style="display:flex;gap:6px;align-items:center">
-              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">color</sc-if><sc-if value="{{ fr }}">couleur</sc-if></span>
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">color</sc-if><sc-if value="{{ fr }}">couleur</sc-if></span>
               <sc-for list="{{ fdfColorChips }}" as="cc" hint-placeholder-count="2">
                 <button onClick="{{ cc.click }}" style="{{ cc.style }}">{{ cc.label }}</button>
               </sc-for>
             </div>
           </div>
           <div style="display:flex;gap:20px;align-items:center;margin-top:12px;flex-wrap:wrap">
-            <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474">zoom
+            <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e">zoom
               <input type="range" min="6" max="24" step="0.5" value="{{ fdfZoom }}" onChange="{{ onFdfZoom }}" style="accent-color:var(--accent);width:110px">
             </label>
-            <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8474">
+            <label style="display:flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">relief</sc-if><sc-if value="{{ fr }}">relief</sc-if>
               <input type="range" min="0" max="70" value="{{ fdfRelief }}" onChange="{{ onFdfRelief }}" style="accent-color:var(--accent);width:110px">
             </label>
             <button onClick="{{ fdfReset }}" style="margin-left:auto;font-family:'Iosevka',ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid #b9b2a2;border-radius:999px;padding:5px 13px;background:transparent;color:#55503f;cursor:pointer;transition:all .2s" style-hover="background:#22201b;color:#f1eee4;border-color:#22201b">reset</button>
           </div>
-          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#8a8474;margin-top:14px">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#6f6a5e;margin-top:14px">
             <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ a MiniLibX-style window running real 42 maps — drag to orbit, scroll or pinch to zoom, not a screenshot</sc-if>
             <sc-if value="{{ fr }}">↑ une fenêtre façon MiniLibX avec de vraies cartes 42 — glissez pour pivoter, molette ou pincez pour zoomer, pas une capture</sc-if>
           </div>
@@ -257,13 +256,13 @@
       </div>
       <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:22px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
         <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Savana</h2>
-        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#8a8474">
+        <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#6f6a5e">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a League of Legends account manager</sc-if>
           <sc-if value="{{ fr }}">un gestionnaire de comptes League of Legends</sc-if>
         </span>
       </div>
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
-        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#8a8474">Electron · Vue 3 · Express · SQLite</span>
+        <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#6f6a5e">Electron · Vue 3 · Express · SQLite</span>
         <a href="https://github.com/TsRun/Savana" target="_blank" rel="noopener" style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#22201b;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--accent)">code ↗</a>
       </div>
       <p style="font-size:17px;line-height:1.7;color:#55503f;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
@@ -276,7 +275,7 @@
             <div ref="{{ savZoomRef }}" style="width:1104px;background:#0a0a0f;color:#f8fafc;font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.4)">
               <!-- titlebar -->
               <div style="display:flex;align-items:center;height:32px;background:#12121a;border-bottom:1px solid rgba(255,255,255,.04);padding-left:16px">
-                <span style="position:relative;width:20px;height:20px;border-radius:4px;overflow:hidden;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">S<img src="https://raw.githubusercontent.com/TsRun/Savana/master/public/SavanaLogo.jpg" alt="" style="position:absolute;inset:0;width:20px;height:20px;object-fit:cover"></span>
+                <span style="position:relative;width:20px;height:20px;border-radius:4px;overflow:hidden;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">S<img src="./assets/savana/SavanaLogo.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:20px;height:20px;object-fit:cover"></span>
                 <span style="font-size:0.75rem;color:#94a3b8;margin-left:8px">Savana</span>
                 <span style="margin-left:auto;display:flex;height:32px">
                   <span style="width:46px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;transition:background .15s" style-hover="background:#1a1a25">—</span>
@@ -288,7 +287,7 @@
                 <!-- sidebar -->
                 <div style="width:260px;flex:none;background:#12121a;border-right:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column">
                   <div style="display:flex;align-items:center;gap:16px;padding:24px;border-bottom:1px solid rgba(255,255,255,.04)">
-                    <span style="position:relative;width:40px;height:40px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">S<img src="https://raw.githubusercontent.com/TsRun/Savana/master/public/SavanaLogo.jpg" alt="" style="position:absolute;inset:0;width:40px;height:40px;object-fit:cover"></span>
+                    <span style="position:relative;width:40px;height:40px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">S<img src="./assets/savana/SavanaLogo.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:40px;height:40px;object-fit:cover"></span>
                     <span style="display:flex;flex-direction:column">
                       <span style="font-weight:700;font-size:1rem;color:#f8fafc">Savana</span>
                       <span style="font-size:0.75rem;color:#64748b">v2.0</span>
@@ -333,7 +332,7 @@
                   </div>
                   <div style="flex:1;display:grid;grid-template-columns:repeat(2,380px);justify-content:center;gap:24px;padding:32px;overflow-y:auto;align-content:start">
                     <sc-for list="{{ savCards }}" as="c" hint-placeholder-count="4">
-                      <div onClick="{{ c.flip }}" style="width:380px;min-height:400px;perspective:1000px;cursor:pointer">
+                      <div onClick="{{ c.flip }}" onKeyDown="{{ c.flipKey }}" role="button" tabindex="0" aria-label="Flip account card" style="width:380px;min-height:400px;perspective:1000px;cursor:pointer">
                         <div style="{{ c.flipInner }}">
                           <!-- front -->
                           <div style="backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:400px;padding:24px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(145deg,rgba(22,22,31,.9),rgba(18,18,26,.95));border:1px solid rgba(255,255,255,.04);border-radius:16px;transition:border-color .25s,box-shadow .25s" style-hover="border-color:rgba(99,102,241,.25);box-shadow:0 12px 40px rgba(0,0,0,.25),0 0 0 1px rgba(99,102,241,.3)">
@@ -349,7 +348,7 @@
                             </div>
                             <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.04)">
                               <div style="display:flex;align-items:center;gap:16px">
-                                <img src="{{ c.rankImg }}" alt="" style="width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));transform:scale(1.1);flex:none">
+                                <img src="{{ c.rankImg }}" alt="" loading="lazy" style="width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));transform:scale(1.1);flex:none">
                                 <div style="display:flex;flex-direction:column;gap:2px">
                                   <span style="font-size:1rem;font-weight:600;color:#f8fafc">{{ c.rankTier }}</span>
                                   <span style="font-size:0.875rem;color:#94a3b8">{{ c.rankLp }}</span>
@@ -368,7 +367,7 @@
                             </div>
                             <div style="display:flex;align-items:center;gap:8px">
                               <span style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:#1a1a25;border-radius:10px">
-                                <img src="{{ c.roleImg }}" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1);opacity:.9">
+                                <img src="{{ c.roleImg }}" alt="" loading="lazy" style="width:20px;height:20px;filter:brightness(0) invert(1);opacity:.9">
                                 <span style="font-size:0.75rem;font-weight:600;color:#fff">{{ c.rolePct }}</span>
                               </span>
                               <span style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#1a1a25;border-radius:10px">
@@ -378,7 +377,7 @@
                               <span style="margin-left:auto;display:flex;gap:4px">
                                 <sc-for list="{{ c.champs }}" as="ch" hint-placeholder-count="3">
                                   <span style="display:flex;flex-direction:column;align-items:center;gap:1px">
-                                    <span style="position:relative;width:32px;height:32px;border-radius:4px;overflow:hidden;border:2px solid rgba(255,255,255,.04);background:#1a1a25;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#94a3b8;flex:none">{{ ch.letter }}<img src="{{ ch.img }}" alt="" style="position:absolute;inset:0;width:32px;height:32px;object-fit:cover"></span>
+                                    <span style="position:relative;width:32px;height:32px;border-radius:4px;overflow:hidden;border:2px solid rgba(255,255,255,.04);background:#1a1a25;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#94a3b8;flex:none">{{ ch.letter }}<img src="{{ ch.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:32px;height:32px;object-fit:cover"></span>
                                     <span style="{{ ch.wrStyle }}">{{ ch.wr }}</span>
                                   </span>
                                 </sc-for>
@@ -440,7 +439,7 @@
               </div>
             </div>
           </div>
-          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#8a8474;margin-top:14px">
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#6f6a5e;margin-top:14px">
             <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ the real app, miniaturized — click a card to flip it, hit Load to launch</sc-if>
             <sc-if value="{{ fr }}">↑ la vraie app, miniaturisée — cliquez une carte pour la retourner, Load pour lancer</sc-if>
           </div>
@@ -548,7 +547,7 @@
                 </div>
                 <div style="flex:1;overflow-y:auto;padding:11px 11px 14px;display:flex;flex-direction:column;gap:7px">
                   <sc-for list="{{ fmTasks }}" as="t" hint-placeholder-count="3">
-                    <div onClick="{{ t.select }}" style="{{ t.cardStyle }}">
+                    <div onClick="{{ t.select }}" onKeyDown="{{ t.selectKey }}" role="button" tabindex="0" aria-label="Select task" style="{{ t.cardStyle }}">
                       <div style="display:flex;align-items:flex-start;gap:8px">
                         <span style="{{ t.badgeStyle }}">{{ t.cx }}</span>
                         <span style="flex:1;font-size:12.5px;line-height:1.4">{{ t.title }}</span>
@@ -758,13 +757,13 @@
           <div style="display:flex;align-items:baseline;gap:10px;margin-top:16px;flex-wrap:wrap">
             <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;font-weight:600;color:var(--accent)">04</span>
             <span style="font-size:22px;letter-spacing:-.01em">ChessVoice</span>
-            <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px dashed #b9b2a2;border-radius:999px;padding:2.5px 9px;color:#8a8474;margin-left:auto"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">private</sc-if><sc-if value="{{ fr }}">privé</sc-if></span>
+            <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px dashed #b9b2a2;border-radius:999px;padding:2.5px 9px;color:#6f6a5e;margin-left:auto"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">private</sc-if><sc-if value="{{ fr }}">privé</sc-if></span>
           </div>
           <p style="font-style:italic;font-size:15px;line-height:1.6;color:#55503f;margin:8px 0 12px">
             <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Chess played entirely by voice — browser STT/TTS, hybrid local-grammar + LLM move parsing, on chess.com and lichess.</sc-if>
             <sc-if value="{{ fr }}">Les échecs entièrement à la voix — STT/TTS navigateur, parsing des coups hybride grammaire locale + LLM, sur chess.com et lichess.</sc-if>
           </p>
-          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#8a8474">Chrome MV3 · Web Speech · Groq</div>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#6f6a5e">Chrome MV3 · Web Speech · Groq</div>
         </div>
         <div style="border:1px solid #ddd6c8;border-radius:14px;padding:16px;background:#f6f4ec;transition:box-shadow .3s,border-color .3s;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%" style-hover="box-shadow:0 18px 40px rgba(34,32,27,.12);border-color:var(--accent)">
           <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="shot-minishell" shape="rounded" radius="8" src="./assets/minishell-shot.svg" placeholder="minishell — drop a screenshot" hint-size="100%,200px" style="width:100%"></x-import>
@@ -777,7 +776,7 @@
             <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A small Bash rebuilt from scratch in C — parsing, pipes, signals, builtins, and not a byte leaked. With Adrien Mori.</sc-if>
             <sc-if value="{{ fr }}">Un petit Bash réécrit de zéro en C — parsing, pipes, signaux, builtins, sans un octet de fuite. Avec Adrien Mori.</sc-if>
           </p>
-          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#8a8474">C · syscalls · École 42</div>
+          <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#6f6a5e">C · syscalls · École 42</div>
         </div>
       </div>
     </div>
@@ -788,7 +787,7 @@
     <div style="max-width:1240px;margin:0 auto;display:flex;gap:64px;align-items:flex-start;flex-wrap:wrap">
       <div style="flex:0 1 380px;min-width:280px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 45%">
         <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="portrait" shape="rounded" radius="18" src="./assets/portrait.svg" placeholder="drop a portrait here" hint-size="100%,460px" style="width:100%;height:460px;display:block"></x-import>
-        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.1em;color:#a49c8a;margin-top:12px">mathis serrier — france</div>
+        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.1em;color:#635e52;margin-top:12px">mathis serrier — france</div>
       </div>
       <div style="flex:1 1 440px;min-width:300px">
         <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
@@ -876,7 +875,7 @@
         </div>
       </div>
       <div style="margin-top:56px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
-        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#8a8474">
+        <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#6f6a5e">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">TsRun/foreman — repo languages</sc-if>
           <sc-if value="{{ fr }}">TsRun/foreman — langages du repo</sc-if>
         </div>
@@ -899,7 +898,7 @@
   <!-- ======================= CONTACT ======================= -->
   <section id="contact" data-screen-label="Contact" style="background:var(--accent);color:#2a1a12;padding:130px 28px 0;scroll-margin-top:40px">
     <div style="max-width:1240px;margin:0 auto">
-      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(42,26,18,.65);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">Contact</div>
+      <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(42,26,18,.92);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">Contact</div>
       <h2 style="font-weight:400;font-style:italic;font-size:clamp(46px,7.4vw,102px);line-height:1.02;letter-spacing:-.02em;margin:24px 0 18px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
         <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Let's build something.</sc-if>
         <sc-if value="{{ fr }}">Construisons quelque chose.</sc-if>
@@ -909,13 +908,13 @@
         <sc-if value="{{ fr }}">Disponible pour des missions freelance — outils desktop, apps web, intégrations IA &amp; agents. À distance, depuis Perpignan.</sc-if>
       </p>
       <div style="animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
-        <a href="mailto:mathis.serrier@gmail.com" style="font-family:'Iosevka',ui-monospace,monospace;font-size:clamp(16px,2.6vw,26px);font-weight:600;color:#2a1a12;text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px;transition:color .25s" style-hover="color:#faf9f5">mathis.serrier@gmail.com</a>
+        <a href="{{ mailtoHref }}" style="font-family:'Iosevka',ui-monospace,monospace;font-size:clamp(16px,2.6vw,26px);font-weight:600;color:#2a1a12;text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px;transition:color .25s" style-hover="color:#faf9f5">{{ email }}</a>
         <div style="display:flex;gap:28px;margin-top:30px;font-family:'Iosevka',ui-monospace,monospace;font-size:12.5px;letter-spacing:.06em;flex-wrap:wrap">
           <a href="https://github.com/TsRun" target="_blank" rel="noopener" style="color:#2a1a12;text-decoration:none;border-bottom:1px solid rgba(42,26,18,.4);padding-bottom:2px;transition:color .25s" style-hover="color:#faf9f5">github.com/TsRun ↗</a>
-          <span style="color:rgba(42,26,18,.65)"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">CV — on request</sc-if><sc-if value="{{ fr }}">CV — sur demande</sc-if></span>
+          <span style="color:rgba(42,26,18,.92)"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">CV — on request</sc-if><sc-if value="{{ fr }}">CV — sur demande</sc-if></span>
         </div>
       </div>
-      <div style="margin-top:100px;border-top:1px solid rgba(42,26,18,.25);padding:22px 0 28px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:'Iosevka',ui-monospace,monospace;font-size:11px;color:rgba(42,26,18,.7)">
+      <div style="margin-top:100px;border-top:1px solid rgba(42,26,18,.25);padding:22px 0 28px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:'Iosevka',ui-monospace,monospace;font-size:11px;color:rgba(42,26,18,.92)">
         <span>© 2026 Mathis Serrier</span>
         <span>Newsreader &amp; Iosevka</span>
         <a href="#top" style="color:#2a1a12;text-decoration:none"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Back to top ↑</sc-if><sc-if value="{{ fr }}">Haut de page ↑</sc-if></a>
@@ -931,7 +930,8 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#d97757&quot;,&quot;options&quot;:[&quot;#d97757&quot;,&quot;#c2884b&quot;,&quot;#7d9b76&quot;,&quot;#6a89b7&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;fr&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;\&quot;en\&quot; | \&quot;fr\&quot;&quot;,&quot;section&quot;:&quot;Content&quot;}}">
 class Component extends DCLogic {
   state = {
-    lang: null, goal: '', tasks: null, selectedId: 1, nextId: 4,
+    lang: (() => { try { return localStorage.getItem('lang'); } catch (e) { return null; } })(),
+    goal: '', tasks: null, selectedId: 1, nextId: 4,
     fdfZoom: 12, fdfRelief: 42, fdfMapKey: '42', fdfProj: 'iso', fdfHeat: false,
     fmTab: 'run', fmRouted: null, fmRoom: null,
     savFlipped: null, savToasts: [], savLoading: null, savConnected: null,
@@ -1145,6 +1145,20 @@ class Component extends DCLogic {
     this.fdfA = 0.6; this.fdfTilt = 0.62; this.fdfPhase = 0; this.fdfAuto = !this.noMotion; this.fdfVis = true; this.fdfDrag = null;
     this.fdfMix = 0; this.fdfPtrs = new Map(); this.fdfPinch = null;
     el.style.cursor = 'grab';
+    el.tabIndex = 0;
+    el.setAttribute('role', 'application');
+    el.setAttribute('aria-label', 'FdF wireframe viewer. Drag or use arrow keys to orbit and tilt, plus and minus to zoom.');
+    el.addEventListener('keydown', (e) => {
+      const k = e.key;
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', '+', '=', '-'].includes(k)) return;
+      e.preventDefault();
+      this.fdfAuto = false;
+      if (k === 'ArrowLeft') this.fdfA -= 0.12;
+      else if (k === 'ArrowRight') this.fdfA += 0.12;
+      else if (k === 'ArrowUp') this.fdfTilt = Math.min(1.1, this.fdfTilt + 0.06);
+      else if (k === 'ArrowDown') this.fdfTilt = Math.max(0.22, this.fdfTilt - 0.06);
+      else this.zoomFdf(k === '-' ? -1.5 : 1.5);
+    });
     const pinchDist = () => {
       const p = Array.from(this.fdfPtrs.values());
       return p.length < 2 ? 0 : Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
@@ -1417,6 +1431,10 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.applyAccent();
+    if ((this.state.lang || this.props.defaultLang || 'en') === 'fr') {
+      document.documentElement.lang = 'fr';
+      document.title = 'Mathis Serrier — Développeur freelance';
+    }
     if (!this.state.tasks) this.setState({ tasks: this.seed() });
     this.timer = setInterval(() => this.tick(), 900);
     if (typeof window !== 'undefined' && window.matchMedia && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -1481,6 +1499,11 @@ class Component extends DCLogic {
       return {
         title: t.title, agent: t.agent, cx: t.cx,
         select: () => this.setState({ selectedId: t.id, fmTab: 'run' }),
+        selectKey: (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          this.setState({ selectedId: t.id, fmTab: 'run' });
+        },
         cardStyle: {
           border: '1px solid ' + (selected ? '#141413' : '#f0eee6'),
           borderLeft: '2px solid ' + (selected ? '#141413' : 'transparent'),
@@ -1546,7 +1569,7 @@ class Component extends DCLogic {
     /* ---- Savana replica vals ---- */
 
     const accounts = this.savData();
-    const SAV_A = 'https://raw.githubusercontent.com/TsRun/Savana/master/public/assets/';
+    const SAV_A = './assets/savana/';
     const wrColor = (w) => (w >= 60 ? '#22c55e' : w >= 50 ? '#f59e0b' : '#64748b');
 
     const savCards = accounts.map((acc) => {
@@ -1576,6 +1599,11 @@ class Component extends DCLogic {
         })),
         backUser: acc.uname,
         flip: () => this.setState({ savFlipped: this.state.savFlipped === acc.id ? null : acc.id }),
+        flipKey: (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          this.setState({ savFlipped: this.state.savFlipped === acc.id ? null : acc.id });
+        },
         flipInner: {
           position: 'relative', minHeight: '400px', transformStyle: 'preserve-3d',
           transition: 'transform .5s cubic-bezier(.23,1,.32,1)',
@@ -1603,10 +1631,14 @@ class Component extends DCLogic {
       },
     }));
 
+    // assembled at runtime so the address never appears verbatim in the raw markup
+    const em = ['mathis', 'serrier'].join('.') + '@' + 'gmail.com';
+
     return {
       en: en, fr: !en,
-      setEn: () => { document.documentElement.lang = 'en'; this.setState({ lang: 'en' }); },
-      setFr: () => { document.documentElement.lang = 'fr'; this.setState({ lang: 'fr' }); },
+      email: em, mailtoHref: 'mailto:' + em,
+      setEn: () => { document.documentElement.lang = 'en'; document.title = 'Mathis Serrier — Freelance developer'; try { localStorage.setItem('lang', 'en'); } catch (e) {} this.setState({ lang: 'en' }); },
+      setFr: () => { document.documentElement.lang = 'fr'; document.title = 'Mathis Serrier — Développeur freelance'; try { localStorage.setItem('lang', 'fr'); } catch (e) {} this.setState({ lang: 'fr' }); },
       enBtn: Object.assign({}, btnBase, en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
       frBtn: Object.assign({}, btnBase, !en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
 

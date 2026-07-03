@@ -25,15 +25,15 @@
 	#   <script data-dc-script> logic via new Function. Babel is NOT loaded on this page —
 	#   it is only fetched for .jsx/.tsx x-imports, and ours are plain .js. If a .jsx import
 	#   is ever added, unpkg.com must be re-added to script-src.
-	# - React/ReactDOM are self-hosted under /vendor, so no script CDN origins are needed.
-	# - Fonts: Google Fonts + jsdelivr (Iosevka). Savana demo images: raw.githubusercontent.com.
+	# - React/ReactDOM are self-hosted under /vendor; Savana demo images under /assets/savana.
+	# - Fonts: Google Fonts + jsdelivr (Iosevka) are the only remaining external origins.
 	# - frame-ancestors 'self' also neutralizes the runtime's origin-unchecked postMessage
 	#   listener (support.js) by preventing hostile embedding.
 	header {
 		X-Content-Type-Options "nosniff"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Strict-Transport-Security "max-age=31536000"
-		Content-Security-Policy "default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https://raw.githubusercontent.com; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'self'; form-action 'self'"
+		Content-Security-Policy "default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'self'; form-action 'self'"
 		-Server
 	}
 
