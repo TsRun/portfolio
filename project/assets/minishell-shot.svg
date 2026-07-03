@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- macOS terminal window, same chrome language as the fdf demo -->
+  <rect width="800" height="200" rx="10" fill="#1c1c1e"/>
+  <path d="M0 10a10 10 0 0 1 10-10h780a10 10 0 0 1 10 10v18H0z" fill="#2a2a2c"/>
+  <circle cx="18" cy="14" r="6" fill="#ff5f57"/>
+  <circle cx="38" cy="14" r="6" fill="#febc2e"/>
+  <circle cx="58" cy="14" r="6" fill="#28c840"/>
+  <text x="400" y="19" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#9a9a9e">mathis@42 — minishell</text>
+
+  <!-- session: the real prompt is the blue cwd basename + '> ' (srcs/main.c) -->
+  <g font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="12.5" fill="#d4d4d4">
+    <text x="16" y="52"><tspan fill="#569cd6">~ </tspan><tspan fill="#d4d4d4">&gt; ./minishell</tspan></text>
+    <text x="16" y="74"><tspan fill="#569cd6">minishell</tspan>&gt; echo $USER | tr a-z A-Z</text>
+    <text x="16" y="94">MSERRIER</text>
+    <text x="16" y="116"><tspan fill="#569cd6">minishell</tspan>&gt; export WHO=world &amp;&amp; echo "hello, $WHO" &gt; out</text>
+    <text x="16" y="138"><tspan fill="#569cd6">minishell</tspan>&gt; ls srcs | grep .c | wc -l</text>
+    <text x="16" y="158">17</text>
+    <text x="16" y="180"><tspan fill="#569cd6">minishell</tspan>&gt; <tspan fill="#d4d4d4">█</tspan></text>
+  </g>
+</svg>

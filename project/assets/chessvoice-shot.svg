@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <!-- chess.com-style page backdrop -->
+  <rect width="800" height="200" fill="#312e2b"/>
+
+  <!-- board crop (top-left corner of a game vs. the engine) -->
+  <g>
+    <!-- 5 visible ranks x 8 files, 50px squares, green board -->
+    <g>
+      <rect x="24" y="0" width="400" height="200" fill="#779556"/>
+      <g fill="#ebecd0">
+        <rect x="24" y="0" width="50" height="50"/><rect x="124" y="0" width="50" height="50"/><rect x="224" y="0" width="50" height="50"/><rect x="324" y="0" width="50" height="50"/>
+        <rect x="74" y="50" width="50" height="50"/><rect x="174" y="50" width="50" height="50"/><rect x="274" y="50" width="50" height="50"/><rect x="374" y="50" width="50" height="50"/>
+        <rect x="24" y="100" width="50" height="50"/><rect x="124" y="100" width="50" height="50"/><rect x="224" y="100" width="50" height="50"/><rect x="324" y="100" width="50" height="50"/>
+        <rect x="74" y="150" width="50" height="50"/><rect x="174" y="150" width="50" height="50"/><rect x="274" y="150" width="50" height="50"/><rect x="374" y="150" width="50" height="50"/>
+      </g>
+      <!-- last-move highlight: g1 -> f3 (knight just played by voice) -->
+      <rect x="274" y="100" width="50" height="50" fill="#f5f682" opacity="0.5"/>
+      <rect x="324" y="150" width="50" height="50" fill="#f5f682" opacity="0.5"/>
+      <!-- black back rank + pawns (crop shows black's side) -->
+      <g font-size="40" text-anchor="middle">
+        <text x="49" y="38">♜</text><text x="99" y="38">♞</text><text x="149" y="38">♝</text><text x="199" y="38">♛</text><text x="249" y="38">♚</text><text x="299" y="38">♝</text><text x="399" y="38">♜</text>
+        <text x="49" y="88">♟</text><text x="99" y="88">♟</text><text x="149" y="88">♟</text><text x="199" y="88">♟</text><text x="299" y="88">♟</text><text x="349" y="88">♟</text><text x="399" y="88">♟</text>
+        <text x="249" y="138">♟</text>
+        <!-- white knight landed on f3 (from the voice move) -->
+        <text x="299" y="188" fill="#fff" stroke="#000" stroke-width="0.6">♘</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- move list panel -->
+  <g font-size="13" fill="#c3c2c1">
+    <rect x="424" y="0" width="376" height="200" fill="#262421"/>
+    <text x="448" y="34" fill="#8b8987" font-size="11" letter-spacing="1">CHESSVOICE · CHESS.COM</text>
+    <text x="448" y="62"><tspan fill="#8b8987">1.</tspan> e4 <tspan fill="#e0e0e0">e5</tspan></text>
+    <text x="448" y="84"><tspan fill="#8b8987">2.</tspan> <tspan fill="#fff" font-weight="600">Nf3</tspan></text>
+    <line x1="448" y1="100" x2="760" y2="100" stroke="#3a3733"/>
+    <text x="448" y="122" font-size="12" fill="#8b949e">🔊 "Knight f3 — your move"</text>
+  </g>
+
+  <!-- the real ChessVoice HUD (rgba(13,17,23,.92), #30363d border, bottom-center) -->
+  <g>
+    <rect x="438" y="138" width="336" height="40" rx="10" fill="#0d1117" opacity="0.92" stroke="#30363d"/>
+    <circle cx="460" cy="158" r="4" fill="#f0883e">
+      <animate attributeName="opacity" values="1;0.4;1" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <text x="472" y="163" font-size="13" fill="#e0e0e0">Listening...</text>
+    <text x="558" y="163" font-size="13"><tspan fill="#8b949e">Heard:</tspan> <tspan fill="#e0e0e0">« cavalier f3 »</tspan></text>
+    <text x="712" y="163" font-size="13" fill="#3fb950" font-weight="600">✓ Nf3</text>
+  </g>
+</svg>
