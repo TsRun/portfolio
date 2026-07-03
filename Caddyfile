@@ -47,7 +47,7 @@
 	root * /app/project
 
 	file_server {
-		hide .git .env* .thumbnail *.dc.html
+		hide .git .env* .thumbnail .DS_Store *.dc.html
 	}
 
 	encode {
