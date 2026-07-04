@@ -20,11 +20,13 @@ The design medium is **HTML/CSS/JS** — these are prototypes, not production co
 
 This repo deploys to Railway (project `Portfolio`, service `portfolio`) as a static site: the root `Staticfile` points Railpack's static provider at `project/`, and Caddy serves `project/index.html`. The root `Caddyfile` replaces Railpack's default one with a tightened one: enumerated CSP origins plus `'unsafe-eval'` in `script-src` (the DC runtime evaluates the page's `<script data-dc-script>` logic via `new Function`; Babel is only fetched for `.jsx` x-imports, which this page doesn't use), `frame-ancestors 'self'`, HSTS, and Cache-Control (HTML `no-cache`, assets 1 h).
 
-**`project/index.html` is a copy of `project/Portfolio.dc.html`** (the prototype is self-booting — `support.js` loads React/ReactDOM from `project/vendor/`, self-hosted so a CDN outage can't blank the page). After editing `Portfolio.dc.html`, regenerate it before pushing:
+**`project/index.html` and `project/fr.html` are generated from `project/Portfolio.dc.html`** (the prototype is self-booting — `support.js` loads React/ReactDOM from `project/vendor/`, self-hosted so a CDN outage can't blank the page). `index.html` is a verbatim copy (EN, canonical `/`); `fr.html` is the French edition (canonical `/fr`, served by Caddy's `try_files` at `https://tsrun.dev/fr`) with the head metadata translated and the runtime's `defaultLang` flipped — the translations live in the build script, which fails loudly if its patterns drift out of sync with the source. After editing `Portfolio.dc.html`, regenerate both before pushing:
 
 ```sh
-cp project/Portfolio.dc.html project/index.html
+python3 scripts/build.py
 ```
+
+If the hero section changes, also regenerate the social-preview images `project/assets/og.jpg` (from `/`) and `project/assets/og-fr.jpg` (from `/fr`): 1200×630 viewport screenshots of the rendered page.
 
 Assets are cached for 1 h (see `Caddyfile`), so **whenever `support.js` or `image-slot.js` changes, bump the `?v=N` query** on its `<script src>` in `Portfolio.dc.html` — otherwise returning visitors can run a stale script against fresh HTML/CSP.
 

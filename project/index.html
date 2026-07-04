@@ -3,14 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mathis Serrier — Freelance developer</title>
+<title>Mathis Serrier — Freelance developer in Toulouse</title>
 <meta name="description" content="Portfolio of Mathis Serrier — freelance developer in Toulouse, France. Voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents. C/C++ at École 42, Python and TypeScript everywhere else.">
 <meta name="author" content="Mathis Serrier">
 <meta name="theme-color" content="#f0eee6">
 <link rel="canonical" href="https://tsrun.dev/">
+<link rel="alternate" hreflang="en" href="https://tsrun.dev/">
+<link rel="alternate" hreflang="fr" href="https://tsrun.dev/fr">
+<link rel="alternate" hreflang="x-default" href="https://tsrun.dev/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tsrun.dev/">
-<meta property="og:title" content="Mathis Serrier — Freelance developer">
+<meta property="og:title" content="Mathis Serrier — Freelance developer in Toulouse">
 <meta property="og:description" content="Freelance developer in Toulouse. I build the tools I wish existed — voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents.">
 <meta property="og:image" content="https://tsrun.dev/assets/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -19,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mathis Serrier — Freelance developer">
+<meta name="twitter:title" content="Mathis Serrier — Freelance developer in Toulouse">
 <meta name="twitter:description" content="Freelance developer in Toulouse. I build the tools I wish existed — voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents.">
 <meta name="twitter:image" content="https://tsrun.dev/assets/og.jpg">
 <meta name="twitter:image:alt" content="Mathis Serrier — I build the tools I wish existed. Developer portfolio, Toulouse.">
@@ -1579,7 +1582,7 @@ class Component extends DCLogic {
     this.applyAccent();
     if ((this.state.lang || this.props.defaultLang || 'en') === 'fr') {
       document.documentElement.lang = 'fr';
-      document.title = 'Mathis Serrier — Développeur freelance';
+      document.title = 'Mathis Serrier — Développeur freelance à Toulouse';
     }
     if (!this.state.tasks) this.setState({ tasks: this.seed() });
     this.timer = setInterval(() => this.tick(), 900);
@@ -1783,8 +1786,8 @@ class Component extends DCLogic {
     return {
       en: en, fr: !en,
       email: em, mailtoHref: 'mailto:' + em,
-      setEn: () => { document.documentElement.lang = 'en'; document.title = 'Mathis Serrier — Freelance developer'; try { localStorage.setItem('lang', 'en'); } catch (e) {} this.setState({ lang: 'en' }); },
-      setFr: () => { document.documentElement.lang = 'fr'; document.title = 'Mathis Serrier — Développeur freelance'; try { localStorage.setItem('lang', 'fr'); } catch (e) {} this.setState({ lang: 'fr' }); },
+      setEn: () => { document.documentElement.lang = 'en'; document.title = 'Mathis Serrier — Freelance developer in Toulouse'; try { localStorage.setItem('lang', 'en'); } catch (e) {} this.setState({ lang: 'en' }); },
+      setFr: () => { document.documentElement.lang = 'fr'; document.title = 'Mathis Serrier — Développeur freelance à Toulouse'; try { localStorage.setItem('lang', 'fr'); } catch (e) {} this.setState({ lang: 'fr' }); },
       enBtn: Object.assign({}, btnBase, en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
       frBtn: Object.assign({}, btnBase, !en ? { background: '#22201b', color: '#f1eee4' } : { background: 'transparent', color: '#6f6a5e' }),
 
