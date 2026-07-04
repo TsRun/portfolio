@@ -254,7 +254,7 @@
       </h1>
       <p class="hero-sub" style="font-size:18.5px;line-height:1.65;color:#55503f;max-width:600px;margin:0 0 40px;animation:riseIn .8s .6s cubic-bezier(.2,.7,.2,1) both">
         <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Voice-driven chess, a blindfold-cubing trainer, a task queue for AI coding agents. I'm Mathis Serrier — C/C++ at 42, Python and TypeScript everywhere else.</sc-if>
-        <sc-if value="{{ fr }}">Des échecs à la voix, un entraîneur de cubing à l'aveugle, une file de tâches pour agents de code IA. Moi, c'est Mathis Serrier — C/C++ à 42, Python et TypeScript partout ailleurs.</sc-if>
+        <sc-if value="{{ fr }}">Des échecs à la voix, un entraîneur de cubing à l'aveugle, une task queue pour agents de code IA. Moi, c'est Mathis Serrier — C/C++ à 42, Python et TypeScript partout ailleurs.</sc-if>
       </p>
       <div class="hero-cta" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap;animation:riseIn .8s .72s cubic-bezier(.2,.7,.2,1) both">
         <span style="display:inline-flex;gap:9px;align-items:center;font-family:'Iosevka',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#55503f;border:1px solid #b9b2a2;border-radius:999px;padding:9px 16px">
@@ -268,7 +268,7 @@
       </div>
     </div>
     <div class="hero-scroll" style="position:absolute;bottom:26px;left:28px;font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:#635e52;animation:pulse 2.6s ease-in-out infinite">
-      <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">scroll ↓</sc-if><sc-if value="{{ fr }}">défiler ↓</sc-if>
+      <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">scroll ↓</sc-if><sc-if value="{{ fr }}">scroll ↓</sc-if>
     </div>
   </header>
 
@@ -294,7 +294,7 @@
         <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Fil de Fer</h2>
         <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#6f6a5e">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a 3D wireframe renderer, in C</sc-if>
-          <sc-if value="{{ fr }}">un rendu 3D fil de fer, en C</sc-if>
+          <sc-if value="{{ fr }}">un renderer 3D wireframe, en C</sc-if>
         </span>
       </div>
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
@@ -303,7 +303,7 @@
       </div>
       <p style="font-size:17px;line-height:1.7;color:#55503f;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
         <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">The 42 classic: read a heightmap, project every point, draw every edge — no OpenGL, just lines. This one runs the same math in your browser. Grab it.</sc-if>
-        <sc-if value="{{ fr }}">Le classique de 42 : lire une carte d'altitudes, projeter chaque point, tracer chaque arête — sans OpenGL, rien que des lignes. Celui-ci refait les mêmes maths dans votre navigateur. Attrapez-le.</sc-if>
+        <sc-if value="{{ fr }}">Le classique de 42 : lire une heightmap, projeter chaque point, tracer chaque arête — sans OpenGL, rien que des lignes. Celui-ci refait les mêmes maths dans votre navigateur. Attrapez-le.</sc-if>
       </p>
       <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap;margin-top:56px">
         <div style="flex:1 1 560px;min-width:min(100%,320px);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 40%">
@@ -320,7 +320,7 @@
           </div>
           <div style="display:flex;gap:18px;row-gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
             <div style="display:flex;gap:6px;align-items:center">
-              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">carte</sc-if></span>
+              <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6a5e"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">map</sc-if><sc-if value="{{ fr }}">map</sc-if></span>
               <sc-for list="{{ fdfMapChips }}" as="mc" hint-placeholder-count="2">
                 <button onClick="{{ mc.click }}" style="{{ mc.style }}">{{ mc.label }}</button>
               </sc-for>
@@ -350,7 +350,7 @@
           </div>
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;color:#6f6a5e;margin-top:14px">
             <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">↑ a MiniLibX-style window running real 42 maps — drag to orbit, scroll or pinch to zoom, not a screenshot</sc-if>
-            <sc-if value="{{ fr }}">↑ une fenêtre façon MiniLibX avec de vraies cartes 42 — glissez pour pivoter, molette ou pincez pour zoomer, pas une capture</sc-if>
+            <sc-if value="{{ fr }}">↑ une fenêtre façon MiniLibX avec de vraies maps de 42 — glissez pour pivoter, molette ou pincez pour zoomer, pas un screenshot</sc-if>
           </div>
         </div>
         <div style="flex:1 1 300px;min-width:280px;display:flex;flex-direction:column;gap:36px">
@@ -381,7 +381,7 @@
             </h3>
             <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">42 rules: no leaks, no libraries, every malloc accounted for. The kind of discipline that stays with you in any language.</sc-if>
-              <sc-if value="{{ fr }}">Les règles de 42 : zéro fuite, zéro lib, chaque malloc justifié. Le genre de discipline qui vous suit dans n'importe quel langage.</sc-if>
+              <sc-if value="{{ fr }}">Les règles de 42 : zéro leak, zéro lib, chaque malloc justifié. Le genre de discipline qui vous suit dans n'importe quel langage.</sc-if>
             </p>
           </div>
         </div>
@@ -408,7 +408,7 @@
       </div>
       <p style="font-size:17px;line-height:1.7;color:#55503f;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
         <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A desktop companion that holds all your League accounts and swaps between them in one click — sessions injected straight into the Riot client, ranked stats pulled live from the Riot API.</sc-if>
-        <sc-if value="{{ fr }}">Un compagnon de bureau qui garde tous vos comptes League et bascule de l'un à l'autre en un clic — sessions injectées directement dans le client Riot, stats classées tirées en direct de l'API Riot.</sc-if>
+        <sc-if value="{{ fr }}">Un compagnon desktop qui garde tous vos comptes League et switche de l'un à l'autre en un clic — sessions injectées directement dans le client Riot, stats ranked tirées en direct de l'API Riot.</sc-if>
       </p>
       <div style="display:flex;flex-direction:row-reverse;gap:56px;align-items:flex-start;flex-wrap:wrap;margin-top:56px">
         <div style="flex:1 1 560px;min-width:min(100%,320px);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 40%">
@@ -593,7 +593,7 @@
             </h3>
             <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Savana injects the session straight into the Riot client — no retyping credentials, no clipboard gymnastics. Switching takes seconds.</sc-if>
-              <sc-if value="{{ fr }}">Savana injecte la session directement dans le client Riot — pas de mot de passe à retaper, pas de gymnastique presse-papiers. La bascule prend quelques secondes.</sc-if>
+              <sc-if value="{{ fr }}">Savana injecte la session directement dans le client Riot — pas de mot de passe à retaper, pas de gymnastique clipboard. Le switch prend quelques secondes.</sc-if>
             </p>
           </div>
           <div style="border-top:1px solid #ddd6c8;padding-top:32px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
@@ -603,17 +603,17 @@
             </h3>
             <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Rank, LP and winrate per account, straight from the Riot API — so you know which smurf is climbing before you log in.</sc-if>
-              <sc-if value="{{ fr }}">Rang, LP et taux de victoire par compte, directement depuis l'API Riot — pour savoir quel smurf grimpe avant même de se connecter.</sc-if>
+              <sc-if value="{{ fr }}">Rang, LP et winrate par compte, directement depuis l'API Riot — pour savoir quel smurf grimpe avant même de se connecter.</sc-if>
             </p>
           </div>
           <div style="border-top:1px solid #ddd6c8;padding-top:32px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 50%">
             <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;font-weight:600;color:var(--accent)">03</div>
             <h3 style="font-weight:400;font-style:italic;font-size:24px;margin:8px 0 10px">
-              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A compact stack</sc-if><sc-if value="{{ fr }}">Une pile compacte</sc-if>
+              <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A compact stack</sc-if><sc-if value="{{ fr }}">Une stack compacte</sc-if>
             </h3>
             <p style="font-size:15.5px;line-height:1.65;color:#55503f;margin:0">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Electron shell, Vue 3 front, a small Express service for the Riot API, SQLite for the vault. Everything local, nothing phones home.</sc-if>
-              <sc-if value="{{ fr }}">Coquille Electron, front Vue 3, un petit service Express pour l'API Riot, SQLite pour le coffre. Tout en local, rien ne fuite.</sc-if>
+              <sc-if value="{{ fr }}">Un shell Electron, un front Vue 3, un petit service Express pour l'API Riot, SQLite pour le coffre. Tout en local, rien ne fuite.</sc-if>
             </p>
           </div>
         </div>
@@ -631,19 +631,19 @@
         <h2 style="font-weight:400;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;margin:0">Foreman</h2>
         <span style="font-style:italic;font-size:clamp(17px,1.6vw,22px);color:#a49e92">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">a personal task queue for AI coding agents</sc-if>
-          <sc-if value="{{ fr }}">une file de tâches personnelle pour agents de code IA</sc-if>
+          <sc-if value="{{ fr }}">une task queue perso pour agents de code IA</sc-if>
         </span>
       </div>
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
         <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#a49e92">Tauri 2 · Rust · React 18 · SQLite</span>
         <span style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#c9c3b6;border:1px dashed rgba(241,238,228,.3);border-radius:999px;padding:4px 12px">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">private repo — ask me for a demo</sc-if>
-          <sc-if value="{{ fr }}">dépôt privé — demandez une démo</sc-if>
+          <sc-if value="{{ fr }}">repo privé — demandez une démo</sc-if>
         </span>
       </div>
       <p style="font-size:17px;line-height:1.7;color:#c9c3b6;max-width:640px;margin:26px 0 0;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 65%">
         <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A macOS desktop app that turns plain-English intent into shipped code: queue tasks under a project, let a classifier route them to specialised agents, and watch them run — in parallel across agents, strictly serial within one.</sc-if>
-        <sc-if value="{{ fr }}">Une app de bureau macOS qui transforme une intention en code livré : des tâches en file sous un projet, un classifieur qui les route vers des agents spécialisés, et une exécution en parallèle entre agents — strictement séquentielle au sein d'un même agent.</sc-if>
+        <sc-if value="{{ fr }}">Une app desktop macOS qui transforme une intention en code shippé : des tâches en queue sous un projet, un classifieur qui les route vers des agents spécialisés, et une exécution en parallèle entre agents — strictement séquentielle au sein d'un même agent.</sc-if>
       </p>
 
       <div style="display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;margin-top:70px">
@@ -874,7 +874,7 @@
             </h3>
             <p style="font-size:16px;line-height:1.7;color:#c9c3b6;margin:0">
               <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A Rust backend under Tauri 2, a React 18 front in plain CSS. Read-only git status, an editable CLAUDE.md per project, SQLite for everything — and the same UI runs in the browser on a mocked backend for fast iteration.</sc-if>
-              <sc-if value="{{ fr }}">Un backend Rust sous Tauri 2, un front React 18 en CSS simple. Statut git en lecture seule, un CLAUDE.md éditable par projet, SQLite pour tout — et la même UI tourne dans le navigateur sur un backend mocké.</sc-if>
+              <sc-if value="{{ fr }}">Un backend Rust sous Tauri 2, un front React 18 en CSS vanilla. Statut git en lecture seule, un CLAUDE.md éditable par projet, SQLite pour tout — et la même UI tourne dans le navigateur sur un backend mocké.</sc-if>
             </p>
           </div>
         </div>
@@ -915,7 +915,7 @@
           </div>
           <p style="font-style:italic;font-size:15px;line-height:1.6;color:#55503f;margin:8px 0 12px">
             <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">A small Bash rebuilt from scratch in C — parsing, pipes, signals, builtins, and not a byte leaked. With Adrien Mori.</sc-if>
-            <sc-if value="{{ fr }}">Un petit Bash réécrit de zéro en C — parsing, pipes, signaux, builtins, sans un octet de fuite. Avec Adrien Mori.</sc-if>
+            <sc-if value="{{ fr }}">Un petit Bash réécrit from scratch en C — parsing, pipes, signaux, builtins, zéro leak. Avec Adrien Mori.</sc-if>
           </p>
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:#6f6a5e">C · syscalls · École 42</div>
         </div>
@@ -940,7 +940,7 @@
         </h2>
         <p style="font-size:17.5px;line-height:1.75;color:#55503f;margin:0 0 20px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">I like owning the whole stack — Python day to day, a Rust core or a typed React front when the tool calls for it, and the design in between. I cut my teeth at École 42, in C and C++: memory, processes, a shell rebuilt from scratch. Lately it's agentic tooling — queues, classifiers and specialised agents that turn plain-English intent into working software.</sc-if>
-          <sc-if value="{{ fr }}">J'aime posséder toute la pile — Python au quotidien, un cœur Rust ou un front React typé quand l'outil le demande, et le design entre les deux. J'ai fait mes armes à l'École 42, en C et C++ : la mémoire, les processus, un shell réécrit de zéro. Ces temps-ci : l'outillage agentique — des files, des classifieurs et des agents qui transforment une intention en logiciel qui tourne.</sc-if>
+          <sc-if value="{{ fr }}">J'aime posséder toute la stack — Python au quotidien, un cœur Rust ou un front React typé quand l'outil le demande, et le design entre les deux. J'ai fait mes armes à l'École 42, en C et C++ : la mémoire, les processus, un shell réécrit from scratch. Ces temps-ci : le tooling agentique — des queues, des classifieurs et des agents qui transforment une intention en logiciel qui tourne.</sc-if>
         </p>
         <p style="font-size:17.5px;line-height:1.75;color:#55503f;margin:0 0 30px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
           <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">I care about calm interfaces, warm typography and software that respects your attention. This site is set in Newsreader and Iosevka — the same pair Foreman ships with.</sc-if>
@@ -949,7 +949,7 @@
         <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:12px;line-height:2.2;color:#22201b;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 55%">
           <div><span style="color:var(--accent)">→</span> Python · C++/C · TypeScript · Rust</div>
           <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Trained at École 42</sc-if><sc-if value="{{ fr }}">Formé à l'École 42</sc-if></div>
-          <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Desktop apps — Tauri 2 &amp; Electron</sc-if><sc-if value="{{ fr }}">Apps de bureau — Tauri 2 &amp; Electron</sc-if></div>
+          <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Desktop apps — Tauri 2 &amp; Electron</sc-if><sc-if value="{{ fr }}">Apps desktop — Tauri 2 &amp; Electron</sc-if></div>
           <div><span style="color:var(--accent)">→</span> <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">Based in France</sc-if><sc-if value="{{ fr }}">Basé en France</sc-if></div>
           <div><span style="color:var(--accent)">→</span> <a href="https://github.com/TsRun" target="_blank" rel="noopener" style="color:#22201b;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--accent)">github.com/TsRun ↗</a></div>
         </div>
@@ -968,7 +968,7 @@
       <div class="stack-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:#ddd6c8;border:1px solid #ddd6c8;border-radius:14px;overflow:hidden;margin-top:48px;animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 40%">
         <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Python</div>
-          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">the daily driver</sc-if><sc-if value="{{ fr }}">l'outil du quotidien</sc-if></div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">the daily driver</sc-if><sc-if value="{{ fr }}">le daily driver</sc-if></div>
         </div>
         <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">C++ / C</div>
@@ -984,7 +984,7 @@
         </div>
         <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">React 18</div>
-          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">calm UI, plain CSS</sc-if><sc-if value="{{ fr }}">UI calme, CSS simple</sc-if></div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">calm UI, plain CSS</sc-if><sc-if value="{{ fr }}">UI calme, CSS vanilla</sc-if></div>
         </div>
         <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Vue 3</div>
@@ -996,7 +996,7 @@
         </div>
         <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">Node · Express</div>
-          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">servers &amp; proxies</sc-if><sc-if value="{{ fr }}">serveurs &amp; proxys</sc-if></div>
+          <div style="font-style:italic;font-size:14px;opacity:.72;margin-top:6px"><sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">servers &amp; proxies</sc-if><sc-if value="{{ fr }}">serveurs &amp; proxies</sc-if></div>
         </div>
         <div style="background:#f5f3eb;padding:24px 20px;transition:all .25s;cursor:default" style-hover="background:var(--accent);color:#faf9f5">
           <div style="font-family:'Iosevka',ui-monospace,monospace;font-size:13px;font-weight:600;letter-spacing:.04em">SQLite</div>
@@ -1046,7 +1046,7 @@
       </h2>
       <p style="font-size:17.5px;line-height:1.65;max-width:560px;margin:0 0 44px;color:rgba(42,26,18,.85);animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 58%">
         <sc-if value="{{ en }}" hint-placeholder-val="{{ true }}">I'm available for freelance missions — desktop tools, web apps, AI &amp; agent integrations. Remote, from Perpignan.</sc-if>
-        <sc-if value="{{ fr }}">Disponible pour des missions freelance — outils desktop, apps web, intégrations IA &amp; agents. À distance, depuis Perpignan.</sc-if>
+        <sc-if value="{{ fr }}">Disponible pour des missions freelance — outils desktop, apps web, intégrations IA &amp; agents. En remote, depuis Perpignan.</sc-if>
       </p>
       <div style="animation:rise .8s linear both;animation-timeline:view();animation-range:entry 0% entry 60%">
         <a href="{{ mailtoHref }}" style="font-family:'Iosevka',ui-monospace,monospace;font-size:clamp(16px,2.6vw,26px);font-weight:600;color:#2a1a12;text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px;transition:color .25s" style-hover="color:#faf9f5">{{ email }}</a>
